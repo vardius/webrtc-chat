@@ -39,16 +39,12 @@ export class Logger {
         if (this._logLevel === LogLevel.INFO && (method === 'error' || method === 'warn')) {
             return;
         }
-
-        if (window.performance) {
-            let now = (window.performance.now() / 1000).toFixed(3);
-            if (data instanceof Error) {
-                this.logToChat(method, now + ': ' + data.toString());
-            }
-            this.logToChat(method, now + ': ', data);
-        } else {
-            this.logToChat(method, data);
+        let now = new Date();
+        now = now.getHours() + '.' + now.getMinutes();
+        if (data instanceof Error) {
+            this.logToChat(method, now + ': ' + data.toString());
         }
+        this.logToChat(method, now + ': ' + data);
     }
 
     logToChat(method, message) {
