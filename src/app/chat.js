@@ -41,6 +41,8 @@ export class Chat {
         this.clearInput();
         this.peerData.send(message);
         this.addMessage(message);
+        let elem = document.querySelector('div.chat');
+        elem.scrollTop = elem.scrollHeight;
     }
 
     onOpen(event) {
