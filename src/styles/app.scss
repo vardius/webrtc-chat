@@ -80,6 +80,15 @@ body {
       font-size: 14px;
       display: inline-block;
       color: $grey;
+      &.info {
+        color: $info;
+      }
+      &.warn {
+        color: $warning;
+      }
+      &.error {
+        color: $danger;
+      }
       @include animation-name(slideFromRight);
     }
   }

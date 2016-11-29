@@ -9,8 +9,9 @@
 import {EventType} from "peer-data";
 
 export class Chat {
-    constructor(peerData) {
+    constructor(peerData, logger) {
         this.peerData = peerData;
+        this.logger = logger;
         this.inputSelector = 'input#sendInput';
         this.subscribeEvents();
         this.init('sendBtn');
@@ -46,11 +47,11 @@ export class Chat {
     }
 
     onOpen(event) {
-        this.addMessage('User joined chat', 'system');
+        this.logger.info('User joined chat');
     }
 
     onClose(event) {
-        this.addMessage('User left chat', 'system');
+        this.logger.info('User left chat');
     }
 
     onData(event) {
@@ -58,7 +59,7 @@ export class Chat {
     }
 
     onError(event) {
-        this.addMessage(event.toString(), 'system');
+        this.logger.error(event);
     }
 
     clearInput() {
@@ -67,9 +68,8 @@ export class Chat {
 
     addMessage(message, incoming = false) {
         let template = require('./../public/message.html');
-        incoming = incoming === 'system' ? 'system' : incoming ? 'income' : 'outcome';
         template = template.replace(/{{message}}/gi, prop => message);
-        template = template.replace(/{{class}}/gi, prop => incoming);
+        template = template.replace(/{{class}}/gi, prop => incoming ? 'income' : 'outcome');
         document.querySelector('div.chat').innerHTML += template;
     }
 }

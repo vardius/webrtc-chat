@@ -8,6 +8,7 @@
  */
 import {PeerData, PeerDataConfig, LogLevel} from "peer-data";
 import {Signaling} from "./signaling";
+import {Logger} from "./logger";
 import {GuiManager} from "./gui-manager";
 import {Chat} from "./chat";
 
@@ -23,8 +24,9 @@ export default class App {
     constructor() {
         this.signaling = new Signaling();
         this.config = new PeerDataConfig(servers, constraints, logLevel, this.signaling);
+        this.config.logger = new Logger(logLevel);
         this.peerData = new PeerData(this.config);
         this.gui = new GuiManager(this.peerData, this.signaling);
-        this.chat = new Chat(this.peerData);
+        this.chat = new Chat(this.peerData, this.config.logger);
     }
 };
