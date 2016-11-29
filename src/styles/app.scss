@@ -14,11 +14,13 @@ body {
   background-color: $bg;
 }
 
-#load-info, #share-info {
-  word-wrap: break-word
-}
-
 .container {
+  .send-group {
+    margin-top: 25px;
+  }
+  #load-info, #share-info {
+    word-wrap: break-word
+  }
   .chat {
     margin-top: 5px;
     height: 500px;
