@@ -5,8 +5,6 @@ Server-less chat application useing peer to peer WebRTC
 
 Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
-You **may have** to use **incognito** to test this app!
-
 ## License
 
 The code is available under the [MIT license](LICENSE.txt).
