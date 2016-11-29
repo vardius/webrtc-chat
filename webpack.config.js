@@ -99,7 +99,7 @@ module.exports = function makeWebpackConfig() {
             // copy those assets to output
             {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'file?name=fonts/[name].[hash].[ext]?'
+                loader: 'file?name=fonts/[name].[ext]?'
             },
             // Support for *.json files.
             {test: /\.json$/, loader: 'json'},
@@ -177,7 +177,7 @@ module.exports = function makeWebpackConfig() {
             // Extract css files
             // Reference: https://github.com/webpack/extract-text-webpack-plugin
             // Disabled when in test mode or not in build mode
-            new ExtractTextPlugin('css/[name].[hash].css', {disable: !isProd})
+            new ExtractTextPlugin('css/[name].css', {disable: !isProd})
         );
     }
 
