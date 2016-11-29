@@ -1,16 +1,9 @@
 # WebRTC Chat
+[![Build Status](https://travis-ci.org/Vardius/webrtc-chat.svg?branch=master)](https://travis-ci.org/Vardius/webrtc-chat)
 
-## Contributing
+Server-less chat application using peer to peer WebRTC
 
-Hundreds of developers have helped make the HTML5 Boilerplate what it is
-today. Anyone and everyone is welcome to [contribute](CONTRIBUTING.md),
-however, if you decide to get involved, please take a moment to review
-the [guidelines](CONTRIBUTING.md):
-
-* [Bug reports](CONTRIBUTING.md#bugs)
-* [Feature requests](CONTRIBUTING.md#features)
-* [Pull requests](CONTRIBUTING.md#pull-requests)
-
+Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
 ## License
 
