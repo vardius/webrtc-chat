@@ -19,6 +19,8 @@ export class Chat {
     init(id) {
         let sendBtn = document.getElementById(id);
         sendBtn.addEventListener('click', this.onSend.bind(this));
+
+        document.querySelector(this.inputSelector).addEventListener('keypress', this.onEnter.bind(this));
     }
 
     subscribeEvents() {
@@ -26,6 +28,12 @@ export class Chat {
         this.peerData.on(EventType.CLOSE, this.onClose.bind(this));
         this.peerData.on(EventType.DATA, this.onData.bind(this));
         this.peerData.on(EventType.ERROR, this.onError.bind(this));
+    }
+
+    onEnter(event) {
+        if (event.keyCode === 13) {
+            this.onSend()
+        }
     }
 
     onSend() {
