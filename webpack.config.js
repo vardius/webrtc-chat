@@ -191,7 +191,7 @@ module.exports = function makeWebpackConfig() {
             new webpack.optimize.DedupePlugin(),
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
             // Minify all javascript, switch loaders to minimizing mode
-            new webpack.optimize.UglifyJsPlugin({mangle: {keep_fnames: true}}),
+            // new webpack.optimize.UglifyJsPlugin({mangle: {keep_fnames: true}}),
             // Copy assets from the public folder
             // Reference: https://github.com/kevlened/copy-webpack-plugin
             new CopyWebpackPlugin([{
