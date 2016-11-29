@@ -28,7 +28,7 @@ export class Logger {
         this.trace(data, 'error');
     }
 
-    private trace(data, method) {
+    trace(data, method) {
         if (this._logLevel === LogLevel.OFF) {
             return;
         }
@@ -50,7 +50,7 @@ export class Logger {
         }
     }
 
-    private logToChat(method, message) {
+    logToChat(method, message) {
         let template = require('./../public/system-message.html');
         template = template.replace(/{{message}}/gi, prop => message);
         template = template.replace(/{{class}}/gi, prop => method);
