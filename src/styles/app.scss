@@ -14,12 +14,13 @@ body {
   background-color: $bg;
 }
 
+#load-info, #share-info {
+  word-wrap: break-word
+}
+
 .container {
   .send-group {
     margin-top: 25px;
-  }
-  #load-info, #share-info {
-    word-wrap: break-word
   }
   .chat {
     margin-top: 5px;
@@ -70,6 +71,16 @@ body {
         right: -3px;
         background-color: #eceff1;
       }
+    }
+    &.system {
+      position: relative;
+      width: 100%;
+      margin-bottom: 27px;
+      text-align: center;
+      font-size: 14px;
+      display: inline-block;
+      color: $grey;
+      @include animation-name(slideFromRight);
     }
   }
 }

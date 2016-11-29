@@ -46,11 +46,11 @@ export class Chat {
     }
 
     onOpen(event) {
-        console.log(event);
+        this.addMessage('User joined chat', 'system');
     }
 
     onClose(event) {
-        console.log(event);
+        this.addMessage('User left chat', 'system');
     }
 
     onData(event) {
@@ -58,7 +58,7 @@ export class Chat {
     }
 
     onError(event) {
-        console.log(event);
+        this.addMessage(event.toString(), 'system');
     }
 
     clearInput() {
@@ -67,8 +67,9 @@ export class Chat {
 
     addMessage(message, incoming = false) {
         let template = require('./../public/message.html');
+        incoming = incoming === 'system' ? 'system' : incoming ? 'income' : 'outcome';
         template = template.replace(/{{message}}/gi, prop => message);
-        template = template.replace(/{{class}}/gi, prop => incoming ? 'income' : 'outcome');
+        template = template.replace(/{{class}}/gi, prop => incoming);
         document.querySelector('div.chat').innerHTML += template;
     }
 }
