@@ -9,24 +9,24 @@
 import {PeerData, PeerDataConfig, LogLevel} from "peer-data";
 import {Signaling} from "./signaling";
 import {Logger} from "./logger";
-import {GuiManager} from "./gui-manager";
 import {Chat} from "./chat";
 
-const logLevel = LogLevel.ERROR;
 const servers = {
     iceServers: [
         {url: "stun:stun.1.google.com:19302"}
     ]
 };
 const constraints = {ordered: true};
+const logLevel = LogLevel.ERROR;
+
+export const logger = new Logger(logLevel);
+export const signaling = new Signaling();
 
 export default class App {
     constructor() {
-        this.signaling = new Signaling();
-        this.config = new PeerDataConfig(servers, constraints, logLevel, this.signaling);
-        this.config.logger = new Logger(logLevel);
+        this.config = new PeerDataConfig(servers, constraints, logLevel, signaling);
+        this.config.logger = logger;
         this.peerData = new PeerData(this.config);
-        this.gui = new GuiManager(this.peerData, this.signaling);
-        this.chat = new Chat(this.peerData, this.config.logger);
+        this.chat = new Chat(this.peerData);
     }
 };

@@ -7,67 +7,91 @@
  * file that was distributed with this source code.
  */
 import {EventType} from "peer-data";
+import {ModalManager} from "./modal-manager";
+import {signaling} from "./app";
+import {EventsLoader, onOpen, onClose, onData, onError} from "./events";
 
 export class Chat {
-    constructor(peerData, logger) {
+    constructor(peerData) {
         this.peerData = peerData;
-        this.logger = logger;
         this.inputSelector = 'input#sendInput';
         this.subscribeEvents();
         this.init('sendBtn');
     }
 
     init(id) {
+        let token = this.getToken();
+        if (token) {
+            EventsLoader.load(token, signaling.onMessage);
+        } else {
+            this.peerData.connect();
+            ModalManager.onHide('#shareModal', event => {
+                document.querySelector('div#share-info').innerHTML = '';
+                $('#loadModal').modal('show');
+            });
+        }
+
+        let loadBtn = document.getElementById('loadBtn');
+        loadBtn.addEventListener('click', this.onLoad.bind(this));
+
+        ModalManager.onHide('#loadModal', event => document.querySelector('div#load-info').innerHTML = '');
+        this.modalLoop(10);
+
         let sendBtn = document.getElementById(id);
         sendBtn.addEventListener('click', this.onSend.bind(this));
 
-        document.querySelector(this.inputSelector).addEventListener('keypress', this.onEnter.bind(this));
+        document.querySelector(this.inputSelector).addEventListener('keypress', this.onKeyPress.bind(this));
     }
 
     subscribeEvents() {
-        this.peerData.on(EventType.OPEN, this.onOpen.bind(this));
-        this.peerData.on(EventType.CLOSE, this.onClose.bind(this));
-        this.peerData.on(EventType.DATA, this.onData.bind(this));
-        this.peerData.on(EventType.ERROR, this.onError.bind(this));
+        this.peerData.on(EventType.OPEN, onOpen);
+        this.peerData.on(EventType.CLOSE, onClose);
+        this.peerData.on(EventType.DATA, onData);
+        this.peerData.on(EventType.ERROR, onError);
     }
 
-    onEnter(event) {
+    onKeyPress(event) {
         if (event.keyCode === 13) {
-            this.onSend()
+            let message = document.querySelector(this.inputSelector).value;
+            this.send(message);
         }
     }
 
     onSend() {
         let message = document.querySelector(this.inputSelector).value;
-        if (message.length > 0) {
-            this.clearInput();
-            this.peerData.send(message);
-            this.addMessage(message);
-            this.constructor.scrollDown();
-        }
+        this.send(message);
     }
 
-    onOpen(event) {
-        this.logger.info('User joined chat');
+    onLoad() {
+        let data = document.querySelector('textarea#loadInput').value;
+        EventsLoader.load(data, signaling.onMessage);
+        $('#loadModal').modal('hide');
     }
 
-    onClose(event) {
-        this.logger.info('User left chat');
+    modalLoop(i) {
+        setTimeout(() => {
+            if (ModalManager.showShareModal() !== true && --i) this.modalLoop(i);
+        }, 1000)
     }
 
-    onData(event) {
-        this.addMessage(event.data, true);
-    }
-
-    onError(event) {
-        this.logger.error(event);
+    getToken() {
+        return window.location.hash.substring(1);
     }
 
     clearInput() {
         document.querySelector(this.inputSelector).value = '';
     }
 
-    addMessage(message, incoming = false) {
+    send(message) {
+        if (message.length > 0) {
+            this.clearInput();
+            this.peerData.send(message);
+            this.constructor.addMessage(message);
+            this.constructor.scrollDown();
+        }
+    }
+
+    static addMessage(message, incoming = false) {
         let template = require('./../public/message.html');
         template = template.replace(/{{message}}/gi, prop => message);
         template = template.replace(/{{class}}/gi, prop => incoming ? 'income' : 'outcome');
