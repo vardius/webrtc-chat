@@ -39,10 +39,12 @@ export class Chat {
 
     onSend() {
         let message = document.querySelector(this.inputSelector).value;
-        this.clearInput();
-        this.peerData.send(message);
-        this.addMessage(message);
-        this.scrollDown();
+        if (message.length > 0) {
+            this.clearInput();
+            this.peerData.send(message);
+            this.addMessage(message);
+            this.constructor.scrollDown();
+        }
     }
 
     onOpen(event) {
