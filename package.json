@@ -59,7 +59,7 @@
     "karma-remap-istanbul": "0.1.1",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
-    "node-sass": "^3.4.2",
+    "node-sass": "^3.13.0",
     "null-loader": "^0.1.1",
     "phantomjs-prebuilt": "^2.1.7",
     "postcss-loader": "^0.9.1",

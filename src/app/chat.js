@@ -42,8 +42,7 @@ export class Chat {
         this.clearInput();
         this.peerData.send(message);
         this.addMessage(message);
-        let elem = document.querySelector('div.chat');
-        elem.scrollTop = elem.scrollHeight;
+        this.scrollDown();
     }
 
     onOpen(event) {
@@ -71,5 +70,10 @@ export class Chat {
         template = template.replace(/{{message}}/gi, prop => message);
         template = template.replace(/{{class}}/gi, prop => incoming ? 'income' : 'outcome');
         document.querySelector('div.chat').innerHTML += template;
+    }
+
+    static scrollDown() {
+        let elem = document.querySelector('div.chat');
+        elem.scrollTop = elem.scrollHeight;
     }
 }

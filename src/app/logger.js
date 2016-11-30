@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 import {LogLevel} from "peer-data";
+import {Chat} from "./chat";
 
 export class Logger {
     constructor(logLevel) {
@@ -52,6 +53,7 @@ export class Logger {
         template = template.replace(/{{message}}/gi, prop => message);
         template = template.replace(/{{class}}/gi, prop => method);
         document.querySelector('div.chat').innerHTML += template;
+        Chat.scrollDown();
     }
 
     get logLevel() {

@@ -40,9 +40,9 @@ webpackJsonp([0],{
 	
 	var _logger = __webpack_require__(71);
 	
-	var _guiManager = __webpack_require__(73);
+	var _guiManager = __webpack_require__(75);
 	
-	var _chat = __webpack_require__(82);
+	var _chat = __webpack_require__(72);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
 	                                                                                                                                                           * This file is part of the webrtc-chat package.
@@ -194,7 +194,7 @@ webpackJsonp([0],{
 /***/ 71:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -213,6 +213,8 @@ webpackJsonp([0],{
 	
 	var _peerData = __webpack_require__(2);
 	
+	var _chat = __webpack_require__(72);
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Logger = exports.Logger = function () {
@@ -223,27 +225,27 @@ webpackJsonp([0],{
 	    }
 	
 	    _createClass(Logger, [{
-	        key: 'info',
+	        key: "info",
 	        value: function info(data) {
 	            this.trace(data, 'info');
 	        }
 	    }, {
-	        key: 'log',
+	        key: "log",
 	        value: function log(data) {
 	            this.trace(data, 'log');
 	        }
 	    }, {
-	        key: 'warn',
+	        key: "warn",
 	        value: function warn(data) {
 	            this.trace(data, 'warn');
 	        }
 	    }, {
-	        key: 'error',
+	        key: "error",
 	        value: function error(data) {
 	            this.trace(data, 'error');
 	        }
 	    }, {
-	        key: 'trace',
+	        key: "trace",
 	        value: function trace(data, method) {
 	            if (this._logLevel === _peerData.LogLevel.OFF) {
 	                return;
@@ -262,9 +264,9 @@ webpackJsonp([0],{
 	            this.logToChat(method, now + ': ' + data);
 	        }
 	    }, {
-	        key: 'logToChat',
+	        key: "logToChat",
 	        value: function logToChat(method, message) {
-	            var template = __webpack_require__(72);
+	            var template = __webpack_require__(74);
 	            template = template.replace(/{{message}}/gi, function (prop) {
 	                return message;
 	            });
@@ -272,9 +274,10 @@ webpackJsonp([0],{
 	                return method;
 	            });
 	            document.querySelector('div.chat').innerHTML += template;
+	            _chat.Chat.scrollDown();
 	        }
 	    }, {
-	        key: 'logLevel',
+	        key: "logLevel",
 	        get: function get() {
 	            return this._logLevel;
 	        },
@@ -289,258 +292,6 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 72:
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"bubble system {{class}}\">{{message}}</div>"
-
-/***/ },
-
-/***/ 73:
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.GuiManager = undefined;
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of the webrtc-chat package.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * (c) Rafał Lorenz <vardius@gmail.com>
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * For the full copyright and license information, please view the LICENSE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * file that was distributed with this source code.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-	
-	
-	var _modalManager = __webpack_require__(75);
-	
-	var _eventsLoader = __webpack_require__(81);
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var GuiManager = exports.GuiManager = function () {
-	    function GuiManager(peerData, signaling) {
-	        _classCallCheck(this, GuiManager);
-	
-	        this.peerData = peerData;
-	        this.signaling = signaling;
-	        this.init();
-	    }
-	
-	    _createClass(GuiManager, [{
-	        key: "init",
-	        value: function init() {
-	            var token = this.getToken();
-	            if (token) {
-	                _eventsLoader.EventsLoader.load(token, this.signaling.onMessage);
-	            } else {
-	                this.peerData.connect();
-	                _modalManager.ModalManager.onHide('#shareModal', function (event) {
-	                    document.querySelector('div#share-info').innerHTML = '';
-	                    $('#loadModal').modal('show');
-	                });
-	            }
-	
-	            var loadBtn = document.getElementById('loadBtn');
-	            loadBtn.addEventListener('click', this.onLoad.bind(this));
-	
-	            _modalManager.ModalManager.onHide('#loadModal', function (event) {
-	                return document.querySelector('div#load-info').innerHTML = '';
-	            });
-	            this.modalLoop(10);
-	        }
-	    }, {
-	        key: "modalLoop",
-	        value: function modalLoop(i) {
-	            var _this = this;
-	
-	            setTimeout(function () {
-	                if (_modalManager.ModalManager.showShareModal() !== true && --i) _this.modalLoop(i);
-	            }, 1000);
-	        }
-	    }, {
-	        key: "onLoad",
-	        value: function onLoad() {
-	            var data = document.querySelector('textarea#loadInput').value;
-	            _eventsLoader.EventsLoader.load(data, this.signaling.onMessage);
-	            $('#loadModal').modal('hide');
-	        }
-	    }, {
-	        key: "getToken",
-	        value: function getToken() {
-	            return window.location.hash.substring(1);
-	        }
-	    }]);
-
-	    return GuiManager;
-	}();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(74)))
-
-/***/ },
-
-/***/ 75:
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function($) {'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.ModalManager = undefined;
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of the webrtc-chat package.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * (c) Rafał Lorenz <vardius@gmail.com>
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * For the full copyright and license information, please view the LICENSE
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * file that was distributed with this source code.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-	
-	
-	var _signaling = __webpack_require__(70);
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var ModalManager = exports.ModalManager = function () {
-	    function ModalManager() {
-	        _classCallCheck(this, ModalManager);
-	    }
-	
-	    _createClass(ModalManager, null, [{
-	        key: 'showShareModal',
-	        value: function showShareModal() {
-	            if (_signaling.SignalingData.candidatesLoaded !== true || _signaling.SignalingData.offerLoaded !== true && _signaling.SignalingData.answerLoaded !== true) {
-	                return false;
-	            }
-	
-	            var templateName = _signaling.SignalingData.offerLoaded ? 'offer' : 'answer';
-	            var token = JSON.stringify(_signaling.SignalingData.events);
-	            var data = (_signaling.SignalingData.offerLoaded ? location.href + '#' : '') + encodeURIComponent(token);
-	
-	            var template = __webpack_require__(76)("./" + templateName + '.html');
-	
-	            template = template.replace(/{{data}}/gi, function (prop) {
-	                return data;
-	            });
-	            document.querySelector('div#share-info').innerHTML += template;
-	            $('#shareModal').modal('show');
-	
-	            return true;
-	        }
-	    }, {
-	        key: 'onHide',
-	        value: function onHide(selector, callback) {
-	            $(selector).on('hide.bs.modal', callback);
-	        }
-	    }]);
-
-	    return ModalManager;
-	}();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(74)))
-
-/***/ },
-
-/***/ 76:
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./answer.html": 77,
-		"./index.html": 78,
-		"./message.html": 79,
-		"./offer.html": 80,
-		"./system-message.html": 72
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 76;
-
-
-/***/ },
-
-/***/ 77:
-/***/ function(module, exports) {
-
-	module.exports = "<h1>Share this token with the other side</h1>\n<p>{{data}}</p>"
-
-/***/ },
-
-/***/ 78:
-/***/ function(module, exports) {
-
-	module.exports = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n\n    <meta name=\"description\" content=\"Serverless chat application using peer to peer WebRTC\">\n    <meta name=\"keywords\"\n          content=\"HTML, HTML5, CSS, CSS3, XML, XHTML, JavaScript, EcmaScript, EcmaScript6, Rafał, Lorenz, WebRTC, real, time, communication\">\n    <meta name=\"author\" content=\"Rafał Lorenz\">\n    <meta name=\"copyright\" content=\"Rafał Lorenz\"/>\n</head>\n<body>\n<nav class=\"navbar navbar-default\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\"\n                    data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">WebRTC Chat</a>\n        </div>\n    </div>\n</nav>\n<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"row\">\n                <div class=\"col-lg-12\">\n                    <div class=\"chat\"></div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-lg-12\">\n                    <div class=\"input-group send-group\">\n                        <input id=\"sendInput\" class=\"form-control\"\n                               placeholder=\"Type your message here...\">\n                        <span class=\"input-group-btn\">\n                            <button id=\"sendBtn\" class=\"btn btn-default\" type=\"button\">Send</button>\n                        </span>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div id=\"shareModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n                        aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\">Share Offer</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div id=\"share-info\"></div>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div id=\"loadModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n                        aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\">Load Answer</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div id=\"load-info\">\n                    <h1>Paste here token from other side</h1>\n                </div>\n\n                <textarea id=\"loadInput\" class=\"form-control\" placeholder=\"Paste here...\"></textarea>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button id=\"loadBtn\" type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Load</button>\n            </div>\n        </div>\n    </div>\n</div>\n</body>\n</html>\n"
-
-/***/ },
-
-/***/ 79:
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"bubble {{class}}\">{{message}}</div>"
-
-/***/ },
-
-/***/ 80:
-/***/ function(module, exports) {
-
-	module.exports = "<h1>Share this link with the other side</h1>\n<a href=\"{{data}}\">{{data}}</a>"
-
-/***/ },
-
-/***/ 81:
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	/**
-	 * This file is part of the webrtc-chat package.
-	 *
-	 * (c) Rafał Lorenz <vardius@gmail.com>
-	 *
-	 * For the full copyright and license information, please view the LICENSE
-	 * file that was distributed with this source code.
-	 */
-	
-	var EventsLoader = exports.EventsLoader = function () {
-	    function EventsLoader() {
-	        _classCallCheck(this, EventsLoader);
-	    }
-	
-	    _createClass(EventsLoader, null, [{
-	        key: "load",
-	        value: function load(data, callback) {
-	            var events = JSON.parse(decodeURIComponent(data));
-	            for (var i = 0; i < events.length; i++) {
-	                callback(events[i]);
-	            }
-	        }
-	    }]);
-
-	    return EventsLoader;
-	}();
-
-/***/ },
-
-/***/ 82:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -605,8 +356,7 @@ webpackJsonp([0],{
 	            this.clearInput();
 	            this.peerData.send(message);
 	            this.addMessage(message);
-	            var elem = document.querySelector('div.chat');
-	            elem.scrollTop = elem.scrollHeight;
+	            this.scrollDown();
 	        }
 	    }, {
 	        key: 'onOpen',
@@ -638,7 +388,7 @@ webpackJsonp([0],{
 	        value: function addMessage(message) {
 	            var incoming = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
-	            var template = __webpack_require__(79);
+	            var template = __webpack_require__(73);
 	            template = template.replace(/{{message}}/gi, function (prop) {
 	                return message;
 	            });
@@ -647,9 +397,267 @@ webpackJsonp([0],{
 	            });
 	            document.querySelector('div.chat').innerHTML += template;
 	        }
+	    }], [{
+	        key: 'scrollDown',
+	        value: function scrollDown() {
+	            var elem = document.querySelector('div.chat');
+	            elem.scrollTop = elem.scrollHeight;
+	        }
 	    }]);
 
 	    return Chat;
+	}();
+
+/***/ },
+
+/***/ 73:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"bubble {{class}}\">{{message}}</div>"
+
+/***/ },
+
+/***/ 74:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"bubble system {{class}}\">{{message}}</div>"
+
+/***/ },
+
+/***/ 75:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.GuiManager = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of the webrtc-chat package.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * (c) Rafał Lorenz <vardius@gmail.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * For the full copyright and license information, please view the LICENSE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * file that was distributed with this source code.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	
+	
+	var _modalManager = __webpack_require__(77);
+	
+	var _eventsLoader = __webpack_require__(82);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var GuiManager = exports.GuiManager = function () {
+	    function GuiManager(peerData, signaling) {
+	        _classCallCheck(this, GuiManager);
+	
+	        this.peerData = peerData;
+	        this.signaling = signaling;
+	        this.init();
+	    }
+	
+	    _createClass(GuiManager, [{
+	        key: "init",
+	        value: function init() {
+	            var token = this.getToken();
+	            if (token) {
+	                _eventsLoader.EventsLoader.load(token, this.signaling.onMessage);
+	            } else {
+	                this.peerData.connect();
+	                _modalManager.ModalManager.onHide('#shareModal', function (event) {
+	                    document.querySelector('div#share-info').innerHTML = '';
+	                    $('#loadModal').modal('show');
+	                });
+	            }
+	
+	            var loadBtn = document.getElementById('loadBtn');
+	            loadBtn.addEventListener('click', this.onLoad.bind(this));
+	
+	            _modalManager.ModalManager.onHide('#loadModal', function (event) {
+	                return document.querySelector('div#load-info').innerHTML = '';
+	            });
+	            this.modalLoop(10);
+	        }
+	    }, {
+	        key: "modalLoop",
+	        value: function modalLoop(i) {
+	            var _this = this;
+	
+	            setTimeout(function () {
+	                if (_modalManager.ModalManager.showShareModal() !== true && --i) _this.modalLoop(i);
+	            }, 1000);
+	        }
+	    }, {
+	        key: "onLoad",
+	        value: function onLoad() {
+	            var data = document.querySelector('textarea#loadInput').value;
+	            _eventsLoader.EventsLoader.load(data, this.signaling.onMessage);
+	            $('#loadModal').modal('hide');
+	        }
+	    }, {
+	        key: "getToken",
+	        value: function getToken() {
+	            return window.location.hash.substring(1);
+	        }
+	    }]);
+
+	    return GuiManager;
+	}();
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(76)))
+
+/***/ },
+
+/***/ 77:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.ModalManager = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This file is part of the webrtc-chat package.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * (c) Rafał Lorenz <vardius@gmail.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * For the full copyright and license information, please view the LICENSE
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * file that was distributed with this source code.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+	
+	
+	var _signaling = __webpack_require__(70);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ModalManager = exports.ModalManager = function () {
+	    function ModalManager() {
+	        _classCallCheck(this, ModalManager);
+	    }
+	
+	    _createClass(ModalManager, null, [{
+	        key: 'showShareModal',
+	        value: function showShareModal() {
+	            if (_signaling.SignalingData.candidatesLoaded !== true || _signaling.SignalingData.offerLoaded !== true && _signaling.SignalingData.answerLoaded !== true) {
+	                return false;
+	            }
+	
+	            var templateName = _signaling.SignalingData.offerLoaded ? 'offer' : 'answer';
+	            var token = JSON.stringify(_signaling.SignalingData.events);
+	            var data = (_signaling.SignalingData.offerLoaded ? location.href + '#' : '') + encodeURIComponent(token);
+	
+	            var template = __webpack_require__(78)("./" + templateName + '.html');
+	
+	            template = template.replace(/{{data}}/gi, function (prop) {
+	                return data;
+	            });
+	            document.querySelector('div#share-info').innerHTML += template;
+	            $('#shareModal').modal('show');
+	
+	            return true;
+	        }
+	    }, {
+	        key: 'onHide',
+	        value: function onHide(selector, callback) {
+	            $(selector).on('hide.bs.modal', callback);
+	        }
+	    }]);
+
+	    return ModalManager;
+	}();
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(76)))
+
+/***/ },
+
+/***/ 78:
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./answer.html": 79,
+		"./index.html": 80,
+		"./message.html": 73,
+		"./offer.html": 81,
+		"./system-message.html": 74
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 78;
+
+
+/***/ },
+
+/***/ 79:
+/***/ function(module, exports) {
+
+	module.exports = "<h1>Share this token with the other side</h1>\n<p>{{data}}</p>"
+
+/***/ },
+
+/***/ 80:
+/***/ function(module, exports) {
+
+	module.exports = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n\n    <meta name=\"description\" content=\"Serverless chat application using peer to peer WebRTC\">\n    <meta name=\"keywords\"\n          content=\"HTML, HTML5, CSS, CSS3, XML, XHTML, JavaScript, EcmaScript, EcmaScript6, Rafał, Lorenz, WebRTC, real, time, communication\">\n    <meta name=\"author\" content=\"Rafał Lorenz\">\n    <meta name=\"copyright\" content=\"Rafał Lorenz\"/>\n</head>\n<body>\n<nav class=\"navbar navbar-default\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\"\n                    data-target=\"#bs-example-navbar-collapse-1\" aria-expanded=\"false\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">WebRTC Chat</a>\n        </div>\n    </div>\n</nav>\n<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"row\">\n                <div class=\"col-lg-12\">\n                    <div class=\"chat\"></div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-lg-12\">\n                    <div class=\"input-group send-group\">\n                        <input id=\"sendInput\" class=\"form-control\"\n                               placeholder=\"Type your message here...\">\n                        <span class=\"input-group-btn\">\n                            <button id=\"sendBtn\" class=\"btn btn-default\" type=\"button\">\n                                <i class=\"fa fa-paper-plane-o\" aria-hidden=\"true\"></i>\n                            </button>\n                        </span>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div id=\"shareModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n                        aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\">Share Offer</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div id=\"share-info\"></div>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div id=\"loadModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span\n                        aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\">Load Answer</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div id=\"load-info\">\n                    <h1>Paste here token from other side</h1>\n                </div>\n\n                <textarea id=\"loadInput\" class=\"form-control\" placeholder=\"Paste here...\"></textarea>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button id=\"loadBtn\" type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Load</button>\n            </div>\n        </div>\n    </div>\n</div>\n</body>\n</html>\n"
+
+/***/ },
+
+/***/ 81:
+/***/ function(module, exports) {
+
+	module.exports = "<h1>Share this link with the other side</h1>\n<a href=\"{{data}}\">{{data}}</a>"
+
+/***/ },
+
+/***/ 82:
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * This file is part of the webrtc-chat package.
+	 *
+	 * (c) Rafał Lorenz <vardius@gmail.com>
+	 *
+	 * For the full copyright and license information, please view the LICENSE
+	 * file that was distributed with this source code.
+	 */
+	
+	var EventsLoader = exports.EventsLoader = function () {
+	    function EventsLoader() {
+	        _classCallCheck(this, EventsLoader);
+	    }
+	
+	    _createClass(EventsLoader, null, [{
+	        key: "load",
+	        value: function load(data, callback) {
+	            var events = JSON.parse(decodeURIComponent(data));
+	            for (var i = 0; i < events.length; i++) {
+	                callback(events[i]);
+	            }
+	        }
+	    }]);
+
+	    return EventsLoader;
 	}();
 
 /***/ },
