@@ -21,10 +21,12 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
 }
+
 @mixin font {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
 }
+
 @mixin placeholder {
   &::-webkit-input-placeholder {
     @content;
