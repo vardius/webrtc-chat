@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^3.1.0",
-    "peer-data": "^1.0.17",
+    "peer-data": "^1.0.19",
     "core-js": "^2.4.1",
     "webrtc-adapter": "^2.0.8"
   },

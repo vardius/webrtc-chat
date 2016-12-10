@@ -6,30 +6,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import {logger} from "./app";
-import {Chat} from "./chat";
+import {logger} from './app';
+import {addMessage} from './window';
 
 export class EventsLoader {
-    static load(data, callback) {
-        let events = JSON.parse(decodeURIComponent(data));
-        for (let i = 0; i < events.length; i++) {
-            callback(events[i]);
-        }
+  static load(data, callback) {
+    let events = JSON.parse(decodeURIComponent(data));
+    for (let i = 0; i < events.length; i++) {
+      callback(events[i]);
     }
+  }
 }
 
 export function onOpen() {
-    logger.info('User joined chat');
+  logger.info('User joined chat');
 }
 
 export function onClose() {
-    logger.info('User left chat');
+  logger.info('User left chat');
 }
 
 export function onData(event) {
-    Chat.addMessage(event.data, true);
+  addMessage(event.data, true);
 }
 
 export function onError(event) {
-    logger.error(event);
+  logger.error(event);
 }

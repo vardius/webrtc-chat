@@ -8,7 +8,7 @@
  */
 
 describe('App', () => {
-    it('should init', () => {
-        expect(true).toBe(true);
-    });
+  it('should init', () => {
+    expect(true).toBe(true);
+  });
 });
