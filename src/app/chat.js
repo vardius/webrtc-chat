@@ -6,10 +6,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import {signaling, user} from './app';
+import {signaling, peerData} from './app';
 import {EventsLoader} from './events';
 import {addMessage} from './window';
-import PeerData from 'peer-data';
 
 export class Chat {
   constructor() {
@@ -19,17 +18,17 @@ export class Chat {
   }
 
   init() {
-    let token = this.getToken();
+    const token = this.getToken();
     if (token) {
-      EventsLoader.load(token, signaling.onMessage);
+      EventsLoader.load(token, signaling.onMessage.bind(signaling));
     } else {
-      PeerData.connect();
+      peerData.connect();
     }
 
-    let sendBtn = document.querySelector(this.inputBtnSelector);
+    const sendBtn = document.querySelector(this.inputBtnSelector);
     sendBtn.addEventListener('click', this.onSend.bind(this));
 
-    let sendInput = document.querySelector(this.inputSelector);
+    const sendInput = document.querySelector(this.inputSelector);
     sendInput.addEventListener('keypress', this.onKeyPress.bind(this));
   }
 
@@ -44,9 +43,9 @@ export class Chat {
   }
 
   send() {
-    let message = this.send(this.getMessage());
-    if (message.length > 0 && user.inRoom) {
-      PeerData.send(message, [user.inRoom]);
+    const message = this.getMessage();
+    if (message.length > 0) {
+      peerData.send(message);
       addMessage(message);
     }
   }

@@ -2,10 +2,12 @@ dist: trusty
 sudo: required
 language: node_js
 node_js:
+  - "node"
+  - "6"
   - "5"
 os:
   - linux
 install:
   - npm install
 script:
-  - npm run test
+  - npm run ci

@@ -11,7 +11,7 @@ import {addMessage} from './window';
 
 export class EventsLoader {
   static load(data, callback) {
-    let events = JSON.parse(decodeURIComponent(data));
+    const events = JSON.parse(decodeURIComponent(data));
     for (let i = 0; i < events.length; i++) {
       callback(events[i]);
     }

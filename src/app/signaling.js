@@ -6,28 +6,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import {PeerDataBridge, SignalingEventType} from 'peer-data';
-import {user} from './app';
+import {SignalingEventType} from 'peer-data';
+import {user, peerData} from './app';
 
 export class Signaling {
   send(event) {
-    event.caller = {id: user.name};
+    const newEvent = Object.assign(event, {caller: {id: user.name}});
 
-    switch (event.type) {
+    switch (newEvent.type) {
       case SignalingEventType.OFFER:
-        this.onOffer.apply(this, [event]);
+        this.onOffer(newEvent);
         break;
       case SignalingEventType.ANSWER:
-        this.onAnswer.apply(this, [event]);
+        this.onAnswer(newEvent);
         break;
       case SignalingEventType.CANDIDATE:
-        this.onCandidate.apply(this, [event]);
+        this.onCandidate(newEvent);
         break;
       case SignalingEventType.CONNECT:
-        this.onConnect.apply(this, [event]);
+        this.onConnect(newEvent);
         break;
       case SignalingEventType.DISCONNECT:
-        this.onDisconnect.apply(this, [event]);
+        this.onDisconnect(newEvent);
+        break;
+      default:
         break;
     }
   }
@@ -35,39 +37,38 @@ export class Signaling {
   onMessage(event) {
     switch (event.type) {
       case SignalingEventType.OFFER:
-        PeerDataBridge.onOffer(event);
+        peerData.bridge.onOffer(event, this);
         break;
       case SignalingEventType.ANSWER:
-        PeerDataBridge.onAnswer(event);
+        peerData.bridge.onAnswer(event);
         break;
       case SignalingEventType.CANDIDATE:
-        PeerDataBridge.onCandidate(event);
+        peerData.bridge.onCandidate(event);
+        break;
+      default:
         break;
     }
   }
 
   onConnect(event) {
-    PeerDataBridge.onConnect(event);
+    peerData.bridge.onConnect(event, this);
   }
 
   onDisconnect(event) {
-    PeerDataBridge.onDisconnect(event);
+    peerData.bridge.onDisconnect(event);
   }
 
   onCandidate(event) {
-    alert('candidates');
     if (event.data) {
       user.candidates.push(event);
     }
   }
 
   onOffer(event) {
-    alert('offer');
-    //get an offer somehow
+    user.offer = event;
   }
 
   onAnswer(event) {
-    alert('answer');
-    //get an answer somehow
+    user.answer = event;
   }
 }

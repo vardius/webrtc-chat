@@ -7,29 +7,29 @@
  * file that was distributed with this source code.
  */
 
-"use strict";
+'use strict';
 
 const chatSelector = 'div.chat';
 
 export function addMessage(message, incoming = false) {
   clearInput();
   let template = require('./../public/message.html');
-  template = template.replace(/{{message}}/gi, prop => message);
-  template = template.replace(/{{class}}/gi, prop => incoming ? 'income' : 'outcome');
+  template = template.replace(/{{message}}/gi, () => message);
+  template = template.replace(/{{class}}/gi, () => incoming ? 'income' : 'outcome');
   document.querySelector(chatSelector).innerHTML += template;
   scrollDown();
 }
 
 export function addSystemMessage(type, message) {
   let template = require('./../public/system-message.html');
-  template = template.replace(/{{message}}/gi, prop => message);
-  template = template.replace(/{{class}}/gi, prop => type);
+  template = template.replace(/{{message}}/gi, () => message);
+  template = template.replace(/{{class}}/gi, () => type);
   document.querySelector('div.chat').innerHTML += template;
   scrollDown();
 }
 
 export function scrollDown() {
-  let elem = document.querySelector(chatSelector);
+  const elem = document.querySelector(chatSelector);
   elem.scrollTop = elem.scrollHeight;
 }
 
@@ -38,5 +38,5 @@ export function clearInput() {
 }
 
 export function clearMessages() {
-  document.querySelector(chatSelector).innerHTML += template;
+  document.querySelector(chatSelector).innerHTML = '';
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import App from "./app/app.js";
-import "./styles/app.scss";
+import App from './app/app.js';
+import './styles/app.scss';
 
-const app = new App();
+const app = new App();// eslint-disable-line no-unused-vars
