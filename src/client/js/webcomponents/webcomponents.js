@@ -5,24 +5,19 @@ export function WebComponent(name, options) {
     const f = function (...args) {
       const constructor = original.apply(this, args);
 
-      if (options.template || options.styles) {
+      if (options.shadowDOM === true) {
         let shadowRoot = constructor.shadowRoot;
         if (!shadowRoot) {
           shadowRoot = constructor.attachShadow({
             mode: 'open'
           });
         }
-
-        const template = createTemplate(options.template);
-        if (template) {
-          shadowRoot.appendChild(template);
-        }
-
-        const styles = createStyles(options.styles);
-        if (styles) {
-          shadowRoot.appendChild(styles);
-        }
+        appendChilds(shadowRoot, options);
+      } else {
+        appendChilds(constructor, options);
       }
+
+      //add middleware system here
 
       return constructor;
     }
@@ -41,6 +36,18 @@ export function WebComponent(name, options) {
   }
 }
 
+function appendChilds(target, options) {
+  const template = createTemplate(options.template);
+  if (template) {
+    target.appendChild(template);
+  }
+
+  const styles = createStyles(options.styles);
+  if (styles) {
+    target.appendChild(styles);
+  }
+}
+
 function createTemplate(template) {
   if (!template) {
     return null
@@ -49,7 +56,7 @@ function createTemplate(template) {
   let t = document.createElement('template');
   t.innerHTML = template;
 
-  return t.content.cloneNode(true);
+  return t.content.cloneNode(true)
 }
 
 function createStyles(styles) {
