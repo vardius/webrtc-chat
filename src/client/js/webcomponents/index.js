@@ -1,1 +1,0 @@
-export {WebComponent} from './webcomponents';

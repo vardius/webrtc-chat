@@ -19,7 +19,7 @@ module.exports = merge(config, {
       'babel-polyfill',
       'client/js/index'
     ],
-    vendor: ['bootstrap', 'webrtc-adapter']
+    vendor: ['bootstrap', 'webrtc-adapter', 'web-component']
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({

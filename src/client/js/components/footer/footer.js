@@ -1,4 +1,4 @@
-import { WebComponent } from '../../webcomponents'
+import { WebComponent } from 'web-component'
 
 @WebComponent('webrtc-footer', {
   template: require('./footer.html')
