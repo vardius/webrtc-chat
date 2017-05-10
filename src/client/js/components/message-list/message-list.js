@@ -6,5 +6,7 @@ import { WebComponent } from 'web-component'
 export class MessageList extends HTMLElement {
   constructor() {
     super();
+
+    this.elements = [];
   }
 }
