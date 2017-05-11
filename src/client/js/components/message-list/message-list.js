@@ -11,14 +11,14 @@ export class MessageList extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addMessage('from js', 'system');
+    // this.addMessage('from js', 'system');
   }
 
   addMessage(body, type) {
     let msg = document.createElement('webrtc-message');
-    msg.textContent = body;
+    msg.body = body;
     msg.type = type;
 
-    this.querySelector('.messages').appendChild(msg);
+    this.querySelector('.message-list').appendChild(msg);
   }
 }

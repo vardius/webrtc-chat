@@ -2,52 +2,76 @@
 @import "variables";
 @import "keyframes";
 .bubble {
-  font-size: 16px;
   position: relative;
-  display: inline-block;
+  max-width: 600px;
+  overflow: hidden;
   clear: both;
-  margin-bottom: 8px;
-  padding: 13px 14px;
-  vertical-align: top;
-  border-radius: 5px;
-  &:before {
-    position: absolute;
-    top: 19px;
+  .avatar {
+    bottom: 5px;
+    .status {
+      bottom: 0;
+    }
+  }
+  .body {
+    padding: 12px;
+    font-size: 16px;
+    line-height: 26px;
+    position: relative;
+  }
+  .body:before {
+    content: '';
     display: block;
-    width: 8px;
-    height: 6px;
-    content: '\00a0';
-    transform: rotate(29deg) skew(-35deg);
+    position: absolute;
+    bottom: 0;
+    border: 18px solid transparent;
+    border-bottom-width: 0;
   }
   &.income {
+    padding: 0 0 0 58px;
+    text-align: left;
     float: left;
-    color: $white;
-    background-color: $blue;
-    align-self: flex-start;
-    @include animation-name(slideFromLeft);
-    &:before {
-      left: -3px;
-      background-color: $blue;
+    .avatar {
+      left: 0;
+      .status {
+        right: 4px;
+      }
     }
+    .body {
+      background: #ebebeb;
+      color: #333333;
+      border-radius: 8px 8px 8px 0;
+    }
+    .body:before {
+      left: -30px;
+      border-right-color: #ebebeb;
+      border-right-width: 12px;
+    }
+    @include animation-name(slideFromLeft);
   }
   &.outcome {
+    padding: 0 58px 0 0;
+    text-align: right;
     float: right;
-    color: $dark;
-    background-color: #eceff1;
-    align-self: flex-end;
-    @include animation-name(slideFromRight);
-    &:before {
-      right: -3px;
-      background-color: #eceff1;
+    .avatar {
+      right: 0;
+      .status {
+        left: 4px;
+      }
     }
+    .body {
+      background: #7266ba;
+      color: #ffffff;
+      border-radius: 8px 8px 0 8px;
+    }
+    .body:before {
+      right: -30px;
+      border-left-color: #7266ba;
+      border-left-width: 12px;
+    }
+    @include animation-name(slideFromRight);
   }
   &.system {
-    position: relative;
-    width: 100%;
-    margin-bottom: 27px;
     text-align: center;
-    font-size: 14px;
-    display: inline-block;
     color: $grey;
     &.info {
       color: $info;
@@ -57,6 +81,9 @@
     }
     &.error {
       color: $danger;
+    }
+    .avatar {
+      display: none;
     }
     @include animation-name(slideFromRight);
   }

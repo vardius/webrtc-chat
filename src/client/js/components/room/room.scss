@@ -1,3 +1,29 @@
-:host {
-  width: 100%;
+.room {
+  position: relative;
+  padding: 0 0 0 50px;
+  display: block;
+  cursor: pointer;
+  margin: 0 0 20px;
+  .avatar {
+    top: 0;
+    left: 0;
+  }
+  .status {
+    bottom: 0;
+    left: 28px;
+  }
+  .title {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .info {
+    font: 200 14px/20px "Raleway", sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

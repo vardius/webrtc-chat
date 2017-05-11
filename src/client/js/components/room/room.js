@@ -55,7 +55,7 @@ export class Room extends HTMLElement {
   }
 
   _updateRendering() {
-    this.querySelector('strong').textContent = `${this._title}`;
-    this.querySelector('.badge').textContent = this._newCount ? `${this._newCount}` : '';
+    this.querySelector('.title').textContent = `${this._title}`;
+    this.querySelector('.status').textContent = this._newCount ? `${this._newCount}` : '';
   }
 }

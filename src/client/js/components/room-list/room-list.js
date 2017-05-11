@@ -28,14 +28,11 @@ export class RoomList extends HTMLElement {
     msg.title = title;
     msg.newCount = newCount;
 
-    let item = document.createElement('list-group-item');
-    item.appendChild(msg);
-
-    this.querySelector('div.list-group').appendChild(item);
+    this.querySelector('div.rooms').appendChild(msg);
   }
 
   addRoomEventListener() {
-    const children = this.querySelector('.list-group').children;
+    const children = this.querySelector('.rooms').children;
     Array.from(children).forEach((element) => {
       element.addEventListener('click', this.onClick.bind(this))
     });

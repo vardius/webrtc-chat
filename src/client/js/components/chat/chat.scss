@@ -1,0 +1,34 @@
+.chat-column {
+  height: calc(100vh - 180px);
+  .avatar {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    img {
+      display: block;
+      border-radius: 20px;
+      height: 100%;
+    }
+    .status {
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      position: absolute;
+    }
+  }
+  .status {
+    &.off {
+      border: 1px solid #5a5a5a;
+      background: #ffffff;
+    }
+    &.online {
+      background: #4caf50;
+    }
+    &.busy {
+      background: #ffc107;
+    }
+    &.offline {
+      background: #ed4e6e;
+    }
+  }
+}
