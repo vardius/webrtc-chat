@@ -1,8 +1,5 @@
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
-@import "~font-awesome/scss/font-awesome";
-
-:host {
-  background: #e8e6e7 none repeat scroll 0 0;
+.input-group {
+  width: 100%;
   margin: 0;
   padding: 10px;
   .search-query {
@@ -10,19 +7,6 @@
     border-radius: 4px;
     height: 33px;
     margin-bottom: 0;
-  }
-  button {
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    border: 0 none;
-    border-radius: 3px;
-    color: #666666;
-    left: auto;
-    margin-bottom: 0;
-    margin-top: 7px;
-    padding: 2px 5px;
-    position: absolute;
-    right: 0;
-    z-index: 9999;
   }
   .search-query:focus+button {
     z-index: 3;

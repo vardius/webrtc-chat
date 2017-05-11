@@ -1,7 +1,3 @@
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
-@import "~font-awesome/scss/font-awesome";
-@import "variables";
-
 :host {
   position: absolute;
   bottom: 0;
@@ -22,5 +18,5 @@
 }
 
 .btn-upload {
-  color: $grey;
+  color: #999999;
 }

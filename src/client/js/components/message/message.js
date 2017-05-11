@@ -3,7 +3,7 @@ import {WebComponent} from 'web-component'
 @WebComponent('webrtc-message', {
   template: require('./message.html'),
   styles: require('./message.scss'),
-  shadowDOM: true
+  shadowDOM:true
 })
 export class Message extends HTMLElement {
   constructor() {
