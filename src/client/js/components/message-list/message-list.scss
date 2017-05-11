@@ -1,0 +1,11 @@
+:host {
+  float: left;
+  width: 100%;
+  padding: 14px 14px 0;
+  max-height: 100%;
+  .messages {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 300px;
+  }
+}

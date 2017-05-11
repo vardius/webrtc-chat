@@ -1,0 +1,6 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+:host .list-group {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 300px;
+}

@@ -1,26 +1,22 @@
-import {
-  WebComponent
-} from 'web-component'
+import {WebComponent} from 'web-component'
 
 @WebComponent('webrtc-message', {
-  template: require('./message.html')
+  template: require('./message.html'),
+  styles: require('./message.scss'),
+  shadowDOM: true
 })
 export class Message extends HTMLElement {
   constructor() {
     super();
-    this._body = null;
     this._type = null;
   }
 
   static get observedAttributes() {
-    return ['body'];
+    return ['type'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     switch (name) {
-      case 'body':
-        this._body = newValue;
-        break;
       case 'type':
         this._type = newValue;
         break;
@@ -29,10 +25,6 @@ export class Message extends HTMLElement {
   }
 
   connectedCallback() {
-    if (this.hasAttribute('body')) {
-      this._body = this.getAttribute('body');
-      this._updateRendering();
-    }
     if (this.hasAttribute('type')) {
       this._type = this.getAttribute('type');
       this._updateRendering();
@@ -47,16 +39,7 @@ export class Message extends HTMLElement {
     this.setAttribute("type", v);
   }
 
-  get body() {
-    return this._body;
-  }
-
-  set body(v) {
-    this.setAttribute("body", v);
-  }
-
   _updateRendering() {
-    this.querySelector('.bubble').textContent = `${this._body}`;
-    this.querySelector('.bubble').className = `bubble ${this._type}`;
+    this.shadowRoot.querySelector('.bubble').className = `bubble ${this._type}`;
   }
 }

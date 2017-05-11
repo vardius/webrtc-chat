@@ -6,3 +6,5 @@ export {MessageList} from './message-list/message-list';
 export {MessageNew} from './message-new/message-new';
 export {Room} from './room/room';
 export {RoomList} from './room-list/room-list';
+export {RoomNew} from './room-new/room-new';
+export {RoomSearch} from './room-search/room-search';

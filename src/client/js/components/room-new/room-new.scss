@@ -1,0 +1,13 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~font-awesome/scss/font-awesome";
+:host {
+  position: absolute;
+  bottom: 0;
+  background: none repeat scroll 0 0;
+  float: left;
+  padding: 15px;
+  width: 100%;
+  .btn-room-new {
+    color: black;
+  }
+}
