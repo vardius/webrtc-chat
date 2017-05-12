@@ -1,19 +1,23 @@
-import {WebComponent} from 'web-component'
+import {
+  WebComponent
+} from './../../../../../../web-component/src'
 
 @WebComponent('webrtc-message', {
-  template: require('./message.html'),
-  styles: require('./message.scss')
+  template: require('./message.html')
 })
 export class Message extends HTMLElement {
   constructor() {
     super();
-    this._type = null;
-    this._time = null;
-    this._body = null;
+
+    this._picture = '/images/avatar.png';
+    this._type = 'system';
+    this._status = 'off';
+    this._time = (new Date).getTime();
+    this._body = '';
   }
 
   static get observedAttributes() {
-    return ['type', 'body', 'time'];
+    return ['type', 'body', 'time', 'status', 'picture'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -27,8 +31,13 @@ export class Message extends HTMLElement {
       case 'body':
         this._body = newValue;
         break;
+      case 'status':
+        this._status = newValue;
+        break;
+      case 'picture':
+        this._picture = newValue;
+        break;
     }
-    this._updateRendering();
   }
 
   connectedCallback() {
@@ -42,6 +51,14 @@ export class Message extends HTMLElement {
     }
     if (this.hasAttribute('time')) {
       this._time = this.getAttribute('time');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('status')) {
+      this._status = this.getAttribute('status');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('picture')) {
+      this._picture = this.getAttribute('picture');
       this._updateRendering();
     }
   }
@@ -70,10 +87,27 @@ export class Message extends HTMLElement {
     this.setAttribute("body", v);
   }
 
-  _updateRendering() {
-    this.querySelector('.bubble').className = this._type ? `bubble ${this._type}` : 'bubble system';
-    this.querySelector('.body').textContent = this._body ? `${this._body}` : '';
+  get status() {
+    return this._status;
+  }
 
-    //todo: add name and time
+  set status(v) {
+    this.setAttribute("status", v);
+  }
+
+  get picture() {
+    return this._picture;
+  }
+
+  set picture(v) {
+    this.setAttribute("picture", v);
+  }
+
+  _updateRendering() {
+    this.querySelector('.bubble').className = `bubble ${this._type}`;
+    this.querySelector('.bubble').setAttribute("title", new Date(this._time));
+    this.querySelector('.status').className = `status ${this._status}`;
+    this.querySelector('.body').textContent = `${this._body}`;
+    this.querySelector('img').src = `${this._picture}`;
   }
 }

@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@webcomponents/webcomponentsjs@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@webcomponents/webcomponentsjs/-/webcomponentsjs-1.0.0.tgz#f130b1abe23f4d56d6d6254259ff9e054ce70292"
+
 abab@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.3.tgz#b81de5f7274ec4e756d797cd834f303642724e5d"
@@ -3536,7 +3540,7 @@ pbkdf2@^3.0.3:
   dependencies:
     create-hmac "^1.1.2"
 
-peer-data@^1.0.25:
+peer-data@^1.0.26:
   version "1.0.26"
   resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.0.26.tgz#63b670d9f75102e546801ee737857a6c074c4f75"
   dependencies:

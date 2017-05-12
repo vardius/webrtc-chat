@@ -1,26 +1,38 @@
-import {WebComponent} from 'web-component'
+import {
+  WebComponent
+} from './../../../../../../web-component/src'
 
 @WebComponent('webrtc-room-list', {
-  template: require('./room-list.html'),
-  styles: require('./room-list.scss')
+  template: require('./room-list.html')
 })
 export class RoomList extends HTMLElement {
   constructor() {
     super();
-    this.addRoom.bind(this);
+
+    this.addRoom = this.addRoom.bind(this);
+    this.onAddRoom = this.onAddRoom.bind(this);
   }
 
   connectedCallback() {
-    // this.addRoom('nowy room', 2);
-    this.addRoomEventListener()
+    this.addRoomEventListener();
+    const roomNew = this.querySelector('webrtc-room-new');
+    roomNew.addEventListener('room-add', this.onAddRoom);
+  }
+
+  onAddRoom() {
+    this.addRoom('test room', '');
   }
 
   onClick(e) {
-    let a = this.querySelector('.list-group-item.active')
-    if (a) {
-      a.classList.remove('active');
-    }
-    e.target.classList.add('active');
+    const event = new CustomEvent("select", {
+      room: this.findRoom(e.target)
+    });
+    this.dispatchEvent(event);
+  }
+
+  findRoom(el) {
+    while ((el = el.parentElement) && el.nodeName !== 'WEBRTC-ROOM') {}
+    return el;
   }
 
   addRoom(title, newCount) {
@@ -28,11 +40,11 @@ export class RoomList extends HTMLElement {
     msg.title = title;
     msg.newCount = newCount;
 
-    this.querySelector('div.rooms').appendChild(msg);
+    this.querySelector('div.room-list').appendChild(msg);
   }
 
   addRoomEventListener() {
-    const children = this.querySelector('.rooms').children;
+    const children = this.querySelector('.room-list').children;
     Array.from(children).forEach((element) => {
       element.addEventListener('click', this.onClick.bind(this))
     });

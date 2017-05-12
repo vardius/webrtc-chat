@@ -1,8 +1,7 @@
-import { WebComponent } from 'web-component'
+import { WebComponent } from './../../../../../../web-component/src'
 
 @WebComponent('webrtc-room-search', {
-  template: require('./room-search.html'),
-  styles: require('./room-search.scss')
+  template: require('./room-search.html')
 })
 export class RoomSearch extends HTMLElement {
   constructor() {

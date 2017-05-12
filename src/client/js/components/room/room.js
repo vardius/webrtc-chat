@@ -1,18 +1,22 @@
-import { WebComponent } from 'web-component'
+import {
+  WebComponent
+} from './../../../../../../web-component/src'
 
 @WebComponent('webrtc-room', {
-  template: require('./room.html'),
-  styles: require('./room.scss')
+  template: require('./room.html')
 })
 export class Room extends HTMLElement {
   constructor() {
     super();
-    this._title = null;
-    this._newCount = null;
+
+    this._picture = '/images/avatar.png';
+    this._status = 'off';
+    this._title = '';
+    this._info = '';
   }
 
   static get observedAttributes() {
-    return ['title', 'newCount'];
+    return ['title', 'info', 'status', 'picture'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -20,11 +24,16 @@ export class Room extends HTMLElement {
       case 'title':
         this._title = newValue;
         break;
-      case 'newCount':
-        this._newCount = newValue;
+      case 'info':
+        this._info = newValue;
+        break;
+      case 'status':
+        this._status = newValue;
+        break;
+      case 'picture':
+        this._picture = newValue;
         break;
     }
-    this._updateRendering();
   }
 
   connectedCallback() {
@@ -32,8 +41,16 @@ export class Room extends HTMLElement {
       this._title = this.getAttribute('title');
       this._updateRendering();
     }
-    if (this.hasAttribute('newCount')) {
-      this._newCount = this.getAttribute('newCount');
+    if (this.hasAttribute('info')) {
+      this._info = this.getAttribute('info');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('status')) {
+      this._status = this.getAttribute('status');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('picture')) {
+      this._picture = this.getAttribute('picture');
       this._updateRendering();
     }
   }
@@ -46,16 +63,34 @@ export class Room extends HTMLElement {
     this.setAttribute("title", v);
   }
 
-  get newCount() {
-    return this._newCount;
+  get info() {
+    return this._info;
   }
 
-  set newCount(v) {
-    this.setAttribute("newCount", v);
+  set info(v) {
+    this.setAttribute("info", v);
+  }
+
+  get status() {
+    return this._status;
+  }
+
+  set status(v) {
+    this.setAttribute("status", v);
+  }
+
+  get picture() {
+    return this._picture;
+  }
+
+  set picture(v) {
+    this.setAttribute("picture", v);
   }
 
   _updateRendering() {
     this.querySelector('.title').textContent = `${this._title}`;
-    this.querySelector('.status').textContent = this._newCount ? `${this._newCount}` : '';
+    this.querySelector('.info').textContent = `${this._info}`;
+    this.querySelector('.status').className = `status ${this._status}`;
+    this.querySelector('img').src = `${this._picture}`;
   }
 }
