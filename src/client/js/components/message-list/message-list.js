@@ -12,8 +12,8 @@ export class MessageList extends HTMLElement {
     this._title = '';
 
     this.addMessage = this.addMessage.bind(this);
-    this.onSend = this.onSend.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
+    this.onSend = this.onSend.bind(this);
   }
 
   static get observedAttributes() {
