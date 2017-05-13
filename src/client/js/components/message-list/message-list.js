@@ -1,6 +1,4 @@
-import {
-  WebComponent
-} from './../../../../../../web-component/src'
+import { WebComponent } from 'web-component'
 
 @WebComponent('webrtc-message-list', {
   template: require('./message-list.html')

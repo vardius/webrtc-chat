@@ -1,9 +1,9 @@
-import { WebComponent } from './../../../../../../web-component/src'
+import { WebComponent } from 'web-component'
 
-@WebComponent('webrtc-room-search', {
-  template: require('./room-search.html')
+@WebComponent('webrtc-peer-search', {
+  template: require('./peer-search.html')
 })
-export class RoomSearch extends HTMLElement {
+export class PeerSearch extends HTMLElement {
   constructor() {
     super();
     
@@ -20,7 +20,7 @@ export class RoomSearch extends HTMLElement {
   onKeyPress() {
     const query = this.querySelector('.search-query').value;
 
-    const event = new CustomEvent("room-search", {detail: query});
+    const event = new CustomEvent("peer-search", {detail: query});
     this.dispatchEvent(event);
   }
 }

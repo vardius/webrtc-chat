@@ -69,14 +69,11 @@ body {
       z-index: 3;
     }
   }
-  .btn-room-new {
-    margin-top: 10px;
-  }
-  .room-list {
+  .room {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    .room {
+    .peer {
       position: relative;
       padding: 0 0 0 50px;
       display: block;

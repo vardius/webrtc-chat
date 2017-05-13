@@ -1,33 +1,29 @@
 import { WebComponent } from 'web-component'
 
-@WebComponent('webrtc-message', {
-  template: require('./message.html')
+@WebComponent('webrtc-peer', {
+  template: require('./peer.html')
 })
-export class Message extends HTMLElement {
+export class Peer extends HTMLElement {
   constructor() {
     super();
 
     this._picture = '/images/avatar.png';
-    this._type = 'system';
     this._status = 'off';
-    this._time = (new Date).getTime();
-    this._body = '';
+    this._title = '';
+    this._info = '';
   }
 
   static get observedAttributes() {
-    return ['type', 'body', 'time', 'status', 'picture'];
+    return ['title', 'info', 'status', 'picture'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     switch (name) {
-      case 'type':
-        this._type = newValue;
+      case 'title':
+        this._title = newValue;
         break;
-      case 'time':
-        this._time = newValue;
-        break;
-      case 'body':
-        this._body = newValue;
+      case 'info':
+        this._info = newValue;
         break;
       case 'status':
         this._status = newValue;
@@ -39,16 +35,12 @@ export class Message extends HTMLElement {
   }
 
   connectedCallback() {
-    if (this.hasAttribute('type')) {
-      this._type = this.getAttribute('type');
+    if (this.hasAttribute('title')) {
+      this._title = this.getAttribute('title');
       this._updateRendering();
     }
-    if (this.hasAttribute('body')) {
-      this._body = this.getAttribute('body');
-      this._updateRendering();
-    }
-    if (this.hasAttribute('time')) {
-      this._time = this.getAttribute('time');
+    if (this.hasAttribute('info')) {
+      this._info = this.getAttribute('info');
       this._updateRendering();
     }
     if (this.hasAttribute('status')) {
@@ -61,28 +53,20 @@ export class Message extends HTMLElement {
     }
   }
 
-  get type() {
-    return this._type;
+  get title() {
+    return this._title;
   }
 
-  set type(v) {
-    this.setAttribute("type", v);
+  set title(v) {
+    this.setAttribute("title", v);
   }
 
-  get time() {
-    return this._time;
+  get info() {
+    return this._info;
   }
 
-  set time(v) {
-    this.setAttribute("time", v);
-  }
-
-  get body() {
-    return this._body;
-  }
-
-  set body(v) {
-    this.setAttribute("body", v);
+  set info(v) {
+    this.setAttribute("info", v);
   }
 
   get status() {
@@ -102,10 +86,9 @@ export class Message extends HTMLElement {
   }
 
   _updateRendering() {
-    this.querySelector('.bubble').className = `bubble ${this._type}`;
-    this.querySelector('.bubble').setAttribute("title", new Date(this._time));
+    this.querySelector('.title').textContent = `${this._title}`;
+    this.querySelector('.info').textContent = `${this._info}`;
     this.querySelector('.status').className = `status ${this._status}`;
-    this.querySelector('.body').textContent = `${this._body}`;
     this.querySelector('img').src = `${this._picture}`;
   }
 }

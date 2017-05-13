@@ -13,8 +13,7 @@
   "env": {
     "browser": true,     // browser global variables.
     "node": true,        // Node.js global variables and Node.js-specific rules.
-    "es6": true,         // es6
-    "mocha": true       // adds all of the Mocha testing global variables.
+    "es6": true          // es6
   },
   "globals": {
     "define": true
