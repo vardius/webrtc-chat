@@ -26,8 +26,8 @@ export class Chat extends HTMLElement {
     this.room = this.querySelector('webrtc-room');
     this.messages = this.querySelector('webrtc-message-list');
 
-    if (this.roomId.length > 1) {
-      this.messages.title = this.roomId.substring(1);
+    if (this.roomId.length > 13) {
+      this.messages.title = this.roomId.substring(13);
       this.peerData.connect(this.roomId);
     } else {
       window.addEventListener('WebComponentsReady', () => {
