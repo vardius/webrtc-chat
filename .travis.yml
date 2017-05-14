@@ -10,6 +10,7 @@ cache:
 
 install:
   - npm i -g npm@latest
+  - npm i -g yarn@latest
   - npm install
 
 script:
