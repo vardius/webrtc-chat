@@ -1,5 +1,3 @@
-coverage
+*.iml
+*.log*
 node_modules
-bower_components
-dist
-.idea/
