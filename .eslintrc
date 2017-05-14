@@ -11,15 +11,16 @@
     }
   },
   "env": {
-    "browser": true,     // browser global variables.
-    "node": true,        // Node.js global variables and Node.js-specific rules.
-    "es6": true          // es6
+    "browser": true, // browser global variables.
+    "node": true, // Node.js global variables and Node.js-specific rules.
+    "es6": true // es6
   },
   "globals": {
     "define": true
   },
   "rules": {
     "object-curly-spacing": 0,
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "no-empty-function": 0
   }
 }
