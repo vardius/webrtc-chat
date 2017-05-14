@@ -29,8 +29,10 @@ export class Chat extends HTMLElement {
       this.messages.title = this.roomId.substring(1);
       this.peerData.connect(this.roomId);
     } else {
-      const popup = this.querySelector('webrtc-popup');
-      popup.show();
+      window.addEventListener('WebComponentsReady', () => {
+        const popup = this.querySelector('webrtc-popup');
+        popup.show();
+      });
     }
   }
 

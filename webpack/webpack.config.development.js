@@ -23,7 +23,8 @@ module.exports = merge(config, {
       '@webcomponents/webcomponentsjs/custom-elements-es5-adapter',
       '@webcomponents/webcomponentsjs',
       'web-component',
-      'webrtc-adapter'
+      'webrtc-adapter',
+      'peer-data'
     ]
   },
   plugins: [
