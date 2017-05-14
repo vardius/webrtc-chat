@@ -1,4 +1,4 @@
-import { WebComponent } from 'web-component'
+import { WebComponent } from 'web-component';
 
 @WebComponent('webrtc-message-list', {
   template: require('./message-list.html')
@@ -8,6 +8,7 @@ export class MessageList extends HTMLElement {
     super();
 
     this._title = '';
+    this._owner = '';
 
     this.addMessage = this.addMessage.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
@@ -15,7 +16,7 @@ export class MessageList extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['title'];
+    return ['title', 'owner'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -23,12 +24,19 @@ export class MessageList extends HTMLElement {
       case 'title':
         this._title = newValue;
         break;
+      case 'owner':
+        this._owner = newValue;
+        break;
     }
   }
 
   connectedCallback() {
     if (this.hasAttribute('title')) {
       this._title = this.getAttribute('title');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('owner')) {
+      this._owner = this.getAttribute('owner');
       this._updateRendering();
     }
 
@@ -46,20 +54,30 @@ export class MessageList extends HTMLElement {
     this.setAttribute("title", v);
   }
 
+  get owner() {
+    return this._owner;
+  }
+
+  set owner(v) {
+    this.setAttribute("owner", v);
+  }
+
   onSend(e) {
     const msg = e.detail
     if (msg) {
-      this.addMessage(e.detail, 'outcome');
+      this.addMessage(this._owner, e.detail, 'outcome');
       this.scrollDown();
     }
   }
 
-  addMessage(body, type) {
+  addMessage(author, body, type) {
     let msg = document.createElement("webrtc-message");
+    msg.author = author;
     msg.body = body;
     msg.type = type;
 
     this.querySelector('.message-list').appendChild(msg);
+    this.scrollDown();
   }
 
   scrollDown() {

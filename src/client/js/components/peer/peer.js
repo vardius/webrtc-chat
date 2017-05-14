@@ -1,4 +1,4 @@
-import { WebComponent } from 'web-component'
+import { WebComponent } from 'web-component';
 
 @WebComponent('webrtc-peer', {
   template: require('./peer.html')

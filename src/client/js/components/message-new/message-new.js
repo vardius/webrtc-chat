@@ -1,4 +1,4 @@
-import { WebComponent } from 'web-component'
+import { WebComponent } from 'web-component';
 
 @WebComponent('webrtc-message-new', {
   template: require('./message-new.html')

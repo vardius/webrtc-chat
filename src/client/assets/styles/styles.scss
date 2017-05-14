@@ -207,11 +207,20 @@ body {
         &.error {
           color: $danger;
         }
-        .avatar {
+        .avatar,
+        .author {
           display: none;
+        }
+        .body {
+          font-size: 12px;
+          line-height: 0;
         }
         @include animation-name(slideFromRight);
       }
+    }
+    .author {
+      font-size: 14px;
+      line-height: 0;
     }
   }
 }

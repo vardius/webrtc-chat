@@ -1,5 +1,5 @@
-import { WebComponent } from 'web-component'
-import PeerData, { SocketChannel, DataEventType } from 'peer-data';
+import { WebComponent } from 'web-component';
+import PeerData, { SocketChannel, DataEventType, ConnectionEventType } from 'peer-data';
 
 @WebComponent('webrtc-chat', {
   template: require('./chat.html')
@@ -17,6 +17,7 @@ export class Chat extends HTMLElement {
     this.onData = this.onData.bind(this);
     this.onError = this.onError.bind(this);
     this.onLog = this.onLog.bind(this);
+    this.onSend = this.onSend.bind(this);
 
     this.setUpPeer();
   }
@@ -59,6 +60,11 @@ export class Chat extends HTMLElement {
       this.peerData.on(DataEventType.DATA, this.onData);
       this.peerData.on(DataEventType.ERROR, this.onError);
       this.peerData.on(DataEventType.LOG, this.onLog);
+
+      window.addEventListener('WebComponentsReady', () => {
+        const messageNew = this.messages.querySelector('webrtc-message-new');
+        messageNew.addEventListener('send', this.onSend)
+      });
     }
   }
 
@@ -66,30 +72,36 @@ export class Chat extends HTMLElement {
     this.peerData.send(data);
   }
 
+  onSend(e) {
+    this.send(e.detail);
+  }
+
   onOpen(e) {
-    this.room.addPeer(e.caller.id);
-    this.messages.addMessage(`Peer ${e.caller.id} connected`, 'system');
+    this.room.addPeer(e.id);
+    this.messages.addMessage('', `New user ${e.id} connected`, 'system');
   }
 
   onClose(e) {
-    this.room.removePeer(e.caller.id);
-    this.messages.addMessage(`Peer ${e.caller.id} disconnected`, 'system');
+    this.room.removePeer(e.id);
+    this.messages.addMessage('', `New user ${e.id} disconnected`, 'system');
   }
 
   onData(e) {
-    this.messages.addMessage(e.data, 'income');
+    this.messages.addMessage(e.id, e.event.data, 'income');
   }
 
   onError(e) {
-    this.messages.addMessage(e.data, 'system error');
+    this.messages.addMessage('', `User ${e.caller.id} connection error`, 'system error');
   }
 
   onLog(e) {
-    e = e[0];
-    if (e.type === 'connect') {
-      let header = this.querySelector("webrtc-header");
-      header.id = e.caller.id;
+    if (e.length === 2 && e[0] === 'SERVER_LOG') {
+      const event = e[1];
+      if (event.type === ConnectionEventType.CONNECT) {
+        let header = this.querySelector("webrtc-header");
+        header.id = event.caller.id;
+        this.messages.owner = event.caller.id;
+      }
     }
-    this.messages.addMessage(e.data, 'system info');
   }
 }

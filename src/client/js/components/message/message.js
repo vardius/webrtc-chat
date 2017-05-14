@@ -1,4 +1,4 @@
-import { WebComponent } from 'web-component'
+import { WebComponent } from 'web-component';
 
 @WebComponent('webrtc-message', {
   template: require('./message.html')
@@ -11,11 +11,12 @@ export class Message extends HTMLElement {
     this._type = 'system';
     this._status = 'off';
     this._time = (new Date).getTime();
+    this._author = '';
     this._body = '';
   }
 
   static get observedAttributes() {
-    return ['type', 'body', 'time', 'status', 'picture'];
+    return ['type', 'body', 'time', 'status', 'picture', 'author'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -34,6 +35,9 @@ export class Message extends HTMLElement {
         break;
       case 'picture':
         this._picture = newValue;
+        break;
+      case 'author':
+        this._author = newValue;
         break;
     }
   }
@@ -57,6 +61,10 @@ export class Message extends HTMLElement {
     }
     if (this.hasAttribute('picture')) {
       this._picture = this.getAttribute('picture');
+      this._updateRendering();
+    }
+    if (this.hasAttribute('author')) {
+      this._author = this.getAttribute('author');
       this._updateRendering();
     }
   }
@@ -101,11 +109,20 @@ export class Message extends HTMLElement {
     this.setAttribute("picture", v);
   }
 
+  get author() {
+    return this._author;
+  }
+
+  set author(v) {
+    this.setAttribute("author", v);
+  }
+
   _updateRendering() {
     this.querySelector('.bubble').className = `bubble ${this._type}`;
     this.querySelector('.bubble').setAttribute("title", new Date(this._time));
     this.querySelector('.status').className = `status ${this._status}`;
     this.querySelector('.body').textContent = `${this._body}`;
+    this.querySelector('.author').textContent = `${this._author}`;
     this.querySelector('img').src = `${this._picture}`;
   }
 }
