@@ -13,8 +13,7 @@ const GLOBALS = {
 };
 
 module.exports = merge(config, {
-  // devtool: 'cheap-module-source-map',
-  devtool: 'nosources-source-map',
+  devtool: 'cheap-module-source-map',
   entry: {
     application: [
       'babel-polyfill',
@@ -22,7 +21,7 @@ module.exports = merge(config, {
     ],
     vendor: [
       'bootstrap',
-      // '@webcomponents/webcomponentsjs/custom-elements-es5-adapter',
+      '@webcomponents/webcomponentsjs/custom-elements-es5-adapter',
       '@webcomponents/webcomponentsjs',
       'web-component',
       'webrtc-adapter',
