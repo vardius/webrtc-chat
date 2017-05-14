@@ -21,7 +21,7 @@ module.exports = merge(config, {
     ],
     vendor: [
       'bootstrap',
-      // '@webcomponents/webcomponentsjs/custom-elements-es5-adapter',
+      '@webcomponents/webcomponentsjs/custom-elements-es5-adapter',
       '@webcomponents/webcomponentsjs',
       'web-component',
       'webrtc-adapter',
@@ -39,16 +39,16 @@ module.exports = merge(config, {
     // Avoid publishing files when compilation fails
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin(GLOBALS),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        'screw_ie8': true
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: false
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //     'screw_ie8': true
+    //   },
+    //   output: {
+    //     comments: false
+    //   },
+    //   sourceMap: false
+    // })
   ],
   module: {
     noParse: /\.min\.js$/
