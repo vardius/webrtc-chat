@@ -18,7 +18,7 @@ const postcssLoaderOptions = {
 module.exports = {
   output: {
     filename: 'js/[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../build'),
+    path: path.resolve(__dirname, '../doc'),
     publicPath: '/'
   },
   resolve: {

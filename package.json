@@ -4,10 +4,10 @@
   "description": "Serverless chat application using peer to peer WebRTC",
   "main": "index.js",
   "scripts": {
-    "clean:build": "rimraf build",
+    "clean:build": "rimraf doc",
     "prebuild": "npm run clean:build",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.production.js --progress",
-    "build:serve": "http-server build/client -p 3003 --cors -o",
+    "build:serve": "http-server doc/client -p 3003 --cors -o",
     "prestart": "npm run clean:build",
     "start": "webpack-dashboard -- node ./bin/server.js",
     "lint": "eslint config src/** --ext .js",
