@@ -257,8 +257,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 17 */,
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE            = __webpack_require__(72)
@@ -279,7 +278,7 @@ exports.f = __webpack_require__(6) ? gOPD : function getOwnPropertyDescriptor(O,
 };
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -297,6 +296,7 @@ module.exports = Object.getPrototypeOf || function(O){
 };
 
 /***/ }),
+/* 19 */,
 /* 20 */
 /***/ (function(module, exports) {
 
@@ -667,7 +667,7 @@ if(__webpack_require__(6)){
     , toObject            = __webpack_require__(10)
     , isArrayIter         = __webpack_require__(111)
     , create              = __webpack_require__(50)
-    , getPrototypeOf      = __webpack_require__(19)
+    , getPrototypeOf      = __webpack_require__(18)
     , gOPN                = __webpack_require__(51).f
     , getIterFn           = __webpack_require__(128)
     , uid                 = __webpack_require__(56)
@@ -682,7 +682,7 @@ if(__webpack_require__(6)){
     , arrayFill           = __webpack_require__(104)
     , arrayCopyWithin     = __webpack_require__(150)
     , $DP                 = __webpack_require__(7)
-    , $GOPD               = __webpack_require__(18)
+    , $GOPD               = __webpack_require__(17)
     , dP                  = $DP.f
     , gOPD                = $GOPD.f
     , RangeError          = global.RangeError
@@ -2338,7 +2338,7 @@ var LIBRARY        = __webpack_require__(49)
   , Iterators      = __webpack_require__(61)
   , $iterCreate    = __webpack_require__(113)
   , setToStringTag = __webpack_require__(62)
-  , getPrototypeOf = __webpack_require__(19)
+  , getPrototypeOf = __webpack_require__(18)
   , ITERATOR       = __webpack_require__(5)('iterator')
   , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
   , FF_ITERATOR    = '@@iterator'
@@ -2513,7 +2513,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function(test, buggy, set){
       try {
-        set = __webpack_require__(36)(Function.call, __webpack_require__(18).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(36)(Function.call, __webpack_require__(17).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch(e){ buggy = true; }
@@ -4142,7 +4142,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Chat.__proto__ || (0, _getPrototypeOf2.default)(Chat)).call(this));
 
-    _this.roomId = window.location.pathname;
+    _this.roomId = window.location.hash.substring(1);
     _this.room = null;
     _this.messages = null;
 
@@ -4165,8 +4165,8 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
       this.room = this.querySelector('webrtc-room');
       this.messages = this.querySelector('webrtc-message-list');
 
-      if (this.roomId.length > 13) {
-        this.messages.title = this.roomId.substring(13);
+      if (this.roomId.length > 0) {
+        this.messages.title = this.roomId;
         this.peerData.connect(this.roomId);
       } else {
         window.addEventListener('WebComponentsReady', function () {
@@ -5067,7 +5067,7 @@ var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer',
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -5127,23 +5127,22 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
         value: function onEnter() {
             var query = this.querySelector('.room-query').value;
             if (query.length > 0) {
-                window.location.href = query;
+                window.location.href = 'http://rafallorenz.com/webrtc-chat#' + query;
             }
         }
     }, {
         key: 'show',
         value: function show() {
-            $('#enter-modal').modal('show');
+            window.$('#enter-modal').modal('show');
         }
     }, {
         key: 'hide',
         value: function hide() {
-            $('#enter-modal').modal('hide');
+            window.$('#enter-modal').modal('hide');
         }
     }]);
     return Popup;
 }(HTMLElement)) || _class);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
 /* 206 */
@@ -6835,7 +6834,7 @@ $export($export.P, 'Function', {bind: __webpack_require__(153)});
 "use strict";
 
 var isObject       = __webpack_require__(4)
-  , getPrototypeOf = __webpack_require__(19)
+  , getPrototypeOf = __webpack_require__(18)
   , HAS_INSTANCE   = __webpack_require__(5)('hasInstance')
   , FunctionProto  = Function.prototype;
 // 19.2.3.6 Function.prototype[@@hasInstance](V)
@@ -7171,7 +7170,7 @@ var global            = __webpack_require__(2)
   , toPrimitive       = __webpack_require__(29)
   , fails             = __webpack_require__(3)
   , gOPN              = __webpack_require__(51).f
-  , gOPD              = __webpack_require__(18).f
+  , gOPD              = __webpack_require__(17).f
   , dP                = __webpack_require__(7).f
   , $trim             = __webpack_require__(63).trim
   , NUMBER            = 'Number'
@@ -7525,7 +7524,7 @@ __webpack_require__(28)('freeze', function($freeze){
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 var toIObject                 = __webpack_require__(16)
-  , $getOwnPropertyDescriptor = __webpack_require__(18).f;
+  , $getOwnPropertyDescriptor = __webpack_require__(17).f;
 
 __webpack_require__(28)('getOwnPropertyDescriptor', function(){
   return function getOwnPropertyDescriptor(it, key){
@@ -7548,7 +7547,7 @@ __webpack_require__(28)('getOwnPropertyNames', function(){
 
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject        = __webpack_require__(10)
-  , $getPrototypeOf = __webpack_require__(19);
+  , $getPrototypeOf = __webpack_require__(18);
 
 __webpack_require__(28)('getPrototypeOf', function(){
   return function getPrototypeOf(it){
@@ -8098,7 +8097,7 @@ $export($export.S + $export.F * __webpack_require__(3)(function(){
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
 var $export  = __webpack_require__(0)
-  , gOPD     = __webpack_require__(18).f
+  , gOPD     = __webpack_require__(17).f
   , anObject = __webpack_require__(1);
 
 $export($export.S, 'Reflect', {
@@ -8145,7 +8144,7 @@ $export($export.S, 'Reflect', {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
-var gOPD     = __webpack_require__(18)
+var gOPD     = __webpack_require__(17)
   , $export  = __webpack_require__(0)
   , anObject = __webpack_require__(1);
 
@@ -8161,7 +8160,7 @@ $export($export.S, 'Reflect', {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
 var $export  = __webpack_require__(0)
-  , getProto = __webpack_require__(19)
+  , getProto = __webpack_require__(18)
   , anObject = __webpack_require__(1);
 
 $export($export.S, 'Reflect', {
@@ -8175,8 +8174,8 @@ $export($export.S, 'Reflect', {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
-var gOPD           = __webpack_require__(18)
-  , getPrototypeOf = __webpack_require__(19)
+var gOPD           = __webpack_require__(17)
+  , getPrototypeOf = __webpack_require__(18)
   , has            = __webpack_require__(11)
   , $export        = __webpack_require__(0)
   , isObject       = __webpack_require__(4)
@@ -8281,8 +8280,8 @@ if(setProto)$export($export.S, 'Reflect', {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
 var dP             = __webpack_require__(7)
-  , gOPD           = __webpack_require__(18)
-  , getPrototypeOf = __webpack_require__(19)
+  , gOPD           = __webpack_require__(17)
+  , getPrototypeOf = __webpack_require__(18)
   , has            = __webpack_require__(11)
   , $export        = __webpack_require__(0)
   , createDesc     = __webpack_require__(42)
@@ -8891,7 +8890,7 @@ var global         = __webpack_require__(2)
   , createDesc     = __webpack_require__(42)
   , _create        = __webpack_require__(50)
   , gOPNExt        = __webpack_require__(164)
-  , $GOPD          = __webpack_require__(18)
+  , $GOPD          = __webpack_require__(17)
   , $DP            = __webpack_require__(7)
   , $keys          = __webpack_require__(52)
   , gOPD           = $GOPD.f
@@ -9462,7 +9461,7 @@ $export($export.S, 'Object', {
 var $export        = __webpack_require__(0)
   , ownKeys        = __webpack_require__(167)
   , toIObject      = __webpack_require__(16)
-  , gOPD           = __webpack_require__(18)
+  , gOPD           = __webpack_require__(17)
   , createProperty = __webpack_require__(105);
 
 $export($export.S, 'Object', {
@@ -9487,8 +9486,8 @@ $export($export.S, 'Object', {
 var $export                  = __webpack_require__(0)
   , toObject                 = __webpack_require__(10)
   , toPrimitive              = __webpack_require__(29)
-  , getPrototypeOf           = __webpack_require__(19)
-  , getOwnPropertyDescriptor = __webpack_require__(18).f;
+  , getPrototypeOf           = __webpack_require__(18)
+  , getOwnPropertyDescriptor = __webpack_require__(17).f;
 
 // B.2.2.4 Object.prototype.__lookupGetter__(P)
 __webpack_require__(6) && $export($export.P + __webpack_require__(83), 'Object', {
@@ -9511,8 +9510,8 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(83), 'Object',
 var $export                  = __webpack_require__(0)
   , toObject                 = __webpack_require__(10)
   , toPrimitive              = __webpack_require__(29)
-  , getPrototypeOf           = __webpack_require__(19)
-  , getOwnPropertyDescriptor = __webpack_require__(18).f;
+  , getPrototypeOf           = __webpack_require__(18)
+  , getOwnPropertyDescriptor = __webpack_require__(17).f;
 
 // B.2.2.5 Object.prototype.__lookupSetter__(P)
 __webpack_require__(6) && $export($export.P + __webpack_require__(83), 'Object', {
@@ -9786,7 +9785,7 @@ var Set                     = __webpack_require__(175)
   , from                    = __webpack_require__(151)
   , metadata                = __webpack_require__(37)
   , anObject                = __webpack_require__(1)
-  , getPrototypeOf          = __webpack_require__(19)
+  , getPrototypeOf          = __webpack_require__(18)
   , ordinaryOwnMetadataKeys = metadata.keys
   , toMetaKey               = metadata.key;
 
@@ -9808,7 +9807,7 @@ metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */)
 
 var metadata               = __webpack_require__(37)
   , anObject               = __webpack_require__(1)
-  , getPrototypeOf         = __webpack_require__(19)
+  , getPrototypeOf         = __webpack_require__(18)
   , ordinaryHasOwnMetadata = metadata.has
   , ordinaryGetOwnMetadata = metadata.get
   , toMetaKey              = metadata.key;
@@ -9857,7 +9856,7 @@ metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, ta
 
 var metadata               = __webpack_require__(37)
   , anObject               = __webpack_require__(1)
-  , getPrototypeOf         = __webpack_require__(19)
+  , getPrototypeOf         = __webpack_require__(18)
   , ordinaryHasOwnMetadata = metadata.has
   , toMetaKey              = metadata.key;
 
@@ -11136,4 +11135,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.810f4d68714ea7d334ca.js.map
+//# sourceMappingURL=application.6edb18e147ddb4db8cb7.js.map

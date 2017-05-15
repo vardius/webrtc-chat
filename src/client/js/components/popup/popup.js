@@ -20,7 +20,7 @@ export class Popup extends HTMLElement {
     onEnter() {
         const query = this.querySelector('.room-query').value;
         if (query.length > 0) {
-            window.location.href = query;
+            window.location.href = 'http://rafallorenz.com/webrtc-chat#' + query;
         }
     }
 
