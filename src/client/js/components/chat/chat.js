@@ -87,12 +87,12 @@ export class Chat extends HTMLElement {
   }
 
   onData(e) {
-    // eslint-disable-next-line no-console
-    console.log(e);
     this.messages.addMessage(e.id, e.event.data, 'income');
   }
 
   onError(e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     this.messages.addMessage('', `User ${e.id} connection error`, 'system error');
   }
 
