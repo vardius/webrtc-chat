@@ -51,9 +51,9 @@ export class Chat extends HTMLElement {
       ordered: true
     };
 
-    if (this.roomId.length > 1) {
+    if (this.roomId.length > 0) {
       this.peerData = new PeerData(servers, constraints);
-      this.signaling = new SocketChannel('https://vardius-webrtc-1234.herokuapp.com');
+      this.signaling = new SocketChannel();
 
       this.peerData.on(DataEventType.OPEN, this.onOpen);
       this.peerData.on(DataEventType.CLOSE, this.onClose);

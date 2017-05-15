@@ -13,7 +13,8 @@
   "env": {
     "browser": true, // browser global variables.
     "node": true, // Node.js global variables and Node.js-specific rules.
-    "es6": true // es6
+    "es6": true, // es6
+    "jquery": true
   },
   "globals": {
     "define": true
