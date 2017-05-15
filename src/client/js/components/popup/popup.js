@@ -26,10 +26,10 @@ export class Popup extends HTMLElement {
     }
 
     show() {
-        window.$('#enter-modal').modal('show');
+        $('#enter-modal').modal('show');
     }
 
     hide() {
-        window.$('#enter-modal').modal('hide');
+        $('#enter-modal').modal('hide');
     }
 }

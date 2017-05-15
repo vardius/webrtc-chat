@@ -53,7 +53,7 @@ export class Chat extends HTMLElement {
 
     if (this.roomId.length > 1) {
       this.peerData = new PeerData(servers, constraints);
-      this.signaling = new SocketChannel('http://localhost:8080');
+      this.signaling = new SocketChannel('http://localhost:3000');
 
       this.peerData.on(DataEventType.OPEN, this.onOpen);
       this.peerData.on(DataEventType.CLOSE, this.onClose);

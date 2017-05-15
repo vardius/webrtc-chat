@@ -4196,7 +4196,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
 
       if (this.roomId.length > 1) {
         this.peerData = new _peerData2.default(servers, constraints);
-        this.signaling = new _peerData.SocketChannel('http://localhost:8080');
+        this.signaling = new _peerData.SocketChannel('http://localhost:3000');
 
         this.peerData.on(_peerData.DataEventType.OPEN, this.onOpen);
         this.peerData.on(_peerData.DataEventType.CLOSE, this.onClose);
@@ -11137,4 +11137,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.b9140d4bb940a81d2df3.js.map
+//# sourceMappingURL=application.c3c0ff67e20c89de79cd.js.map
