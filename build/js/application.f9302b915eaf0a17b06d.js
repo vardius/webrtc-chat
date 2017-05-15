@@ -4224,17 +4224,18 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
     key: 'onOpen',
     value: function onOpen(e) {
       this.room.addPeer(e.id);
-      this.messages.addMessage('', 'New user ' + e.id + ' connected', 'system');
+      this.messages.addMessage('', 'User ' + e.id + ' connected', 'system');
     }
   }, {
     key: 'onClose',
     value: function onClose(e) {
       this.room.removePeer(e.id);
-      this.messages.addMessage('', 'New user ' + e.id + ' disconnected', 'system');
+      this.messages.addMessage('', 'User ' + e.id + ' disconnected', 'system');
     }
   }, {
     key: 'onData',
     value: function onData(e) {
+      console.log(e);
       this.messages.addMessage(e.id, e.event.data, 'income');
     }
   }, {
@@ -11149,4 +11150,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.3a1930654a900ff1b837.js.map
+//# sourceMappingURL=application.f9302b915eaf0a17b06d.js.map

@@ -78,15 +78,16 @@ export class Chat extends HTMLElement {
 
   onOpen(e) {
     this.room.addPeer(e.id);
-    this.messages.addMessage('', `New user ${e.id} connected`, 'system');
+    this.messages.addMessage('', `User ${e.id} connected`, 'system');
   }
 
   onClose(e) {
     this.room.removePeer(e.id);
-    this.messages.addMessage('', `New user ${e.id} disconnected`, 'system');
+    this.messages.addMessage('', `User ${e.id} disconnected`, 'system');
   }
 
   onData(e) {
+    console.log(e);
     this.messages.addMessage(e.id, e.event.data, 'income');
   }
 
