@@ -20,7 +20,7 @@ export class Popup extends HTMLElement {
     onEnter() {
       const query = this.querySelector('.room-query').value;
       if (query.length > 0) {
-        window.location.href = window.location.href + window.location.pathname + '#' + query;
+        window.location.href = window.location.href + window.location.pathname.substring(1) + '#' + query;
       }
     }
 
