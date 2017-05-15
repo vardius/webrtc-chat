@@ -18,10 +18,10 @@ export class Popup extends HTMLElement {
     }
 
     onEnter() {
-        const query = this.querySelector('.room-query').value;
-        if (query.length > 0) {
-            window.location.href = 'http://rafallorenz.com/webrtc-chat#' + query;
-        }
+      const query = this.querySelector('.room-query').value;
+      if (query.length > 0) {
+        window.location.href = window.location.href + window.location.pathname + '#' + query;
+      }
     }
 
     show() {
