@@ -4240,8 +4240,6 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
   }, {
     key: 'onError',
     value: function onError(e) {
-      // eslint-disable-next-line no-console
-      console.log(e);
       this.messages.addMessage('', 'User ' + e.id + ' connection error', 'system error');
     }
   }, {
@@ -11151,4 +11149,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.a7b25920afc79df2a3b3.js.map
+//# sourceMappingURL=application.e1b58beedcf9eb4f5739.js.map

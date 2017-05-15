@@ -1,0 +1,6 @@
+{
+  "name": "WebRTC Chat",
+  "description": "Serverless chat application using peer to peer WebRTC",
+  "repository": "https://github.com/vardius/webrtc-chat",
+  "keywords": ["node", "websocket", "socket.io", "webrtc", "server", "peer", "peer-data"]
+}

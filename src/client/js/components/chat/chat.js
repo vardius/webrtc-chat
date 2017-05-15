@@ -91,8 +91,6 @@ export class Chat extends HTMLElement {
   }
 
   onError(e) {
-    // eslint-disable-next-line no-console
-    console.log(e);
     this.messages.addMessage('', `User ${e.id} connection error`, 'system error');
   }
 
