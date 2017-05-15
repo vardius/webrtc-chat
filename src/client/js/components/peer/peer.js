@@ -7,7 +7,7 @@ export class Peer extends HTMLElement {
   constructor() {
     super();
 
-    this._picture = '/images/avatar.png';
+    this._picture = '/webrtc-chat/images/avatar.png';
     this._status = 'off';
     this._title = '';
     this._info = '';

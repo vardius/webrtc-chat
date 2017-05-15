@@ -4165,8 +4165,8 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
       this.room = this.querySelector('webrtc-room');
       this.messages = this.querySelector('webrtc-message-list');
 
-      if (this.roomId.length > 1) {
-        this.messages.title = this.roomId.substring(1);
+      if (this.roomId.length > 13) {
+        this.messages.title = this.roomId.substring(13);
         this.peerData.connect(this.roomId);
       } else {
         window.addEventListener('WebComponentsReady', function () {
@@ -4720,7 +4720,7 @@ var Message = exports.Message = (_dec = (0, _webComponent.WebComponent)('webrtc-
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Message.__proto__ || (0, _getPrototypeOf2.default)(Message)).call(this));
 
-    _this._picture = '/images/avatar.png';
+    _this._picture = '/webrtc-chat/images/avatar.png';
     _this._type = 'system';
     _this._status = 'off';
     _this._time = new Date().getTime();
@@ -4968,7 +4968,7 @@ var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer',
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Peer.__proto__ || (0, _getPrototypeOf2.default)(Peer)).call(this));
 
-    _this._picture = '/images/avatar.png';
+    _this._picture = '/webrtc-chat/images/avatar.png';
     _this._status = 'off';
     _this._title = '';
     _this._info = '';
@@ -11135,4 +11135,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.38178f94aad182ce81c9.js.map
+//# sourceMappingURL=application.46cb60b2541969fe5434.js.map
