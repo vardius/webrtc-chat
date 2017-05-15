@@ -5128,6 +5128,7 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
             var query = this.querySelector('.room-query').value;
             if (query.length > 0) {
                 window.location.href = window.location.href + '#' + query;
+                location.reload();
             }
         }
     }, {
@@ -11136,4 +11137,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.5676635c9550fd57229f.js.map
+//# sourceMappingURL=application.b9140d4bb940a81d2df3.js.map

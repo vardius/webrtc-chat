@@ -21,6 +21,7 @@ export class Popup extends HTMLElement {
       const query = this.querySelector('.room-query').value;
       if (query.length > 0) {
         window.location.href = window.location.href + '#' + query;
+        location.reload();
       }
     }
 
