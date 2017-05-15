@@ -4196,7 +4196,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
 
       if (this.roomId.length > 1) {
         this.peerData = new _peerData2.default(servers, constraints);
-        this.signaling = new _peerData.SocketChannel('http://localhost:3000');
+        this.signaling = new _peerData.SocketChannel('https://vardius-webrtc-1234.herokuapp.com');
 
         this.peerData.on(_peerData.DataEventType.OPEN, this.onOpen);
         this.peerData.on(_peerData.DataEventType.CLOSE, this.onClose);
@@ -11137,4 +11137,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.c3c0ff67e20c89de79cd.js.map
+//# sourceMappingURL=application.68350dcbc7a73af217b4.js.map
