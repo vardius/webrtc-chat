@@ -159,13 +159,13 @@ io.on('connection', function (socket) {
 
   function onConnect(id) {
     // eslint-disable-next-line no-console
-    console.log('Client connected to room: ' + id);
+    console.log(`Client ${socket.id} connected to room: ${id}`);
     socket.join(id);
   }
 
   function onDisconnect(id) {
     // eslint-disable-next-line no-console
-    console.log('Client disconnected from room: ' + id);
+    console.log(`Client ${socket.id} disconnected from room: ${id}`);
     socket.leave(id);
   }
 

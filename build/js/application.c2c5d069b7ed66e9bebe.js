@@ -4235,6 +4235,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
   }, {
     key: 'onData',
     value: function onData(e) {
+      // eslint-disable-next-line no-console
       console.log(e);
       this.messages.addMessage(e.id, e.event.data, 'income');
     }
@@ -11150,4 +11151,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.f9302b915eaf0a17b06d.js.map
+//# sourceMappingURL=application.c2c5d069b7ed66e9bebe.js.map
