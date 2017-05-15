@@ -138,15 +138,6 @@ app.use('/js', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_
 app.use(__WEBPACK_IMPORTED_MODULE_2_cookie_parser___default()());
 app.get('*', serverRenderMiddleware);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server started at port ${port}`);
-});
-
-const os = __webpack_require__(3);
-const socketIO = __webpack_require__(5);
-
 const SocketEventType = {
   CONNECT: 'CONNECT',
   DISCONNECT: 'DISCONNECT',
@@ -155,10 +146,12 @@ const SocketEventType = {
   ANSWER: 'ANSWER'
 };
 
+const os = __webpack_require__(3);
+const socketIO = __webpack_require__(5);
 const http = __webpack_require__(2);
 const server = http.createServer(app);
 
-const io = socketIO(server);
+const io = socketIO.listen(server);
 io.on('connection', function (socket) {
   function log() {
     socket.emit('log', ...arguments);
@@ -205,6 +198,12 @@ io.on('connection', function (socket) {
       });
     }
   });
+});
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Server started at port ${port}`);
 });
 
 /***/ })

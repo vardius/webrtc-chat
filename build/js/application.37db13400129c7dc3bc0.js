@@ -5111,6 +5111,7 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
         var _this = (0, _possibleConstructorReturn3.default)(this, (Popup.__proto__ || (0, _getPrototypeOf2.default)(Popup)).call(this));
 
         _this.onEnter = _this.onEnter.bind(_this);
+        _this.onKeyPress = _this.onKeyPress.bind(_this);
         _this.show = _this.show.bind(_this);
         _this.hide = _this.hide.bind(_this);
         return _this;
@@ -5120,7 +5121,17 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
         key: 'connectedCallback',
         value: function connectedCallback() {
             var btnSend = this.querySelector('.btn-enter');
+            var query = this.querySelector('.room-query');
             btnSend.addEventListener('click', this.onEnter);
+            query.addEventListener('keypress', this.onKeyPress);
+        }
+    }, {
+        key: 'onKeyPress',
+        value: function onKeyPress(e) {
+            if (e.keyCode === 13 && !event.shiftKey) {
+                e.preventDefault();
+                this.onEnter();
+            }
         }
     }, {
         key: 'onEnter',
@@ -11138,4 +11149,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.303c00f314b063904a84.js.map
+//# sourceMappingURL=application.37db13400129c7dc3bc0.js.map

@@ -8,13 +8,23 @@ export class Popup extends HTMLElement {
         super();
 
         this.onEnter = this.onEnter.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
     }
 
     connectedCallback() {
         const btnSend = this.querySelector('.btn-enter');
+        const query = this.querySelector('.room-query');
         btnSend.addEventListener('click', this.onEnter);
+        query.addEventListener('keypress', this.onKeyPress);
+    }
+
+    onKeyPress(e) {
+        if (e.keyCode === 13 && !event.shiftKey) {
+            e.preventDefault();
+            this.onEnter();
+        }
     }
 
     onEnter() {

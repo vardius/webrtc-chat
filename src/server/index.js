@@ -22,15 +22,6 @@ app.use('/js', express.static(fspath.join(__dirname, 'js')));
 app.use(cookieParser());
 app.get('*', serverRenderMiddleware);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server started at port ${port}`);
-});
-
-const os = require('os');
-const socketIO = require('socket.io');
-
 const SocketEventType = {
   CONNECT: 'CONNECT',
   DISCONNECT: 'DISCONNECT',
@@ -39,10 +30,12 @@ const SocketEventType = {
   ANSWER: 'ANSWER',
 };
 
+const os = require('os');
+const socketIO = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
 
-const io = socketIO(server);
+const io = socketIO.listen(server);
 io.on('connection', function (socket) {
   function log() {
     socket.emit('log', ...arguments);
@@ -89,4 +82,10 @@ io.on('connection', function (socket) {
       });
     }
   });
+});
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Server started at port ${port}`);
 });
