@@ -1,27 +1,12 @@
 import express from 'express';
 import fspath from 'path';
 import cookieParser from 'cookie-parser';
+import http from 'http';
+import os from 'os';
+import socketIO from 'socket.io';
 
+const port = process.env.PORT || 3000;
 const index = fspath.join(__dirname, 'index.html');
-
-const serverRenderMiddleware = (req, res) => {
-  res.sendFile(index)
-};
-
-const app = express();
-
-app.get('/favicon.ico', (req, res) => {
-  res.sendStatus(404);
-});
-
-app.use('/css', express.static(fspath.join(__dirname, 'css')));
-app.use('/fonts', express.static(fspath.join(__dirname, 'fonts')));
-app.use('/images', express.static(fspath.join(__dirname, 'images')));
-app.use('/js', express.static(fspath.join(__dirname, 'js')));
-
-app.use(cookieParser());
-app.get('*', serverRenderMiddleware);
-
 const SocketEventType = {
   CONNECT: 'CONNECT',
   DISCONNECT: 'DISCONNECT',
@@ -30,11 +15,16 @@ const SocketEventType = {
   ANSWER: 'ANSWER',
 };
 
-const os = require('os');
-const socketIO = require('socket.io');
-const http = require('http');
-const server = http.createServer(app);
+const app = express();
+app.get('/favicon.ico', (req, res) => { res.sendStatus(404); });
+app.use('/css', express.static(fspath.join(__dirname, 'css')));
+app.use('/fonts', express.static(fspath.join(__dirname, 'fonts')));
+app.use('/images', express.static(fspath.join(__dirname, 'images')));
+app.use('/js', express.static(fspath.join(__dirname, 'js')));
+app.use(cookieParser());
+app.get('*', (req, res) => { res.sendFile(index) });
 
+const server = http.createServer(app);
 const io = socketIO.listen(server);
 io.on('connection', function (socket) {
   function log() {
@@ -63,13 +53,19 @@ io.on('connection', function (socket) {
     switch (event.type) {
       case SocketEventType.CONNECT:
         onConnect(event.room.id);
+        socket.broadcast.to(event.room.id).emit('message', event);
         break;
       case SocketEventType.DISCONNECT:
         onDisconnect(event.room.id);
+        socket.broadcast.to(event.room.id).emit('message', event);
         break;
+      case SocketEventType.OFFER:
+      case SocketEventType.ANSWER:
+        socket.broadcast.to(event.callee.id).emit('message', event);
+        break;
+      default:
+        socket.broadcast.to(event.room.id).emit('message', event);
     }
-
-    socket.broadcast.to(event.room.id).emit('message', event);
   });
 
   socket.on('ipaddr', function () {
@@ -84,7 +80,6 @@ io.on('connection', function (socket) {
   });
 });
 
-const port = process.env.PORT || 3000;
 server.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Server started at port ${port}`);

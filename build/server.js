@@ -114,30 +114,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_path__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cookie_parser__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cookie_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_cookie_parser__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_http__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_http__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_os__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_os___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_os__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_socket_io__);
 
 
 
 
+
+
+
+const port = process.env.PORT || 3000;
 const index = __WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'index.html');
-
-const serverRenderMiddleware = (req, res) => {
-  res.sendFile(index);
-};
-
-const app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
-
-app.get('/favicon.ico', (req, res) => {
-  res.sendStatus(404);
-});
-
-app.use('/css', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'css')));
-app.use('/fonts', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'fonts')));
-app.use('/images', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'images')));
-app.use('/js', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'js')));
-
-app.use(__WEBPACK_IMPORTED_MODULE_2_cookie_parser___default()());
-app.get('*', serverRenderMiddleware);
-
 const SocketEventType = {
   CONNECT: 'CONNECT',
   DISCONNECT: 'DISCONNECT',
@@ -146,12 +137,21 @@ const SocketEventType = {
   ANSWER: 'ANSWER'
 };
 
-const os = __webpack_require__(3);
-const socketIO = __webpack_require__(5);
-const http = __webpack_require__(2);
-const server = http.createServer(app);
+const app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
+app.get('/favicon.ico', (req, res) => {
+  res.sendStatus(404);
+});
+app.use('/css', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'css')));
+app.use('/fonts', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'fonts')));
+app.use('/images', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'images')));
+app.use('/js', __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, 'js')));
+app.use(__WEBPACK_IMPORTED_MODULE_2_cookie_parser___default()());
+app.get('*', (req, res) => {
+  res.sendFile(index);
+});
 
-const io = socketIO.listen(server);
+const server = __WEBPACK_IMPORTED_MODULE_3_http___default.a.createServer(app);
+const io = __WEBPACK_IMPORTED_MODULE_5_socket_io___default.a.listen(server);
 io.on('connection', function (socket) {
   function log() {
     socket.emit('log', ...arguments);
@@ -179,17 +179,23 @@ io.on('connection', function (socket) {
     switch (event.type) {
       case SocketEventType.CONNECT:
         onConnect(event.room.id);
+        socket.broadcast.to(event.room.id).emit('message', event);
         break;
       case SocketEventType.DISCONNECT:
         onDisconnect(event.room.id);
+        socket.broadcast.to(event.room.id).emit('message', event);
         break;
+      case SocketEventType.OFFER:
+      case SocketEventType.ANSWER:
+        socket.broadcast.to(event.callee.id).emit('message', event);
+        break;
+      default:
+        socket.broadcast.to(event.room.id).emit('message', event);
     }
-
-    socket.broadcast.to(event.room.id).emit('message', event);
   });
 
   socket.on('ipaddr', function () {
-    var ifaces = os.networkInterfaces();
+    var ifaces = __WEBPACK_IMPORTED_MODULE_4_os___default.a.networkInterfaces();
     for (var dev in ifaces) {
       ifaces[dev].forEach(function (details) {
         if (details.family === 'IPv4' && details.address !== '127.0.0.1') {
@@ -200,7 +206,6 @@ io.on('connection', function (socket) {
   });
 });
 
-const port = process.env.PORT || 3000;
 server.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Server started at port ${port}`);
