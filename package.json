@@ -2,7 +2,6 @@
   "name": "webrtc-chat",
   "version": "2.0.0",
   "description": "Serverless chat application using peer to peer WebRTC",
-  "main": "index.js",
   "scripts": {
     "clean:build": "rimraf build",
     "prebuild": "npm run clean:build",
