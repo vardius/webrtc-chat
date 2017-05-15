@@ -91,7 +91,7 @@ export class Chat extends HTMLElement {
   }
 
   onError(e) {
-    this.messages.addMessage('', `User ${e.caller.id} connection error`, 'system error');
+    this.messages.addMessage('', `User ${e.id} connection error`, 'system error');
   }
 
   onLog(e) {
