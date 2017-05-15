@@ -5127,7 +5127,7 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
         value: function onEnter() {
             var query = this.querySelector('.room-query').value;
             if (query.length > 0) {
-                window.location.href = window.location.href + window.location.pathname.substring(1) + '#' + query;
+                window.location.href = window.location.href + '#' + query;
             }
         }
     }, {
@@ -11136,4 +11136,4 @@ module.exports = __webpack_require__(191);
 
 /***/ })
 ],[494]);
-//# sourceMappingURL=application.05d00c983059347d55f8.js.map
+//# sourceMappingURL=application.5676635c9550fd57229f.js.map
