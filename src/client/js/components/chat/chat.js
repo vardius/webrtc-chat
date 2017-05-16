@@ -105,8 +105,6 @@ export class Chat extends HTMLElement {
   }
 
   onLog(e) {
-    // eslint-disable-next-line no-console
-    console.log('onLog', e);
     if (e.length === 2 && e[0] === 'SERVER_LOG') {
       const event = e[1];
       if (event.type === ConnectionEventType.CONNECT) {
