@@ -16,13 +16,17 @@ const SocketEventType = {
 };
 
 const app = express();
-app.get('/favicon.ico', (req, res) => { res.sendStatus(404); });
+app.get('/favicon.ico', (req, res) => {
+  res.sendStatus(404);
+});
 app.use('/css', express.static(fspath.join(__dirname, 'css')));
 app.use('/fonts', express.static(fspath.join(__dirname, 'fonts')));
 app.use('/images', express.static(fspath.join(__dirname, 'images')));
 app.use('/js', express.static(fspath.join(__dirname, 'js')));
 app.use(cookieParser());
-app.get('*', (req, res) => { res.sendFile(index) });
+app.get('*', (req, res) => {
+  res.sendFile(index)
+});
 
 const server = http.createServer(app);
 const io = socketIO.listen(server);
