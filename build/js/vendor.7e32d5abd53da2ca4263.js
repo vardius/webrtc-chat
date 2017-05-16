@@ -1308,6 +1308,7 @@ var PeerFactory = (function () {
     PeerFactory.get = function (servers, event) {
         var peer = new RTCPeerConnection(servers);
         peer.onicecandidate = function (iceEvent) {
+            console.log('onicecandidate', iceEvent);
             if (iceEvent.candidate) {
                 var sdp = iceEvent instanceof RTCIceCandidate ? iceEvent : iceEvent.candidate;
                 var message = {
@@ -25389,4 +25390,4 @@ function localstorage(){
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vendor.e0aa6852ac37b9bd0681.js.map
+//# sourceMappingURL=vendor.7e32d5abd53da2ca4263.js.map
