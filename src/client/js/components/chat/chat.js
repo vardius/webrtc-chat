@@ -44,7 +44,8 @@ export class Chat extends HTMLElement {
   setUpPeer() {
     const servers = {
       iceServers: [{
-        url: "stun:stun.1.google.com:19302"
+        // url: "stun:stun.1.google.com:19302"
+        url: "stun:74.125.142.127:19302"
       }]
     };
     const constraints = {
@@ -97,8 +98,6 @@ export class Chat extends HTMLElement {
   onLog(e) {
     if (e.length === 2 && e[0] === 'SERVER_LOG') {
       const event = e[1];
-    // eslint-disable-next-line no-console
-    console.log('onLog:', event.type, event);
       if (event.type === ConnectionEventType.CONNECT) {
         let header = this.querySelector("webrtc-header");
         header.id = event.caller.id;

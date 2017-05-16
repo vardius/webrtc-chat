@@ -4187,7 +4187,8 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
 
       var servers = {
         iceServers: [{
-          url: "stun:stun.1.google.com:19302"
+          // url: "stun:stun.1.google.com:19302"
+          url: "stun:74.125.142.127:19302"
         }]
       };
       var constraints = {
@@ -4247,8 +4248,6 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
     value: function onLog(e) {
       if (e.length === 2 && e[0] === 'SERVER_LOG') {
         var event = e[1];
-        // eslint-disable-next-line no-console
-        console.log('onLog:', event.type, event);
         if (event.type === _peerData.ConnectionEventType.CONNECT) {
           var header = this.querySelector("webrtc-header");
           header.id = event.caller.id;
@@ -11151,4 +11150,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.e6309246a8d3b0204b1e.js.map
+//# sourceMappingURL=application.6d459711a5fe13e8f729.js.map
