@@ -1182,7 +1182,388 @@ function error(data){
 /***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
-!function(e,n){ true?n(exports,__webpack_require__(479)):"function"==typeof define&&define.amd?define(["exports","socket.io-client"],n):n(e["peer-data"]=e["peer-data"]||{},e.io)}(this,function(e,n){"use strict";var t={},i=function(){function e(){}return e.register=function(e,n){t[e]||(t[e]=[]),t[e].push(n)},e.dispatch=function(e,n){t[e].forEach(function(e){return e(n)})},e}(),r=function(){function e(){}return e}();r.CONNECT="CONNECT",r.DISCONNECT="DISCONNECT",r.CANDIDATE="CANDIDATE",r.OFFER="OFFER",r.ANSWER="ANSWER",r.ERROR="ERROR";var o=function(){function e(e,n){void 0===e&&(e={}),void 0===n&&(n=null),this._servers={},this._dataConstraints=null,this._peers={},this._channels={},this._servers=e,this._dataConstraints=n}return Object.defineProperty(e.prototype,"peers",{get:function(){return this._peers},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"channels",{get:function(){return this._channels},enumerable:!0,configurable:!0}),e.prototype.addPeer=function(e,n){return this._peers.hasOwnProperty(e)||(this._peers[e]=n),this},e.prototype.removePeer=function(e){return this._peers.hasOwnProperty(e)&&(this._peers[e].close(),delete this._peers[e],delete this._peers[e]),this},e.prototype.addChannel=function(e,n){return this._channels.hasOwnProperty(e)||(this._channels[e]=n),this},e.prototype.removeChannel=function(e){return this._channels.hasOwnProperty(e)&&(this._channels[e].close(),delete this._channels[e]),this},Object.defineProperty(e.prototype,"servers",{get:function(){return this._servers},set:function(e){this._servers=e},enumerable:!0,configurable:!0}),Object.defineProperty(e.prototype,"dataConstraints",{get:function(){return this._dataConstraints},set:function(e){this._dataConstraints=e},enumerable:!0,configurable:!0}),e}(),s=function(){function e(){}return e}();s.LOG="LOG",s.OPEN="OPEN",s.CLOSE="CLOSE",s.ERROR="ERROR",s.DATA="DATA";var c=function(){function e(){}return e.get=function(e,n){var t=new RTCPeerConnection(e);return t.onicecandidate=function(e){var t=e instanceof RTCIceCandidate?e:e.candidate,o=JSON.stringify({candidate:t.candidate,sdpMid:t.sdpMid,sdpMLineIndex:t.sdpMLineIndex});console.log("onicecandidate",o);var s={type:r.CANDIDATE,caller:null,callee:n.caller,room:n.room,data:o};i.dispatch("send",s)},t},e}(),a=function(){function e(){}return e.get=function(e,n){var t=Math.floor(1e16*(1+Math.random())).toString(16).substring(1);return e.createDataChannel(t,n)},e.subscribeToEvents=function(e,n,t){return e.onmessage=function(e){var n={id:t.caller.id,event:e};i.dispatch(s.DATA,n)},e.onopen=function(e){var n={id:t.caller.id,event:e};i.dispatch(s.OPEN,n)},e.onclose=function(e){var r={id:t.caller.id,event:e};i.dispatch(s.CLOSE,r),delete n[t.caller.id]},e.onerror=function(e){var n={id:t.caller.id,event:e};i.dispatch(s.ERROR,n)},e},e}(),d=function(){function e(e){this._peers={},this._channels={},this._connection=e,this._peers=this._connection.peers,this._channels=this._connection.channels,i.register(r.CONNECT,this.onConnect.bind(this)),i.register(r.DISCONNECT,this.onDisconnect.bind(this)),i.register(r.OFFER,this.onOffer.bind(this)),i.register(r.ANSWER,this.onAnswer.bind(this)),i.register(r.CANDIDATE,this.onCandidate.bind(this))}return Object.defineProperty(e.prototype,"connection",{get:function(){return this._connection},set:function(e){this._connection=e},enumerable:!0,configurable:!0}),e.prototype.onConnect=function(e){var n=this,t=this._peers[e.caller.id]=c.get(this._connection.servers,e),i=a.get(t,this._connection.dataConstraints);this._channels[e.caller.id]=a.subscribeToEvents(i,this._channels,e),this._peers[e.caller.id]=t,t.createOffer(function(i){var o={type:r.OFFER,caller:null,callee:e.caller,room:e.room,data:i};t.setLocalDescription(i,function(){return n.dispatchEvent(o)},function(t){return n.dispatchError(e.caller,t)})},function(t){return n.dispatchError(e.caller,t)})},e.prototype.onDisconnect=function(e){var n=this._channels[e.caller.id],t=this._peers[e.caller.id];n.close(),t.close(),delete this._channels[e.caller.id],delete this._peers[e.caller.id]},e.prototype.onOffer=function(e){var n=this,t=c.get(this._connection.servers,e);this._peers[e.caller.id]=t,t.ondatachannel=function(t){var i=a.subscribeToEvents(t.channel,n._channels,e);n._connection.addChannel(e.caller.id,i)},t.setRemoteDescription(new RTCSessionDescription(e.data),function(){},function(t){return n.dispatchError(e.caller,t)}),t.createAnswer(function(i){var o={type:r.ANSWER,caller:null,callee:e.caller,room:e.room,data:i};t.setLocalDescription(i,function(){return n.dispatchEvent(o)},function(t){return n.dispatchError(e.caller,t)})},function(t){return n.dispatchError(e.caller,t)})},e.prototype.onAnswer=function(e){var n=this;this._peers[e.caller.id].setRemoteDescription(new RTCSessionDescription(e.data),function(){},function(t){return n.dispatchError(e.caller,t)})},e.prototype.onCandidate=function(e){var n=this,t=this._peers[e.caller.id],r=JSON.parse(e.data);console.log(r);var o=new RTCIceCandidate(r);t.addIceCandidate(o).then(function(){},function(t){return n.dispatchError(e.caller,t)}),i.dispatch(s.LOG,"ICE candidate: \n"+(e.data.candidate?e.data.candidate:e.data))},e.prototype.dispatchEvent=function(e){i.dispatch("send",e)},e.prototype.dispatchError=function(e,n){var t={id:e.id,event:n};i.dispatch(s.ERROR,t)},e}(),l=function(){function e(e,n){void 0===e&&(e={}),void 0===n&&(n=null);var t=new o(e,n);this.bridge=new d(t)}return e.prototype.on=function(e,n){i.register(e,n)},e.prototype.send=function(e,n){if(n){var t=this.bridge.connection.channels[n];t&&t.send(e)}else Object.entries(this.bridge.connection.channels).forEach(function(n){n[0];return n[1].send(e)})},e.prototype.connect=function(e){var n={type:r.CONNECT,caller:null,callee:null,room:{id:e},data:null};i.dispatch("send",n)},e.prototype.disconnect=function(e){Object.entries(this.bridge.connection.channels).forEach(function(e){e[0];return e[1].close()}),Object.entries(this.bridge.connection.peers).forEach(function(e){e[0];return e[1].close()});var n={type:r.DISCONNECT,caller:null,callee:null,room:{id:e},data:null};i.dispatch("send",n)},e}(),h=function(){function e(e){this.socket=n.connect(e),this.subscribeEvents()}return e.prototype.onSend=function(e){this.socket.emit("message",e)},e.prototype.subscribeEvents=function(){this.socket.on("message",this.onMessage.bind(this)),this.socket.on("ipaddr",this.onIp.bind(this)),this.socket.on("log",this.onLog.bind(this)),i.register("send",this.onSend.bind(this))},e.prototype.onIp=function(e){i.dispatch(s.LOG,"Server IP address is: "+e)},e.prototype.onLog=function(){for(var e=[],n=0;n<arguments.length;n++)e[n]=arguments[n];i.dispatch(s.LOG,e)},e.prototype.onMessage=function(e){i.dispatch(e.type,e)},e}();e.default=l,e.EventDispatcher=i,e.ConnectionEventType=r,e.DataEventType=s,e.SocketChannel=h,Object.defineProperty(e,"__esModule",{value:!0})});
+(function (global, factory) {
+	 true ? factory(exports, __webpack_require__(479)) :
+	typeof define === 'function' && define.amd ? define(['exports', 'socket.io-client'], factory) :
+	(factory((global['peer-data'] = global['peer-data'] || {}),global.io));
+}(this, (function (exports,io) { 'use strict';
+
+var HANDLERS = {};
+var EventDispatcher = (function () {
+    function EventDispatcher() {
+    }
+    EventDispatcher.register = function (type, callback) {
+        if (!HANDLERS[type]) {
+            HANDLERS[type] = [];
+        }
+        HANDLERS[type].push(callback);
+    };
+    EventDispatcher.dispatch = function (type, data) {
+        HANDLERS[type].forEach(function (h) { return h(data); });
+    };
+    return EventDispatcher;
+}());
+
+var ConnectionEventType = (function () {
+    function ConnectionEventType() {
+    }
+    return ConnectionEventType;
+}());
+ConnectionEventType.CONNECT = 'CONNECT';
+ConnectionEventType.DISCONNECT = 'DISCONNECT';
+ConnectionEventType.CANDIDATE = 'CANDIDATE';
+ConnectionEventType.OFFER = 'OFFER';
+ConnectionEventType.ANSWER = 'ANSWER';
+ConnectionEventType.ERROR = 'ERROR';
+
+var Connection = (function () {
+    function Connection(servers, dataConstraints) {
+        if (servers === void 0) { servers = {}; }
+        if (dataConstraints === void 0) { dataConstraints = null; }
+        this._servers = {};
+        this._dataConstraints = null;
+        this._peers = {};
+        this._channels = {};
+        this._servers = servers;
+        this._dataConstraints = dataConstraints;
+    }
+    Object.defineProperty(Connection.prototype, "peers", {
+        get: function () {
+            return this._peers;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Connection.prototype, "channels", {
+        get: function () {
+            return this._channels;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Connection.prototype.addPeer = function (id, peer) {
+        if (!this._peers.hasOwnProperty(id)) {
+            this._peers[id] = peer;
+        }
+        return this;
+    };
+    Connection.prototype.removePeer = function (id) {
+        if (this._peers.hasOwnProperty(id)) {
+            this._peers[id].close();
+            delete this._peers[id];
+            delete this._peers[id];
+        }
+        return this;
+    };
+    Connection.prototype.addChannel = function (id, channel) {
+        if (!this._channels.hasOwnProperty(id)) {
+            this._channels[id] = channel;
+        }
+        return this;
+    };
+    Connection.prototype.removeChannel = function (id) {
+        if (this._channels.hasOwnProperty(id)) {
+            this._channels[id].close();
+            delete this._channels[id];
+        }
+        return this;
+    };
+    Object.defineProperty(Connection.prototype, "servers", {
+        get: function () {
+            return this._servers;
+        },
+        set: function (value) {
+            this._servers = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Connection.prototype, "dataConstraints", {
+        get: function () {
+            return this._dataConstraints;
+        },
+        set: function (value) {
+            this._dataConstraints = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Connection;
+}());
+
+var DataEventType = (function () {
+    function DataEventType() {
+    }
+    return DataEventType;
+}());
+DataEventType.LOG = 'LOG';
+DataEventType.OPEN = 'OPEN';
+DataEventType.CLOSE = 'CLOSE';
+DataEventType.ERROR = 'ERROR';
+DataEventType.DATA = 'DATA';
+
+var PeerFactory = (function () {
+    function PeerFactory() {
+    }
+    PeerFactory.get = function (servers, event) {
+        var peer = new RTCPeerConnection(servers);
+        peer.onicecandidate = function (iceEvent) {
+            var candidate = iceEvent instanceof RTCIceCandidate ? iceEvent : iceEvent.candidate;
+            // const sdp = JSON.stringify({
+            //   'candidate': candidate.candidate,
+            //   'sdpMid': candidate.sdpMid,
+            //   'sdpMLineIndex': candidate.sdpMLineIndex
+            // });
+            // console.log('onicecandidate', sdp);
+            var message = {
+                type: ConnectionEventType.CANDIDATE,
+                caller: null,
+                callee: event.caller,
+                room: event.room,
+                data: candidate,
+            };
+            EventDispatcher.dispatch('send', message);
+        };
+        return peer;
+    };
+    return PeerFactory;
+}());
+
+var DataChannelFactory = (function () {
+    function DataChannelFactory() {
+    }
+    DataChannelFactory.get = function (peer, dataConstraints) {
+        var label = Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+        return peer.createDataChannel(label, dataConstraints);
+    };
+    DataChannelFactory.subscribeToEvents = function (channel, channels, event) {
+        channel.onmessage = function (channelEvent) {
+            var message = {
+                id: event.caller.id,
+                event: channelEvent,
+            };
+            EventDispatcher.dispatch(DataEventType.DATA, message);
+        };
+        channel.onopen = function (channelEvent) {
+            var message = {
+                id: event.caller.id,
+                event: channelEvent,
+            };
+            EventDispatcher.dispatch(DataEventType.OPEN, message);
+        };
+        channel.onclose = function (channelEvent) {
+            var message = {
+                id: event.caller.id,
+                event: channelEvent,
+            };
+            EventDispatcher.dispatch(DataEventType.CLOSE, message);
+            delete channels[event.caller.id];
+        };
+        channel.onerror = function (channelEvent) {
+            var message = {
+                id: event.caller.id,
+                event: channelEvent,
+            };
+            EventDispatcher.dispatch(DataEventType.ERROR, message);
+        };
+        return channel;
+    };
+    return DataChannelFactory;
+}());
+
+var Bridge = (function () {
+    function Bridge(connection) {
+        this._peers = {};
+        this._channels = {};
+        this._connection = connection;
+        this._peers = this._connection.peers;
+        this._channels = this._connection.channels;
+        EventDispatcher.register(ConnectionEventType.CONNECT, this.onConnect.bind(this));
+        EventDispatcher.register(ConnectionEventType.DISCONNECT, this.onDisconnect.bind(this));
+        EventDispatcher.register(ConnectionEventType.OFFER, this.onOffer.bind(this));
+        EventDispatcher.register(ConnectionEventType.ANSWER, this.onAnswer.bind(this));
+        EventDispatcher.register(ConnectionEventType.CANDIDATE, this.onCandidate.bind(this));
+    }
+    Object.defineProperty(Bridge.prototype, "connection", {
+        get: function () {
+            return this._connection;
+        },
+        set: function (value) {
+            this._connection = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Bridge.prototype.onConnect = function (event) {
+        var _this = this;
+        var peer = this._peers[event.caller.id] = PeerFactory.get(this._connection.servers, event);
+        var channel = DataChannelFactory.get(peer, this._connection.dataConstraints);
+        this._channels[event.caller.id] = DataChannelFactory.subscribeToEvents(channel, this._channels, event);
+        this._peers[event.caller.id] = peer;
+        peer.createOffer(function (desc) {
+            var message = {
+                type: ConnectionEventType.OFFER,
+                caller: null,
+                callee: event.caller,
+                room: event.room,
+                data: desc,
+            };
+            peer.setLocalDescription(desc, function () { return _this.dispatchEvent(message); }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+        }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+    };
+    Bridge.prototype.onDisconnect = function (event) {
+        var channel = this._channels[event.caller.id];
+        var peer = this._peers[event.caller.id];
+        channel.close();
+        peer.close();
+        delete this._channels[event.caller.id];
+        delete this._peers[event.caller.id];
+    };
+    Bridge.prototype.onOffer = function (event) {
+        var _this = this;
+        var peer = PeerFactory.get(this._connection.servers, event);
+        this._peers[event.caller.id] = peer;
+        peer.ondatachannel = function (dataChannelEvent) {
+            var channel = DataChannelFactory.subscribeToEvents(dataChannelEvent.channel, _this._channels, event);
+            _this._connection.addChannel(event.caller.id, channel);
+        };
+        peer.setRemoteDescription(new RTCSessionDescription(event.data), function () { }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+        peer.createAnswer(function (desc) {
+            var message = {
+                type: ConnectionEventType.ANSWER,
+                caller: null,
+                callee: event.caller,
+                room: event.room,
+                data: desc,
+            };
+            peer.setLocalDescription(desc, function () { return _this.dispatchEvent(message); }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+        }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+    };
+    Bridge.prototype.onAnswer = function (event) {
+        var _this = this;
+        var peer = this._peers[event.caller.id];
+        peer.setRemoteDescription(new RTCSessionDescription(event.data), function () { }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+    };
+    Bridge.prototype.onCandidate = function (event) {
+        var _this = this;
+        var peer = this._peers[event.caller.id];
+        // const sdp = JSON.parse(event.data);
+        var candidate = new RTCIceCandidate(event.data);
+        peer.addIceCandidate(candidate).then(function () { }, function (evnt) { return _this.dispatchError(event.caller, evnt); });
+    };
+    Bridge.prototype.dispatchEvent = function (event) {
+        EventDispatcher.dispatch('send', event);
+    };
+    Bridge.prototype.dispatchError = function (caller, event) {
+        var message = {
+            id: caller.id,
+            event: event,
+        };
+        EventDispatcher.dispatch(DataEventType.ERROR, message);
+    };
+    return Bridge;
+}());
+
+var App = (function () {
+    function App(servers, dataConstraints) {
+        if (servers === void 0) { servers = {}; }
+        if (dataConstraints === void 0) { dataConstraints = null; }
+        var connection = new Connection(servers, dataConstraints);
+        this.bridge = new Bridge(connection);
+    }
+    App.prototype.on = function (event, callback) {
+        EventDispatcher.register(event, callback);
+    };
+    App.prototype.send = function (data, id) {
+        if (id) {
+            var channel = this.bridge.connection.channels[id];
+            if (channel) {
+                channel.send(data);
+            }
+        }
+        else {
+            Object
+                .entries(this.bridge.connection.channels)
+                .forEach(function (_a) {
+                var key = _a[0], value = _a[1];
+                return value.send(data);
+            });
+        }
+    };
+    App.prototype.connect = function (roomId) {
+        var event = {
+            type: ConnectionEventType.CONNECT,
+            caller: null,
+            callee: null,
+            room: { id: roomId },
+            data: null,
+        };
+        EventDispatcher.dispatch('send', event);
+    };
+    App.prototype.disconnect = function (roomId) {
+        Object
+            .entries(this.bridge.connection.channels)
+            .forEach(function (_a) {
+            var key = _a[0], value = _a[1];
+            return value.close();
+        });
+        Object
+            .entries(this.bridge.connection.peers)
+            .forEach(function (_a) {
+            var key = _a[0], value = _a[1];
+            return value.close();
+        });
+        var event = {
+            type: ConnectionEventType.DISCONNECT,
+            caller: null,
+            callee: null,
+            room: { id: roomId },
+            data: null,
+        };
+        EventDispatcher.dispatch('send', event);
+    };
+    return App;
+}());
+
+var SocketChannel = (function () {
+    function SocketChannel(opts) {
+        this.socket = io.connect(opts);
+        this.subscribeEvents();
+    }
+    SocketChannel.prototype.onSend = function (event) {
+        this.socket.emit('message', event);
+    };
+    SocketChannel.prototype.subscribeEvents = function () {
+        this.socket.on('message', this.onMessage.bind(this));
+        this.socket.on('ipaddr', this.onIp.bind(this));
+        this.socket.on('log', this.onLog.bind(this));
+        EventDispatcher.register('send', this.onSend.bind(this));
+    };
+    SocketChannel.prototype.onIp = function (ipaddr) {
+        EventDispatcher.dispatch(DataEventType.LOG, 'Server IP address is: ' + ipaddr);
+    };
+    SocketChannel.prototype.onLog = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        EventDispatcher.dispatch(DataEventType.LOG, args);
+    };
+    SocketChannel.prototype.onMessage = function (event) {
+        EventDispatcher.dispatch(event.type, event);
+    };
+    return SocketChannel;
+}());
+
+exports['default'] = App;
+exports.EventDispatcher = EventDispatcher;
+exports.ConnectionEventType = ConnectionEventType;
+exports.DataEventType = DataEventType;
+exports.SocketChannel = SocketChannel;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
 //# sourceMappingURL=peer-data.js.map
 
 
@@ -25005,4 +25386,4 @@ function localstorage(){
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vendor.d35d040ccf47a711f954.js.map
+//# sourceMappingURL=vendor.84533274c733e2ba8e69.js.map
