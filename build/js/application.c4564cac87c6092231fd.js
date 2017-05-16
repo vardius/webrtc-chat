@@ -4218,33 +4218,45 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
   }, {
     key: 'onSend',
     value: function onSend(e) {
+      // eslint-disable-next-line no-console
+      console.log('', e);
       this.send(e.detail);
     }
   }, {
     key: 'onOpen',
     value: function onOpen(e) {
+      // eslint-disable-next-line no-console
+      console.log('onOpen', e);
       this.room.addPeer(e.id);
       this.messages.addMessage('', 'User ' + e.id + ' connected', 'system');
     }
   }, {
     key: 'onClose',
     value: function onClose(e) {
+      // eslint-disable-next-line no-console
+      console.log('onClose', e);
       this.room.removePeer(e.id);
       this.messages.addMessage('', 'User ' + e.id + ' disconnected', 'system');
     }
   }, {
     key: 'onData',
     value: function onData(e) {
+      // eslint-disable-next-line no-console
+      console.log('onData', e);
       this.messages.addMessage(e.id, e.event.data, 'income');
     }
   }, {
     key: 'onError',
     value: function onError(e) {
+      // eslint-disable-next-line no-console
+      console.log('onError', e);
       this.messages.addMessage('', 'User ' + e.id + ' connection error', 'system error');
     }
   }, {
     key: 'onLog',
     value: function onLog(e) {
+      // eslint-disable-next-line no-console
+      console.log('onLog', e);
       if (e.length === 2 && e[0] === 'SERVER_LOG') {
         var event = e[1];
         if (event.type === _peerData.ConnectionEventType.CONNECT) {
@@ -11149,4 +11161,4 @@ module.exports = __webpack_require__(192);
 
 /***/ })
 ],[495]);
-//# sourceMappingURL=application.e1b58beedcf9eb4f5739.js.map
+//# sourceMappingURL=application.c4564cac87c6092231fd.js.map

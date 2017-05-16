@@ -73,28 +73,40 @@ export class Chat extends HTMLElement {
   }
 
   onSend(e) {
+    // eslint-disable-next-line no-console
+    console.log('', e);
     this.send(e.detail);
   }
 
   onOpen(e) {
+    // eslint-disable-next-line no-console
+    console.log('onOpen', e);
     this.room.addPeer(e.id);
     this.messages.addMessage('', `User ${e.id} connected`, 'system');
   }
 
   onClose(e) {
+    // eslint-disable-next-line no-console
+    console.log('onClose', e);
     this.room.removePeer(e.id);
     this.messages.addMessage('', `User ${e.id} disconnected`, 'system');
   }
 
   onData(e) {
+    // eslint-disable-next-line no-console
+    console.log('onData', e);
     this.messages.addMessage(e.id, e.event.data, 'income');
   }
 
   onError(e) {
+    // eslint-disable-next-line no-console
+    console.log('onError', e);
     this.messages.addMessage('', `User ${e.id} connection error`, 'system error');
   }
 
   onLog(e) {
+    // eslint-disable-next-line no-console
+    console.log('onLog', e);
     if (e.length === 2 && e[0] === 'SERVER_LOG') {
       const event = e[1];
       if (event.type === ConnectionEventType.CONNECT) {
