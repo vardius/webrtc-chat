@@ -90,7 +90,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + chunkId + "." + {"0":"80a6fb1fbdf2c1c2b3ac"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "js/" + chunkId + "." + {"0":"e6309246a8d3b0204b1e"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -1554,6 +1554,7 @@ var SocketChannel = (function () {
         EventDispatcher.dispatch(DataEventType.LOG, args);
     };
     SocketChannel.prototype.onMessage = function (event) {
+        console.log('onMessage', event.type, event);
         EventDispatcher.dispatch(event.type, event);
     };
     return SocketChannel;
@@ -25390,4 +25391,4 @@ function localstorage(){
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vendor.7e32d5abd53da2ca4263.js.map
+//# sourceMappingURL=vendor.3e68292fbebbd742f8c9.js.map
