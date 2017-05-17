@@ -1,4 +1,6 @@
-import { WebComponent } from 'web-component';
+import {
+  WebComponent
+} from 'web-component';
 
 @WebComponent('webrtc-peer', {
   template: require('./peer.html')
@@ -9,86 +11,59 @@ export class Peer extends HTMLElement {
 
     this._picture = '/images/avatar.png';
     this._status = 'off';
-    this._title = '';
+    this._name = '';
     this._info = '';
+
+    this.onCall = this.onCall.bind(this);
   }
 
   static get observedAttributes() {
-    return ['title', 'info', 'status', 'picture'];
+    return ['name', 'info', 'status', 'picture'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'title':
-        this._title = newValue;
-        break;
-      case 'info':
-        this._info = newValue;
-        break;
-      case 'status':
-        this._status = newValue;
-        break;
-      case 'picture':
-        this._picture = newValue;
-        break;
+    if (oldValue !== newValue) {
+      this._updateRendering();
     }
   }
 
   connectedCallback() {
-    if (this.hasAttribute('title')) {
-      this._title = this.getAttribute('title');
-      this._updateRendering();
-    }
-    if (this.hasAttribute('info')) {
-      this._info = this.getAttribute('info');
-      this._updateRendering();
-    }
-    if (this.hasAttribute('status')) {
-      this._status = this.getAttribute('status');
-      this._updateRendering();
-    }
-    if (this.hasAttribute('picture')) {
-      this._picture = this.getAttribute('picture');
-      this._updateRendering();
-    }
+    this._updateRendering();
+
+    const mic = this.querySelector('.call-phone');
+    mic.addEventListener('click', this.onCall);
+
+    const vid = this.querySelector('.call-video');
+    vid.addEventListener('click', this.onCall);
   }
 
-  get title() {
-    return this._title;
-  }
-
-  set title(v) {
-    this.setAttribute("title", v);
-  }
-
-  get info() {
-    return this._info;
-  }
-
-  set info(v) {
-    this.setAttribute("info", v);
-  }
-
-  get status() {
-    return this._status;
-  }
-
-  set status(v) {
-    this.setAttribute("status", v);
-  }
-
-  get picture() {
-    return this._picture;
-  }
-
-  set picture(v) {
-    this.setAttribute("picture", v);
+  onCall(e) {
+    e.preventDefault();
+    const event = new CustomEvent("call", {
+      detail: {
+        type: e.target.className.substring(6),
+        peer: this._name,
+      }
+    });
+    this.dispatchEvent(event);
   }
 
   _updateRendering() {
-    this.querySelector('.title').textContent = `${this._title}`;
-    this.querySelector('.info').textContent = `${this._info}`;
-    this.querySelector('.status').className = `status ${this._status}`;
-    this.querySelector('img').src = `${this._picture}`;
+    const name = this.querySelector('.name');
+    if (name) {
+      name.textContent = `${this._name}`;
+    }
+    const info = this.querySelector('.info');
+    if (info) {
+      info.textContent = `${this._info}`;
+    }
+    const status = this.querySelector('.status');
+    if (status) {
+      status.className = `status ${this._status}`;
+    }
+    const img = this.querySelector('.img');
+    if (img) {
+      img.src = `${this._picture}`;
+    }
   }
 }

@@ -1,5 +1,11 @@
-import { WebComponent } from 'web-component';
-import PeerData, { SocketChannel, DataEventType, ConnectionEventType } from 'peer-data';
+import {
+  WebComponent
+} from 'web-component';
+import PeerData, {
+  SocketChannel,
+  DataEventType,
+  ConnectionEventType
+} from 'peer-data';
 
 @WebComponent('webrtc-chat', {
   template: require('./chat.html')
@@ -27,13 +33,20 @@ export class Chat extends HTMLElement {
     this.messages = this.querySelector('webrtc-message-list');
 
     if (this.roomId.length > 0) {
-      this.messages.title = this.roomId;
+      this.messages.name = this.roomId;
       this.peerData.connect(this.roomId);
     } else {
+      //todo: development only
       window.addEventListener('WebComponentsReady', () => {
-        const popup = this.querySelector('webrtc-popup');
-        popup.show();
+        this.room.addPeer('DEV TEST', 'test info verry long text');
+        this.room.addPeer('DEV TEST', 'test info verry long text');
+        this.room.addPeer('DEV TEST', 'test info verry long text');
       });
+
+      // window.addEventListener('WebComponentsReady', () => {
+      //   const popup = this.querySelector('webrtc-popup');
+      //   popup.show();
+      // });
     }
   }
 

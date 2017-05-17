@@ -1,4 +1,6 @@
-import { WebComponent } from 'web-component';
+import {
+  WebComponent
+} from 'web-component';
 
 @WebComponent('webrtc-message-new', {
   template: require('./message-new.html')
@@ -14,6 +16,7 @@ export class MessageNew extends HTMLElement {
   connectedCallback() {
     const btnSend = this.querySelector('.btn-send');
     btnSend.addEventListener('click', this.onSend);
+
     const area = this.querySelector('textarea');
     area.addEventListener('keypress', this.onKeyPress);
   }

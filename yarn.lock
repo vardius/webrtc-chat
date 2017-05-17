@@ -3708,9 +3708,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peer-data@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.7.tgz#030ef6b409005affb8290b46c134b5116e002b0d"
+peer-data@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.8.tgz#e8200c15269db185d146ed2cfce4db8007434125"
   dependencies:
     webrtc-adapter "^3.3.4"
 
@@ -5133,9 +5133,9 @@ watchpack@^1.3.1:
     chokidar "^1.4.3"
     graceful-fs "^4.1.2"
 
-web-component@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/web-component/-/web-component-1.0.7.tgz#d7ba0b0b494fd1d0521adf96f3ef8da4cf3bc5ae"
+web-component@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/web-component/-/web-component-1.0.8.tgz#96fa813fc0ec0bb012cd43b1f6406780f522d5b8"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

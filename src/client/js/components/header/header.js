@@ -1,4 +1,6 @@
-import { WebComponent } from 'web-component';
+import {
+  WebComponent
+} from 'web-component';
 
 @WebComponent('webrtc-header', {
   template: require('./header.html')
@@ -15,27 +17,13 @@ export class Header extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'id':
-        this._id = newValue;
-        this._updateRendering();
-        break;
-    }
-  }
-
-  connectedCallback() {
-    if (this.hasAttribute('id')) {
-      this._id = this.getAttribute('id');
+    if (oldValue !== newValue) {
       this._updateRendering();
     }
   }
 
-  get id() {
-    return this._id;
-  }
-
-  set id(v) {
-    this.setAttribute("id", v);
+  connectedCallback() {
+    this._updateRendering();
   }
 
   _updateRendering() {

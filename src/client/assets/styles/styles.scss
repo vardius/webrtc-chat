@@ -87,7 +87,7 @@ body {
         bottom: 0;
         left: 28px;
       }
-      .title {
+      .name {
         font-size: 14px;
         font-weight: bold;
         line-height: 20px;
@@ -137,7 +137,6 @@ body {
       .body {
         padding: 12px;
         font-size: 16px;
-        line-height: 26px;
         position: relative;
       }
       .body:before {
@@ -218,7 +217,7 @@ body {
       }
     }
     .author {
-      font-size: 14px;
+      font-size: 10px;
       line-height: 0;
     }
   }

@@ -1,4 +1,6 @@
-import { WebComponent } from 'web-component';
+import {
+  WebComponent
+} from 'web-component';
 
 @WebComponent('webrtc-room', {
   template: require('./room.html')
@@ -9,6 +11,8 @@ export class Room extends HTMLElement {
 
     this.addPeer = this.addPeer.bind(this);
     this.onSearch = this.onSearch.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onCall = this.onCall.bind(this);
   }
 
   connectedCallback() {
@@ -17,7 +21,8 @@ export class Room extends HTMLElement {
 
     const children = this.querySelector('.room').children;
     Array.from(children).forEach((element) => {
-      element.addEventListener('click', this.onClick.bind(this))
+      element.addEventListener('click', this.onClick);
+      element.addEventListener('call', this.onCall);
     });
   }
 
@@ -33,9 +38,13 @@ export class Room extends HTMLElement {
     });
   }
 
+  onCall(e) {
+    this.dispatchEvent(e);
+  }
+
   onClick(e) {
     const event = new CustomEvent("select", {
-      room: this.findPeer(e.target)
+      detail: this.findPeer(e.target)
     });
     this.dispatchEvent(event);
   }
@@ -45,9 +54,10 @@ export class Room extends HTMLElement {
     return el;
   }
 
-  addPeer(id) {
+  addPeer(name, info) {
     let msg = document.createElement('webrtc-peer');
-    msg.title = id;
+    msg.name = name;
+    msg.info = info;
 
     this.querySelector('.room').appendChild(msg);
   }
@@ -55,7 +65,7 @@ export class Room extends HTMLElement {
   removePeer(id) {
     const children = this.querySelector('.room').children;
     Array.from(children).forEach((element) => {
-      if (element.title === id) {
+      if (element.name === id) {
         return element.parentNode.removeChild(element);
       }
     });
