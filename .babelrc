@@ -1,12 +1,14 @@
 {
   "presets": [
-    ["es2015"]
+    ["env", {
+      "targets": {
+        "uglify": true
+      },
+      "useBuiltIns": true
+    }],
+    "stage-0"
   ],
   "plugins": [
-    "transform-runtime",
-    "transform-decorators-legacy",
-    "transform-es2015-destructuring",
-    "transform-object-rest-spread",
-    "syntax-object-rest-spread"
+    "transform-decorators-legacy"
   ]
 }

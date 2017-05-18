@@ -55,11 +55,11 @@ export class Room extends HTMLElement {
   }
 
   addPeer(name, info) {
-    let msg = document.createElement('webrtc-peer');
-    msg.name = name;
-    msg.info = info;
+    let peer = document.createElement('webrtc-peer');
+    peer.name = name;
+    peer.info = info;
 
-    this.querySelector('.room').appendChild(msg);
+    this.querySelector('.room').appendChild(peer);
   }
 
   removePeer(id) {
