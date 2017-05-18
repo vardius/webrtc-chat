@@ -12,16 +12,16 @@
   <title>WebRTC Chat</title>
   <link rel="shortcut icon" href="/images/favicon.ico">
 
-  <% for (var css in htmlWebpackPlugin.files.chunks['application'].css) { %>
-    <link href="<%= htmlWebpackPlugin.files.chunks['application'].css[css] %>" rel="stylesheet">
-  <% } %>
+  
+    <link href="/css/application.a7f019f07c030bbcf3ec76ac6a43fec0.css" rel="stylesheet">
+  
 </head>
 
 <body>
   <webrtc-app></webrtc-app>
 
-  <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
-  <script src="<%= htmlWebpackPlugin.files.chunks['application'].entry %>"></script>
+  <script src="/js/vendor.866cb5d2c3315785a91f.js"></script>
+  <script src="/js/application.78dedd21a9b9a41e5003.js"></script>
 </body>
 
 </html>

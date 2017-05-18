@@ -9,19 +9,19 @@ export class MessageNew extends HTMLElement {
   constructor() {
     super();
 
-    this.onSend = this.onSend.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this._onSend = this._onSend.bind(this);
   }
 
   connectedCallback() {
     const btnSend = this.querySelector('.btn-send');
-    btnSend.addEventListener('click', this.onSend);
+    btnSend.addEventListener('click', this._onSend);
 
     const area = this.querySelector('textarea');
-    area.addEventListener('keypress', this.onKeyPress);
+    area.addEventListener('keypress', this._onKeyPress);
   }
 
-  onSend() {
+  _onSend() {
     const area = this.querySelector('textarea');
     const msg = area.value;
     area.value = "";
@@ -32,10 +32,10 @@ export class MessageNew extends HTMLElement {
     this.dispatchEvent(event);
   }
 
-  onKeyPress(e) {
+  _onKeyPress(e) {
     if (e.keyCode === 13 && !event.shiftKey) {
       e.preventDefault();
-      this.onSend();
+      this._onSend();
     }
   }
 }

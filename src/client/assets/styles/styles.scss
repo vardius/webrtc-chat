@@ -69,7 +69,7 @@ body {
       z-index: 3;
     }
   }
-  .room {
+  .participants {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -111,7 +111,7 @@ body {
   .btn-upload {
     color: #999999;
   }
-  .message-list {
+  .conversation {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;

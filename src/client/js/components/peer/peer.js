@@ -14,7 +14,10 @@ export class Peer extends HTMLElement {
     this._name = '';
     this._info = '';
 
-    this.onCall = this.onCall.bind(this);
+    this.call = this.call.bind(this);
+    this.videoCall = this.videoCall.bind(this);
+
+    this._onCall = this._onCall.bind(this);
   }
 
   static get observedAttributes() {
@@ -31,21 +34,48 @@ export class Peer extends HTMLElement {
     this._updateRendering();
 
     const mic = this.querySelector('.call-phone');
-    mic.addEventListener('click', this.onCall);
+    mic.addEventListener('click', this._onCall);
 
     const vid = this.querySelector('.call-video');
-    vid.addEventListener('click', this.onCall);
+    vid.addEventListener('click', this._onCall);
+
+    this.dispatchEvent(new CustomEvent("connected"));
   }
 
-  onCall(e) {
-    e.preventDefault();
+  disconnectedCallback() {
+    this.dispatchEvent(new CustomEvent("disconnected"));
+  }
+
+  call() {
     const event = new CustomEvent("call", {
       detail: {
-        type: e.target.className.substring(6),
+        type: 'phone',
         peer: this._name,
       }
     });
     this.dispatchEvent(event);
+  }
+
+  videoCall() {
+    const event = new CustomEvent("call", {
+      detail: {
+        type: 'video',
+        peer: this._name,
+      }
+    });
+    this.dispatchEvent(event);
+  }
+
+  _onCall(e) {
+    e.preventDefault();
+    switch (e.target.className.substring(6)) {
+      case 'phone':
+        this.call();
+        break;
+      case 'video':
+        this.videoCall();
+        break;
+    }
   }
 
   _updateRendering() {

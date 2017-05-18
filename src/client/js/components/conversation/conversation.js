@@ -2,10 +2,10 @@ import {
   WebComponent
 } from 'web-component';
 
-@WebComponent('webrtc-message-list', {
-  template: require('./message-list.html')
+@WebComponent('webrtc-conversation', {
+  template: require('./conversation.html')
 })
-export class MessageList extends HTMLElement {
+export class Conversation extends HTMLElement {
   constructor() {
     super();
 
@@ -14,7 +14,8 @@ export class MessageList extends HTMLElement {
 
     this.addMessage = this.addMessage.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
-    this.onSend = this.onSend.bind(this);
+
+    this._onSend = this._onSend.bind(this);
   }
 
   static get observedAttributes() {
@@ -29,17 +30,9 @@ export class MessageList extends HTMLElement {
 
   connectedCallback() {
     const messageNew = this.querySelector('webrtc-message-new');
-    messageNew.addEventListener('send', this.onSend)
+    messageNew.addEventListener('send', this._onSend)
 
     this._updateRendering();
-  }
-
-  onSend(e) {
-    const msg = e.detail
-    if (msg) {
-      this.addMessage(this._owner, e.detail, 'outcome');
-      this.scrollDown();
-    }
   }
 
   addMessage(author, body, type) {
@@ -48,13 +41,21 @@ export class MessageList extends HTMLElement {
     msg.body = body;
     msg.type = type;
 
-    this.querySelector('.message-list').appendChild(msg);
+    this.querySelector('.conversation').appendChild(msg);
     this.scrollDown();
   }
 
   scrollDown() {
-    const elem = this.querySelector('.message-list');
+    const elem = this.querySelector('.conversation');
     elem.scrollTop = elem.scrollHeight;
+  }
+
+  _onSend(e) {
+    const msg = e.detail
+    if (msg) {
+      this.addMessage(this._owner, e.detail, 'outcome');
+      this.scrollDown();
+    }
   }
 
   _updateRendering() {
