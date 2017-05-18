@@ -9,7 +9,6 @@ export class Conversation extends HTMLElement {
   constructor() {
     super();
 
-    this._name = '';
     this._owner = '';
 
     this.addMessage = this.addMessage.bind(this);
@@ -19,20 +18,12 @@ export class Conversation extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name', 'owner'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this._updateRendering();
-    }
+    return ['owner'];
   }
 
   connectedCallback() {
     const messageNew = this.querySelector('webrtc-message-new');
-    messageNew.addEventListener('send', this._onSend)
-
-    this._updateRendering();
+    messageNew.addEventListener('send', this._onSend);
   }
 
   addMessage(author, body, type) {
@@ -55,13 +46,6 @@ export class Conversation extends HTMLElement {
     if (msg) {
       this.addMessage(this._owner, e.detail, 'outcome');
       this.scrollDown();
-    }
-  }
-
-  _updateRendering() {
-    const name = this.querySelector('.name');
-    if (name) {
-      name.textContent = `${this._name}`;
     }
   }
 }

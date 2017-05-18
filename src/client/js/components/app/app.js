@@ -16,7 +16,7 @@ export class Chat extends HTMLElement {
     window.addEventListener('WebComponentsReady', () => {
       if (this.roomId.length > 0) {
         const chat = this.querySelector('webrtc-chat');
-        const room = chat.createRoom(this.roomId);
+        const room = chat.createRoom(this.roomId, 'TEST USER');
         room.connect();
       } else {
         const popup = this.querySelector('webrtc-popup');
@@ -30,9 +30,4 @@ export class Chat extends HTMLElement {
   // peer.onaddstream = function gotRemoteStream(e){
   //   vid2.src = URL.createObjectURL(e.stream);
   // };
-
-  // window.addEventListener('WebComponentsReady', () => {
-  //   const popup = this.querySelector('webrtc-popup');
-  //   popup.show();
-  // });
 }

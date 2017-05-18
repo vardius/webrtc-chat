@@ -2,8 +2,7 @@ import {
   WebComponent
 } from 'web-component';
 import {
-  DataEventType,
-  ConnectionEventType
+  DataEventType
 } from 'peer-data';
 
 @WebComponent('webrtc-room', {
@@ -14,10 +13,11 @@ export class Room extends HTMLElement {
     super();
 
     this._id = null;
+    this._username = null;
 
     this.peerData = null;
-    this.participants = [];
-    this.conversation = [];
+    this.participants = null;
+    this.conversation = null;
 
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
@@ -27,20 +27,15 @@ export class Room extends HTMLElement {
     this._onClose = this._onClose.bind(this);
     this._onData = this._onData.bind(this);
     this._onError = this._onError.bind(this);
-    this._onLog = this._onLog.bind(this);
   }
 
   static get observedAttributes() {
-    return ['id'];
+    return ['id', 'username'];
   }
 
   connectedCallback() {
     this.participants = this.querySelector('webrtc-participants');
     this.conversation = this.querySelector('webrtc-conversation');
-
-    if (this.id.length > 0) {
-      this.conversation.name = this.id;
-    }
   }
 
   disconnectedCallback() {
@@ -54,7 +49,8 @@ export class Room extends HTMLElement {
       this.peerData.on(DataEventType.CLOSE, this._onClose);
       this.peerData.on(DataEventType.DATA, this._onData);
       this.peerData.on(DataEventType.ERROR, this._onError);
-      this.peerData.on(DataEventType.LOG, this._onLog);
+
+      this.conversation.owner = this._username;
 
       const messageNew = this.conversation.querySelector('webrtc-message-new');
       messageNew.addEventListener('send', this._onSend)
@@ -81,7 +77,7 @@ export class Room extends HTMLElement {
     }
 
     this.participants.addPeer(e.caller.id);
-    this.conversation.addMessage('', `User ${e.caller.id} connected`, 'system');
+    this.conversation.addMessage('', `User ${e.caller.name} connected`, 'system');
   }
 
   _onClose(e) {
@@ -90,7 +86,7 @@ export class Room extends HTMLElement {
     }
 
     this.participants.removePeer(e.caller.id);
-    this.conversation.addMessage('', `User ${e.caller.id} disconnected`, 'system');
+    this.conversation.addMessage('', `User ${e.caller.name} disconnected`, 'system');
   }
 
   _onData(e) {
@@ -98,7 +94,7 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.conversation.addMessage(e.caller.id, e.event.data, 'income');
+    this.conversation.addMessage(e.caller.name, e.event.data, 'income');
   }
 
   _onError(e) {
@@ -106,17 +102,6 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.conversation.addMessage('', `User ${e.caller.id} connection error`, 'system error');
-  }
-
-  _onLog(e) {
-    if (e.length === 2 && e[0] === 'SERVER_LOG') {
-      const event = e[1];
-      if (e.room == this._id && event.type === ConnectionEventType.CONNECT) {
-        let header = this.querySelector("webrtc-header");
-        header.id = event.caller.id;
-        this.conversation.owner = event.caller.id;
-      }
-    }
+    this.conversation.addMessage('', `User ${e.caller.name} connection error`, 'system error');
   }
 }

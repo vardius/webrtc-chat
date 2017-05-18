@@ -1,5 +1,4 @@
 export {App} from './app/app';
-export {Header} from './header/header';
 export {Popup} from './popup/popup';
 export {Chat} from './chat/chat';
 export {Room} from './room/room';
@@ -8,4 +7,3 @@ export {Conversation} from './conversation/conversation';
 export {Peer} from './peer/peer';
 export {Message} from './message/message';
 export {MessageNew} from './message-new/message-new';
-export {PeerSearch} from './peer-search/peer-search';

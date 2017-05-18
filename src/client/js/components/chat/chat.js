@@ -34,10 +34,11 @@ export class Chat extends HTMLElement {
     this.peerData.on(DataEventType.LOG, this._onLog.bind(this));
   }
 
-  createRoom(id) {
+  createRoom(id, username) {
     if (id && id.length > 0) {
       let room = document.createElement("webrtc-room");
       room.id = id;
+      room.username = username;
       room.peerData = this.peerData;
 
       this.querySelector('.rooms').appendChild(room);

@@ -9,66 +9,48 @@ export class Participants extends HTMLElement {
   constructor() {
     super();
 
+    this.size = 0;
+    this.x = -1;
+    this.y = -1;
+
     this.addPeer = this.addPeer.bind(this);
-
-    this._onCall = this._onCall.bind(this);
-    this._onClick = this._onClick.bind(this);
-    this._onSearch = this._onSearch.bind(this);
   }
 
-  connectedCallback() {
-    const roomSearch = this.querySelector('webrtc-peer-search');
-    roomSearch.addEventListener('peer-search', this._onSearch);
+  addPeer(name) {
+    if (this.x + 1 === this.size && this.y + 1 === this.size) {
+      this.size++;
+    } else if (this.x + 1 < this.size) {
+      this.x++;
+    } else {
+      this.y++;
+    }
 
-    const children = this.querySelector('.participants').children;
-    Array.from(children).forEach((element) => {
-      element.addEventListener('click', this._onClick);
-      element.addEventListener('call', this._onCall);
-    });
-  }
+    const container = this.querySelector('.videos');
+    const rows = container.children;
 
-  addPeer(name, info) {
+    let row = rows.children[this.y];
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'video-row';
+    }
+
     let peer = document.createElement('webrtc-peer');
     peer.name = name;
-    peer.info = info;
-
-    this.querySelector('.participants').appendChild(peer);
+    row.appendChild(peer);
   }
 
   removePeer(id) {
-    const children = this.querySelector('.participants').children;
-    Array.from(children).forEach((element) => {
-      if (element.name === id) {
-        return element.parentNode.removeChild(element);
-      }
+    const container = this.querySelector('.videos');
+    const rows = container.children;
+    Array.from(rows).forEach((row) => {
+      const peers = row.children;
+      Array.from(peers).forEach((peer) => {
+        if (peer.name === id) {
+          const lastPeer = container.lastChild.lastChild;
+          peer.parentNode.appendChild(lastPeer);
+          peer.parentNode.removeChild(peer);
+        }
+      });
     });
-  }
-
-  _findPeer(el) {
-    while ((el = el.parentElement) && el.nodeName !== 'WEBRTC-PEER') {}
-    return el;
-  }
-
-  _onSearch(e) {
-    var matcher = new RegExp(e.detail, "gi");
-    const children = this.querySelector('.participants').children;
-    Array.from(children).forEach((element) => {
-      if (matcher.test(element.textContent)) {
-        element.style.display = "inline-block";
-      } else {
-        element.style.display = "none";
-      }
-    });
-  }
-
-  _onCall(e) {
-    this.dispatchEvent(e);
-  }
-
-  _onClick(e) {
-    const event = new CustomEvent("select", {
-      detail: this._findPeer(e.target)
-    });
-    this.dispatchEvent(event);
   }
 }

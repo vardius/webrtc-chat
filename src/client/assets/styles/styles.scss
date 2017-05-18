@@ -1,200 +1,99 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css?family=Lato');
-@import "variables";
-@import "mixins";
-@import "keyframes";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
-@import "~font-awesome/scss/font-awesome";
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
+  @import url('https://fonts.googleapis.com/css?family=Roboto');
+  @import url('https://fonts.googleapis.com/css?family=Lato');
+  @import "variables";
+  @import "mixins";
+  @import "keyframes";
+  @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+  @import "~font-awesome/scss/font-awesome";
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+  html {
+    position: relative;
+    min-height: 100%;
+  }
 
-body {
-  background-color: $bg;
-  margin-bottom: 60px;
-  min-height: 100%;
-}
+  body {
+    background-color: $dark;
+    min-height: 100%;
+  }
 
-.chat-column {
-  height: calc(100vh - 180px);
-  .avatar {
-    width: 40px;
-    height: 40px;
+  .videos {
+    height: 100vh;
+    width: 100vw;
+    @for $i from 1 through 100 {
+      .video-row:first-child:nth-last-child( #{$i}),
+      .video-row:first-child:nth-last-child( #{$i})~.video-row {
+        margin: 0;
+        padding: 0;
+        font-size: 0;
+        width: 100%;
+        height: calc(100% / #{$i});
+      }
+    }
+  }
+
+  .video-row {
+    @for $i from 1 through 100 {
+      .video-col:first-child:nth-last-child( #{$i}),
+      .video-col:first-child:nth-last-child( #{$i})~.video-col {
+        margin: 0;
+        padding: 0;
+        font-size: 0;
+        height: 100%;
+        width: calc(100% / #{$i});
+        background: url(/../images/avatar.png) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+    }
+  }
+
+  .message-new {
     position: absolute;
-    img {
-      display: block;
-      border-radius: 20px;
-      height: 100%;
-    }
-    .status {
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      position: absolute;
-    }
-  }
-  .status {
-    &.off {
-      border: 1px solid #5a5a5a;
-      background: #ffffff;
-    }
-    &.online {
-      background: #4caf50;
-    }
-    &.busy {
-      background: #ffc107;
-    }
-    &.offline {
-      background: #ed4e6e;
-    }
-  }
-  .input-group {
+    bottom: 0;
+    left: 0;
+    background: transparent;
+    color: white;
+    resize: none;
+    border: 0 none;
     width: 100%;
-    margin: 0;
-    padding: 10px 0 10px 0;
-    .search-query {
-      background: #fff none repeat scroll 0 0 !important;
-      border-radius: 4px;
-      height: 33px;
-      margin-bottom: 0;
-    }
-    .search-query:focus+button {
-      z-index: 3;
-    }
+    font-size: 'x-large';
+    text-align: center;
+    outline: none;
+    height: 40px;
   }
-  .participants {
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    .peer {
-      position: relative;
-      padding: 0 0 0 50px;
-      display: block;
-      cursor: pointer;
-      margin: 0 0 20px;
-      .avatar {
-        top: 0;
-        left: 0;
-      }
-      .status {
-        bottom: 0;
-        left: 28px;
-      }
-      .name {
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .info {
-        font: 200 14px/20px "Raleway", sans-serif;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-  .btns-message-new {
-    float: left;
-    margin-top: 13px;
-    width: 100%;
-  }
-  .btn-upload {
-    color: #999999;
-  }
+
   .conversation {
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 25%;
+    height: calc(100% - 40px);
+    width: 50%;
     overflow-x: hidden;
     overflow-y: auto;
-    h6 {
-      font-size: 20px;
-      margin: 0 0 20px;
-    }
-    .bubble {
+    .message {
       position: relative;
       overflow: hidden;
+      margin: 0 0 5px;
       clear: both;
-      margin-bottom: 5px;
+      font-size: 14px;
+      text-align: left;
+      float: left;
+      color: $white;
       white-space: pre-wrap;
       white-space: -moz-pre-wrap;
       white-space: -pre-wrap;
       white-space: -o-pre-wrap;
       word-wrap: break-word;
-      .avatar {
-        .status {
-          bottom: 0;
-        }
-      }
-      .body {
-        padding: 12px;
-        font-size: 16px;
-        position: relative;
-      }
-      .body:before {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        border: 18px solid transparent;
-        border-bottom-width: 0;
-      }
-      &.income {
-        max-width: 600px;
-        padding: 0 0 0 58px;
-        text-align: left;
-        float: left;
-        .avatar {
-          left: 0;
-          .status {
-            right: 4px;
-          }
-        }
-        .body {
-          background: #ebebeb;
-          color: #333333;
-          border-radius: 8px 8px 8px 0;
-        }
-        .body:before {
-          left: -30px;
-          border-right-color: #ebebeb;
-          border-right-width: 12px;
-        }
-        @include animation-name(slideFromLeft);
-      }
-      &.outcome {
-        max-width: 600px;
-        padding: 0 58px 0 0;
-        text-align: right;
-        float: right;
-        .avatar {
-          right: 0;
-          .status {
-            left: 4px;
-          }
-        }
-        .body {
-          background: #7266ba;
-          color: #ffffff;
-          border-radius: 8px 8px 0 8px;
-        }
-        .body:before {
-          right: -30px;
-          border-left-color: #7266ba;
-          border-left-width: 12px;
-        }
-        @include animation-name(slideFromRight);
-      }
+      @include animation-name(slideFromLeft);
       &.system {
-        text-align: center;
+        font-size: 12px;
         color: $grey;
         &.info {
           color: $info;
@@ -205,20 +104,7 @@ body {
         &.error {
           color: $danger;
         }
-        .avatar,
-        .author {
-          display: none;
-        }
-        .body {
-          font-size: 12px;
-          line-height: 0;
-        }
         @include animation-name(slideFromRight);
       }
     }
-    .author {
-      font-size: 10px;
-      line-height: 0;
-    }
   }
-}
