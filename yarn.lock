@@ -3809,9 +3809,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peer-data@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.9.tgz#157ad4a7399230545f40e36d9dbff48e30d7b724"
+peer-data@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.10.tgz#94163cb2564d07f8190bd2dabd947f010c28fc4d"
   dependencies:
     webrtc-adapter "^3.3.4"
 

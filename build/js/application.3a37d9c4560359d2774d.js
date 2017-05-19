@@ -3328,10 +3328,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
   function Chat() {
     _classCallCheck(this, Chat);
 
-    var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this));
-
-    _this.roomId = window.location.hash.substring(1);
-    return _this;
+    return _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this));
   }
 
   _createClass(Chat, [{
@@ -3340,10 +3337,16 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
       var _this2 = this;
 
       window.addEventListener('WebComponentsReady', function () {
-        if (_this2.roomId.length > 0) {
+        var searchParams = new URLSearchParams(window.location.href);
+        var roomname = searchParams.get('room');
+        var username = searchParams.get('username');
+
+        if (roomname && username && roomname.length > 0 && username.length > 0) {
           var chat = _this2.querySelector('webrtc-chat');
-          var room = chat.createRoom(_this2.roomId, 'TEST USER');
-          room.connect();
+          var room = chat.createRoom(roomname, username);
+          if (room) {
+            room.connect();
+          }
         } else {
           var popup = _this2.querySelector('webrtc-popup');
           popup.show();
@@ -3427,7 +3430,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
   _createClass(Chat, [{
     key: 'createRoom',
     value: function createRoom(id, username) {
-      if (id && id.length > 0) {
+      if (id.length > 0 && username.length > 0) {
         var room = document.createElement("webrtc-room");
         room.id = id;
         room.username = username;
@@ -4020,8 +4023,11 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
       var btnSend = this.querySelector('.btn-enter');
       btnSend.addEventListener('click', this._onEnter);
 
-      var query = this.querySelector('.room-query');
-      query.addEventListener('keypress', this._onKeyPress);
+      var room = this.querySelector('.room-query');
+      room.addEventListener('keypress', this._onKeyPress);
+
+      var name = this.querySelector('.username-query');
+      name.addEventListener('keypress', this._onKeyPress);
     }
   }, {
     key: 'show',
@@ -4044,10 +4050,10 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
   }, {
     key: '_onEnter',
     value: function _onEnter() {
-      var query = this.querySelector('.room-query').value;
-      if (query.length > 0) {
-        window.location.href = window.location.href + '#' + query;
-        location.reload();
+      var roomName = this.querySelector('.room-query').value;
+      var userName = this.querySelector('.username-query').value;
+      if (roomName.length > 0 && userName.length > 0) {
+        window.location.href = '' + window.location.origin + window.location.pathname + '?&room=' + roomName + '&username=' + userName;
       }
     }
   }]);
@@ -4106,7 +4112,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this._onOpen = _this._onOpen.bind(_this);
     _this._onClose = _this._onClose.bind(_this);
     _this._onData = _this._onData.bind(_this);
-    _this._onError = _this._onError.bind(_this);
     return _this;
   }
 
@@ -4129,7 +4134,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         this.peerData.on(_peerData.DataEventType.OPEN, this._onOpen);
         this.peerData.on(_peerData.DataEventType.CLOSE, this._onClose);
         this.peerData.on(_peerData.DataEventType.DATA, this._onData);
-        this.peerData.on(_peerData.DataEventType.ERROR, this._onError);
 
         this.conversation.owner = this._username;
 
@@ -4147,7 +4151,10 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
   }, {
     key: 'send',
     value: function send(data) {
-      this.peerData.send(data);
+      this.peerData.send({
+        message: data,
+        username: this.username
+      });
     }
   }, {
     key: '_onSend',
@@ -4162,7 +4169,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
 
       this.participants.addPeer(e.caller.id);
-      this.conversation.addMessage('', 'User ' + e.caller.name + ' connected', 'system');
     }
   }, {
     key: '_onClose',
@@ -4172,7 +4178,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
 
       this.participants.removePeer(e.caller.id);
-      this.conversation.addMessage('', 'User ' + e.caller.name + ' disconnected', 'system');
     }
   }, {
     key: '_onData',
@@ -4181,16 +4186,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         return;
       }
 
-      this.conversation.addMessage(e.caller.name, e.event.data, 'income');
-    }
-  }, {
-    key: '_onError',
-    value: function _onError(e) {
-      if (e.room.id !== this._id) {
-        return;
-      }
-
-      this.conversation.addMessage('', 'User ' + e.caller.name + ' connection error', 'system error');
+      this.conversation.addMessage(e.event.data.username, e.event.data.message, 'income');
     }
   }], [{
     key: 'observedAttributes',
@@ -8380,7 +8376,7 @@ module.exports = "<video autoplay class=video-col></video>";
 /* 378 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dialog> <div class=modal-dialog role=document> <div class=modal-content> <div class=modal-header> <h4 class=modal-title>Room Name</h4> </div> <div class=modal-body> <input class=\"form-control room-query\"/> </div> <div class=modal-footer> <button type=button class=\"btn btn-primary btn-enter\">Enter</button> </div> </div> </div> </div> ";
+module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dialog> <div class=modal-dialog role=document> <div class=modal-content> <div class=modal-header> <h4 class=modal-title>Room Name</h4> </div> <div class=modal-body> <div class=form-group> <label for=exampleInputFile>Room</label> <input class=\"form-control room-query\"/> </div> <div class=form-group> <label for=exampleInputFile>Username</label> <input class=\"form-control username-query\"/> </div> </div> <div class=modal-footer> <button type=button class=\"btn btn-primary btn-enter\">Enter</button> </div> </div> </div> </div> ";
 
 /***/ }),
 /* 379 */
@@ -9160,4 +9156,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[400]);
-//# sourceMappingURL=application.457ed66f77f2e70f1edf.js.map
+//# sourceMappingURL=application.3a37d9c4560359d2774d.js.map

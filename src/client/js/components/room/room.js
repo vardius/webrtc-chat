@@ -93,6 +93,6 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.conversation.addMessage(e.event.data.username, e.event.data.message, 'income');
+    this.conversation.addMessage(e.data.username, e.data.message, 'income');
   }
 }
