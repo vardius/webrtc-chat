@@ -35,7 +35,7 @@ export class Chat extends HTMLElement {
   }
 
   createRoom(id, username) {
-    if (id && id.length > 0) {
+    if (id.length > 0 && username.length > 0) {
       let room = document.createElement("webrtc-room");
       room.id = id;
       room.username = username;

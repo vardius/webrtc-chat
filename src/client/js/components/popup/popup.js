@@ -20,8 +20,11 @@ export class Popup extends HTMLElement {
     const btnSend = this.querySelector('.btn-enter');
     btnSend.addEventListener('click', this._onEnter);
 
-    const query = this.querySelector('.room-query');
-    query.addEventListener('keypress', this._onKeyPress);
+    const room = this.querySelector('.room-query');
+    room.addEventListener('keypress', this._onKeyPress);
+
+    const name = this.querySelector('.username-query');
+    name.addEventListener('keypress', this._onKeyPress);
   }
 
   show() {
@@ -40,10 +43,10 @@ export class Popup extends HTMLElement {
   }
 
   _onEnter() {
-    const query = this.querySelector('.room-query').value;
-    if (query.length > 0) {
-      window.location.href = window.location.href + '#' + query;
-      location.reload();
+    const roomName = this.querySelector('.room-query').value;
+    const userName = this.querySelector('.username-query').value;
+    if (roomName.length > 0 && userName.length > 0) {
+      window.location.href = `${window.location.origin}${window.location.pathname}?&room=${roomName}&username=${userName}`;
     }
   }
 }

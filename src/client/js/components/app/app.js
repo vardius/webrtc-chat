@@ -8,16 +8,20 @@ import {
 export class Chat extends HTMLElement {
   constructor() {
     super();
-
-    this.roomId = window.location.hash.substring(1);
   }
 
   connectedCallback() {
     window.addEventListener('WebComponentsReady', () => {
-      if (this.roomId.length > 0) {
+      const searchParams = new URLSearchParams(window.location.href);
+      const roomname = searchParams.get('room');
+      const username = searchParams.get('username');
+
+      if (roomname && username && roomname.length > 0 && username.length > 0) {
         const chat = this.querySelector('webrtc-chat');
-        const room = chat.createRoom(this.roomId, 'TEST USER');
-        room.connect();
+        const room = chat.createRoom(roomname, username);
+        if (room) {
+          room.connect();
+        }
       } else {
         const popup = this.querySelector('webrtc-popup');
         popup.show();

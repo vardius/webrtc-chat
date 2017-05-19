@@ -26,7 +26,6 @@ export class Room extends HTMLElement {
     this._onOpen = this._onOpen.bind(this);
     this._onClose = this._onClose.bind(this);
     this._onData = this._onData.bind(this);
-    this._onError = this._onError.bind(this);
   }
 
   static get observedAttributes() {
@@ -48,7 +47,6 @@ export class Room extends HTMLElement {
       this.peerData.on(DataEventType.OPEN, this._onOpen);
       this.peerData.on(DataEventType.CLOSE, this._onClose);
       this.peerData.on(DataEventType.DATA, this._onData);
-      this.peerData.on(DataEventType.ERROR, this._onError);
 
       this.conversation.owner = this._username;
 
@@ -64,7 +62,10 @@ export class Room extends HTMLElement {
   }
 
   send(data) {
-    this.peerData.send(data);
+    this.peerData.send({
+      message: data,
+      username: this.username
+    });
   }
 
   _onSend(e) {
@@ -77,7 +78,6 @@ export class Room extends HTMLElement {
     }
 
     this.participants.addPeer(e.caller.id);
-    this.conversation.addMessage('', `User ${e.caller.name} connected`, 'system');
   }
 
   _onClose(e) {
@@ -86,7 +86,6 @@ export class Room extends HTMLElement {
     }
 
     this.participants.removePeer(e.caller.id);
-    this.conversation.addMessage('', `User ${e.caller.name} disconnected`, 'system');
   }
 
   _onData(e) {
@@ -94,14 +93,6 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.conversation.addMessage(e.caller.name, e.event.data, 'income');
-  }
-
-  _onError(e) {
-    if (e.room.id !== this._id) {
-      return;
-    }
-
-    this.conversation.addMessage('', `User ${e.caller.name} connection error`, 'system error');
+    this.conversation.addMessage(e.event.data.username, e.event.data.message, 'income');
   }
 }
