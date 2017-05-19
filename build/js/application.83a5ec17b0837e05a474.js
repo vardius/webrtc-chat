@@ -3353,13 +3353,6 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
         }
       });
     }
-
-    //todo: Simple as that
-    // peer.addStream(localStream);
-    // peer.onaddstream = function gotRemoteStream(e){
-    //   vid2.src = URL.createObjectURL(e.stream);
-    // };
-
   }]);
 
   return Chat;
@@ -3435,6 +3428,11 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
         room.id = id;
         room.username = username;
         room.peerData = this.peerData;
+
+        navigator.getUserMedia({
+          "audio": true,
+          "video": true
+        }, room.setStream.bind(room));
 
         this.querySelector('.rooms').appendChild(room);
 
@@ -3852,16 +3850,21 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
     value: function addPeer(name) {
       if (this.x + 1 === this.size && this.y + 1 === this.size) {
         this.size++;
+        this.x++;
+        this.y++;
       } else if (this.x + 1 < this.size) {
         this.x++;
       } else {
         this.y++;
       }
 
+      var row = null;
       var container = this.querySelector('.videos');
       var rows = container.children;
+      if (rows && rows.children) {
+        row = Array.from(rows.children)[this.y];
+      }
 
-      var row = rows.children[this.y];
       if (!row) {
         row = document.createElement('div');
         row.className = 'video-row';
@@ -3870,6 +3873,8 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
       var peer = document.createElement('webrtc-peer');
       peer.name = name;
       row.appendChild(peer);
+
+      return peer;
     }
   }, {
     key: 'removePeer',
@@ -4100,6 +4105,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
     _this._id = null;
     _this._username = null;
+    _this._stream = null;
+    _this._waitingPeers = [];
 
     _this.peerData = null;
     _this.participants = null;
@@ -4151,10 +4158,29 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
   }, {
     key: 'send',
     value: function send(data) {
-      this.peerData.send({
+      this.peerData.send(JSON.stringify({
         message: data,
         username: this.username
+      }));
+    }
+  }, {
+    key: 'setStream',
+    value: function setStream(stream) {
+      // selfView.src = URL.createObjectURL(stream);
+      this._stream = stream;
+      this._waitingPeers.forEach(function (peer) {
+        if (peer.connectionState === 'connected') {
+          peer.addStream(stream);
+        }
       });
+    }
+  }, {
+    key: 'toggleMic',
+    value: function toggleMic(stream) {
+      var audioTracks = stream.getAudioTracks();
+      for (var i = 0, l = audioTracks.length; i < l; i++) {
+        audioTracks[i].enabled = !audioTracks[i].enabled;
+      }
     }
   }, {
     key: '_onSend',
@@ -4168,7 +4194,17 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         return;
       }
 
-      this.participants.addPeer(e.caller.id);
+      var peer = this.peerData.peers(e.caller.id);
+
+      if (this._stream) {
+        peer.addStream(this._stream);
+      } else {
+        this._waitingPeers.push(peer);
+      }
+
+      var peerElem = this.participants.addPeer(e.caller.id);
+      console.log(peerElem);
+      peer.onaddstream = peerElem.addStream.bind(peerElem);
     }
   }, {
     key: '_onClose',
@@ -4186,7 +4222,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         return;
       }
 
-      this.conversation.addMessage(e.data.username, e.data.message, 'income');
+      var data = JSON.parse(e.data);
+      this.conversation.addMessage(data.username, data.message, 'income');
     }
   }], [{
     key: 'observedAttributes',
@@ -9156,4 +9193,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[400]);
-//# sourceMappingURL=application.91e5fd529e95292e05bf.js.map
+//# sourceMappingURL=application.83a5ec17b0837e05a474.js.map

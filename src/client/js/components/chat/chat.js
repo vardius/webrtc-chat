@@ -41,6 +41,11 @@ export class Chat extends HTMLElement {
       room.username = username;
       room.peerData = this.peerData;
 
+      navigator.getUserMedia({
+        "audio": true,
+        "video": true
+      }, room.setStream.bind(room));
+
       this.querySelector('.rooms').appendChild(room);
 
       return room;
@@ -49,7 +54,7 @@ export class Chat extends HTMLElement {
 
   removeRoom(id) {
     const children = this.querySelector('.rooms').children;
-    Array.from(children).forEach((room) => {
+    Array.from(children).forEach(room => {
       if (room.id === id) {
         room.disconnect();
         return room.parentNode.removeChild(room);

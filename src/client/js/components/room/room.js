@@ -14,6 +14,8 @@ export class Room extends HTMLElement {
 
     this._id = null;
     this._username = null;
+    this._stream = null;
+    this._waitingPeers = [];
 
     this.peerData = null;
     this.participants = null;
@@ -62,10 +64,27 @@ export class Room extends HTMLElement {
   }
 
   send(data) {
-    this.peerData.send({
+    this.peerData.send(JSON.stringify({
       message: data,
       username: this.username
+    }));
+  }
+
+  setStream(stream) {
+    // selfView.src = URL.createObjectURL(stream);
+    this._stream = stream;
+    this._waitingPeers.forEach(peer => {
+      if (peer.connectionState === 'connected') {
+        peer.addStream(stream);
+      }
     });
+  }
+
+  toggleMic(stream) {
+    const audioTracks = stream.getAudioTracks();
+    for (let i = 0, l = audioTracks.length; i < l; i++) {
+      audioTracks[i].enabled = !audioTracks[i].enabled;
+    }
   }
 
   _onSend(e) {
@@ -77,7 +96,16 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.participants.addPeer(e.caller.id);
+    const peer = this.peerData.peers(e.caller.id);
+
+    if (this._stream) {
+      peer.addStream(this._stream);
+    } else {
+      this._waitingPeers.push(peer);
+    }
+
+    const peerElem = this.participants.addPeer(e.caller.id);
+    peer.onaddstream = peerElem.addStream.bind(peerElem);
   }
 
   _onClose(e) {
@@ -93,6 +121,7 @@ export class Room extends HTMLElement {
       return;
     }
 
-    this.conversation.addMessage(e.data.username, e.data.message, 'income');
+    const data = JSON.parse(e.data)
+    this.conversation.addMessage(data.username, data.message, 'income');
   }
 }

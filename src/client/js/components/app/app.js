@@ -28,10 +28,4 @@ export class Chat extends HTMLElement {
       }
     });
   }
-
-  //todo: Simple as that
-  // peer.addStream(localStream);
-  // peer.onaddstream = function gotRemoteStream(e){
-  //   vid2.src = URL.createObjectURL(e.stream);
-  // };
 }
