@@ -4186,7 +4186,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         return;
       }
 
-      this.conversation.addMessage(e.event.data.username, e.event.data.message, 'income');
+      this.conversation.addMessage(e.data.username, e.data.message, 'income');
     }
   }], [{
     key: 'observedAttributes',
@@ -9156,4 +9156,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[400]);
-//# sourceMappingURL=application.3a37d9c4560359d2774d.js.map
+//# sourceMappingURL=application.91e5fd529e95292e05bf.js.map
