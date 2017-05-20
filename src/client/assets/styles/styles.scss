@@ -40,9 +40,14 @@
         font-size: 0;
         content: "#{$i}";
         width: calc(100% / #{ceil(sqrt($i))});
-        height: calc(100% / #{ceil(sqrt($i))});
+        height: calc(100% / #{round(sqrt($i))});
       }
     }
+  }
+
+  webrtc-peer vide {
+    width: inherit;
+    height: inherit;
   }
 
   .message-new {
