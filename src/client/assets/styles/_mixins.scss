@@ -10,7 +10,8 @@
     -webkit-box-shadow: inset $top $left $blur $color;
     -moz-box-shadow: inset $top $left $blur $color;
     box-shadow: inset $top $left $blur $color;
-  } @else {
+  }
+  @else {
     -webkit-box-shadow: $top $left $blur $color;
     -moz-box-shadow: $top $left $blur $color;
     box-shadow: $top $left $blur $color;
@@ -40,4 +41,14 @@
   &:-ms-input-placeholder {
     @content;
   }
+}
+
+@function sqrt($r) {
+  $x0: 1;
+  $x1: $x0;
+  @for $i from 1 through 100 {
+    $x1: $x0 - ($x0 * $x0 - abs($r)) / (2 * $x0);
+    $x0: $x1;
+  }
+  @return $x1;
 }

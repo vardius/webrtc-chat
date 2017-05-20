@@ -23,8 +23,7 @@ export class Chat extends HTMLElement {
           "audio": true,
           "video": true
         }, stream => {
-          const room = chat.createRoom(roomname, username, stream);
-          room.connect();
+          chat.createRoom(roomname, username, stream);
         });
       } else {
         const popup = this.querySelector('webrtc-popup');

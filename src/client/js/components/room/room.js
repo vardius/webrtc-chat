@@ -35,6 +35,20 @@ export class Room extends HTMLElement {
   connectedCallback() {
     this.participants = this.querySelector('webrtc-participants');
     this.conversation = this.querySelector('webrtc-conversation');
+
+    const callBtn = this.querySelector('.btn-call');
+    callBtn.addEventListener('click', this.connect);
+
+    const hangBtn = this.querySelector('.btn-hang');
+    hangBtn.addEventListener('click', this.disconnect);
+
+    const messageNew = this.conversation.querySelector('webrtc-message-new');
+    messageNew.addEventListener('send', this._onSend);
+
+    const self = this.querySelector('.video-self');
+    if (self.srcObject !== this._stream) {
+      self.srcObject = this._stream;
+    }
   }
 
   disconnectedCallback() {
@@ -49,13 +63,10 @@ export class Room extends HTMLElement {
 
       this.conversation.owner = this._username;
 
-      const messageNew = this.conversation.querySelector('webrtc-message-new');
-      messageNew.addEventListener('send', this._onSend);
-
-      const self = this.querySelector('.video-self');
-      if (self.srcObject !== this._stream) {
-        self.srcObject = this._stream;
-      }
+      const hangBtn = this.querySelector('.btn-hang');
+      hangBtn.style.display = 'block';
+      const callBtn = this.querySelector('.btn-call');
+      callBtn.style.display = 'none';
     }
   }
 
@@ -63,6 +74,10 @@ export class Room extends HTMLElement {
     if (this.peerData) {
       this.peerData.disconnect(this.id);
     }
+    const hangBtn = this.querySelector('.btn-hang');
+    hangBtn.style.display = 'none';
+    const callBtn = this.querySelector('.btn-call');
+    callBtn.style.display = 'block';
   }
 
   setStream(stream) {
@@ -104,11 +119,7 @@ export class Room extends HTMLElement {
     e.data.onconnectionstatechange = event => {
       e.data.onconnectionstatechange(event);
       if (e.data.connectionState === 'closed') {
-        const row = peerElem.parentNode;
-        row.removeChild(peerElem);
-        if (row.children.length < 1) {
-          row.parentNode.removeChild(row)
-        }
+        peerElem.parentNode.removeChild(peerElem);
       }
     }
 

@@ -33,26 +33,14 @@
     height: 100vh;
     width: 100vw;
     @for $i from 1 through 100 {
-      .video-row:first-child:nth-last-child( #{$i}),
-      .video-row:first-child:nth-last-child( #{$i})~.video-row {
+      webrtc-peer:first-child:nth-last-child( #{$i}),
+      webrtc-peer:first-child:nth-last-child( #{$i})~webrtc-peer {
         margin: 0;
         padding: 0;
         font-size: 0;
-        width: 100%;
-        height: calc(100% / #{$i});
-      }
-    }
-  }
-
-  .video-row {
-    @for $i from 1 through 100 {
-      .video-col:first-child:nth-last-child( #{$i}),
-      .video-col:first-child:nth-last-child( #{$i})~.video-col {
-        margin: 0;
-        padding: 0;
-        font-size: 0;
-        height: 100%;
-        width: calc(100% / #{$i});
+        content: "#{$i}";
+        width: calc(100% / #{ceil(sqrt($i))});
+        height: calc(100% / #{ceil(sqrt($i))});
       }
     }
   }
@@ -110,4 +98,27 @@
         @include animation-name(slideFromRight);
       }
     }
+  }
+
+  .btn-circle {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+  }
+
+  .btn-hang {
+    position: absolute;
+    display: none;
+    top: 5px;
+    right: 5px;
+  }
+
+  .btn-call {
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
