@@ -8363,7 +8363,7 @@ module.exports = "<div class=videos></div>";
 /* 377 */
 /***/ (function(module, exports) {
 
-module.exports = "<video autoplay></video>";
+module.exports = "<video autoplay class=video-remote></video>";
 
 /***/ }),
 /* 378 */
@@ -9150,4 +9150,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.eb0b6b1500513b1b7393.js.map
+//# sourceMappingURL=application.89636ee3496769f50180.js.map
