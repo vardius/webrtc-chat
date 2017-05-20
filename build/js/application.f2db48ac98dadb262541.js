@@ -3348,8 +3348,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
             "audio": true,
             "video": true
           }, function (stream) {
-            var room = chat.createRoom(roomname, username, stream);
-            room.connect();
+            chat.createRoom(roomname, username, stream);
           });
         } else {
           var popup = _this2.querySelector('webrtc-popup');
@@ -3824,32 +3823,11 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
   _createClass(Participants, [{
     key: 'addPeer',
     value: function addPeer(name) {
-      if (this.x + 1 === this.size && this.y + 1 === this.size) {
-        this.size++;
-        this.x++;
-        this.y++;
-      } else if (this.x + 1 < this.size) {
-        this.x++;
-      } else {
-        this.y++;
-      }
-
-      var row = null;
       var container = this.querySelector('.videos');
-      var rows = container.children;
-      if (rows && rows.children) {
-        row = Array.from(rows.children)[this.y];
-      }
-
-      if (!row) {
-        row = document.createElement('div');
-        row.className = 'video-row';
-        container.appendChild(row);
-      }
 
       var peer = document.createElement('webrtc-peer');
       peer.name = name;
-      row.appendChild(peer);
+      container.appendChild(peer);
 
       return peer;
     }
@@ -4094,6 +4072,20 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     value: function connectedCallback() {
       this.participants = this.querySelector('webrtc-participants');
       this.conversation = this.querySelector('webrtc-conversation');
+
+      var callBtn = this.querySelector('.btn-call');
+      callBtn.addEventListener('click', this.connect);
+
+      var hangBtn = this.querySelector('.btn-hang');
+      hangBtn.addEventListener('click', this.disconnect);
+
+      var messageNew = this.conversation.querySelector('webrtc-message-new');
+      messageNew.addEventListener('send', this._onSend);
+
+      var self = this.querySelector('.video-self');
+      if (self.srcObject !== this._stream) {
+        self.srcObject = this._stream;
+      }
     }
   }, {
     key: 'disconnectedCallback',
@@ -4110,13 +4102,10 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
         this.conversation.owner = this._username;
 
-        var messageNew = this.conversation.querySelector('webrtc-message-new');
-        messageNew.addEventListener('send', this._onSend);
-
-        var self = this.querySelector('.video-self');
-        if (self.srcObject !== this._stream) {
-          self.srcObject = this._stream;
-        }
+        var hangBtn = this.querySelector('.btn-hang');
+        hangBtn.style.display = 'block';
+        var callBtn = this.querySelector('.btn-call');
+        callBtn.style.display = 'none';
       }
     }
   }, {
@@ -4125,6 +4114,10 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       if (this.peerData) {
         this.peerData.disconnect(this.id);
       }
+      var hangBtn = this.querySelector('.btn-hang');
+      hangBtn.style.display = 'none';
+      var callBtn = this.querySelector('.btn-call');
+      callBtn.style.display = 'block';
     }
   }, {
     key: 'setStream',
@@ -4177,11 +4170,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       e.data.onconnectionstatechange = function (event) {
         e.data.onconnectionstatechange(event);
         if (e.data.connectionState === 'closed') {
-          var row = peerElem.parentNode;
-          row.removeChild(peerElem);
-          if (row.children.length < 1) {
-            row.parentNode.removeChild(row);
-          }
+          peerElem.parentNode.removeChild(peerElem);
         }
       };
 
@@ -8368,13 +8357,13 @@ module.exports = "<p></p>";
 /* 376 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=videos></div> ";
+module.exports = "<div class=videos> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> </div> ";
 
 /***/ }),
 /* 377 */
 /***/ (function(module, exports) {
 
-module.exports = "<video autoplay class=video-col></video>";
+module.exports = "<video autoplay></video>";
 
 /***/ }),
 /* 378 */
@@ -8386,7 +8375,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video>";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-call btn-success btn-circle\"> <i class=\"fa fa-sign-in\" aria-hidden=true> </i></button> <button type=button class=\"btn btn-hang btn-danger btn-circle\"> <i class=\"fa fa-sign-out\" aria-hidden=true></i> </button> ";
 
 /***/ }),
 /* 380 */,
@@ -9161,4 +9150,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.d402229c0e9933ed8a7c.js.map
+//# sourceMappingURL=application.f2db48ac98dadb262541.js.map
