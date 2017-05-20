@@ -86,8 +86,8 @@ export class Room extends HTMLElement {
     }
 
     const channel = e.data;
-    channel.onmessage = data => {
-      const msg = JSON.parse(data)
+    channel.onmessage = event => {
+      const msg = JSON.parse(event.data)
       this.conversation.addMessage(msg.username, msg.message, 'income');
     };
   }

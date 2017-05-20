@@ -4154,8 +4154,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
 
       var channel = e.data;
-      channel.onmessage = function (data) {
-        var msg = JSON.parse(data);
+      channel.onmessage = function (event) {
+        var msg = JSON.parse(event.data);
         _this2.conversation.addMessage(msg.username, msg.message, 'income');
       };
     }
@@ -8386,7 +8386,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay class=video-self></video>";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video>";
 
 /***/ }),
 /* 380 */,
@@ -9161,4 +9161,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.22ae2499825d7377ecae.js.map
+//# sourceMappingURL=application.d402229c0e9933ed8a7c.js.map
