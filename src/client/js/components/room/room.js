@@ -2,8 +2,7 @@ import {
   WebComponent
 } from 'web-component';
 import {
-  DataEventType,
-  PeerEventType
+  AppEventType
 } from 'peer-data';
 
 @WebComponent('webrtc-room', {
@@ -25,8 +24,8 @@ export class Room extends HTMLElement {
     this.disconnect = this.disconnect.bind(this);
 
     this._onSend = this._onSend.bind(this);
-    this._onData = this._onData.bind(this);
-    this._onNewPeer = this._onNewPeer.bind(this);
+    this._onPeer = this._onPeer.bind(this);
+    this._onChannel = this._onChannel.bind(this);
   }
 
   static get observedAttributes() {
@@ -45,8 +44,8 @@ export class Room extends HTMLElement {
   connect() {
     if (this.peerData && this.id.length > 0) {
       this.peerData.connect(this.id);
-      this.peerData.on(DataEventType.DATA, this._onData);
-      this.peerData.on(PeerEventType.CREATED, this._onNewPeer);
+      this.peerData.on(AppEventType.PEER, this._onPeer);
+      this.peerData.on(AppEventType.CHANNEL, this._onChannel);
 
       this.conversation.owner = this._username;
 
@@ -66,6 +65,10 @@ export class Room extends HTMLElement {
     }
   }
 
+  setStream(stream) {
+    this._stream = stream;
+  }
+
   send(data) {
     this.peerData.send(JSON.stringify({
       message: data,
@@ -73,57 +76,43 @@ export class Room extends HTMLElement {
     }));
   }
 
-  toggleMic(stream) {
-    const audioTracks = stream.getAudioTracks();
-    for (let i = 0, l = audioTracks.length; i < l; i++) {
-      audioTracks[i].enabled = !audioTracks[i].enabled;
-    }
-  }
-
-  setStream(stream) {
-    this._stream = stream;
-  }
-
   _onSend(e) {
     this.send(e.detail);
   }
 
-  _onData(e) {
+  _onChannel(e) {
     if (e.room.id !== this._id) {
       return;
     }
 
-    const data = JSON.parse(e.data)
-    this.conversation.addMessage(data.username, data.message, 'income');
+    const channel = e.data;
+    channel.onmessage = data => {
+      const msg = JSON.parse(data)
+      this.conversation.addMessage(msg.username, msg.message, 'income');
+    };
   }
 
-  _onNewPeer(e) {
+  _onPeer(e) {
     if (e.room.id !== this._id) {
       return;
     }
 
     const peerElem = this.participants.addPeer(e.caller.id);
 
-    this._stream.getTracks().forEach(track => e.peer.addTrack(track, this._stream));
+    this._stream.getTracks().forEach(track => e.data.addTrack(track, this._stream));
 
-    e.peer.onconnectionstatechange = () => {
-      switch (e.peer.connectionState) {
-        case "connected":
-          // The connection has become fully connected
-          break;
-        case "disconnected":
-        case "failed":
-        case "closed":
-          const row = peerElem.parentNode;
-          row.removeChild(peerElem);
-          if (row.children.length < 1) {
-            row.parentNode.removeChild(row)
-          }
-          break;
+    e.data.onconnectionstatechange = event => {
+      e.data.onconnectionstatechange(event);
+      if (e.data.connectionState === 'closed') {
+        const row = peerElem.parentNode;
+        row.removeChild(peerElem);
+        if (row.children.length < 1) {
+          row.parentNode.removeChild(row)
+        }
       }
     }
 
-    e.peer.ontrack = event => {
+    e.data.ontrack = event => {
       const stream = event.streams[0];
       if (stream !== peerElem.getStream()) {
         peerElem.setStream(stream);

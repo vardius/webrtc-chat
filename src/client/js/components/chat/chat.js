@@ -3,7 +3,7 @@ import {
 } from 'web-component';
 import PeerData, {
   SocketChannel,
-  DataEventType
+  AppEventType
 } from 'peer-data';
 
 @WebComponent('webrtc-chat', {
@@ -27,11 +27,8 @@ export class Chat extends HTMLElement {
     this.peerData = new PeerData(servers, constraints);
     this.signaling = new SocketChannel();
 
-    this.peerData.on(DataEventType.OPEN, this._onOpen.bind(this));
-    this.peerData.on(DataEventType.CLOSE, this._onClose.bind(this));
-    this.peerData.on(DataEventType.DATA, this._onData.bind(this));
-    this.peerData.on(DataEventType.ERROR, this._onError.bind(this));
-    this.peerData.on(DataEventType.LOG, this._onLog.bind(this));
+    this.peerData.on(AppEventType.ERROR, this._onError.bind(this));
+    this.peerData.on(AppEventType.LOG, this._onLog.bind(this));
   }
 
   createRoom(id, username, stream) {
@@ -56,24 +53,6 @@ export class Chat extends HTMLElement {
         return room.parentNode.removeChild(room);
       }
     });
-  }
-
-  _onOpen(e) {
-    this.dispatchEvent(new CustomEvent("open", {
-      detail: e
-    }));
-  }
-
-  _onClose(e) {
-    this.dispatchEvent(new CustomEvent("colse", {
-      detail: e
-    }));
-  }
-
-  _onData(e) {
-    this.dispatchEvent(new CustomEvent("message", {
-      detail: e
-    }));
   }
 
   _onError(e) {

@@ -3416,11 +3416,8 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
     _this.peerData = new _peerData2.default(servers, constraints);
     _this.signaling = new _peerData.SocketChannel();
 
-    _this.peerData.on(_peerData.DataEventType.OPEN, _this._onOpen.bind(_this));
-    _this.peerData.on(_peerData.DataEventType.CLOSE, _this._onClose.bind(_this));
-    _this.peerData.on(_peerData.DataEventType.DATA, _this._onData.bind(_this));
-    _this.peerData.on(_peerData.DataEventType.ERROR, _this._onError.bind(_this));
-    _this.peerData.on(_peerData.DataEventType.LOG, _this._onLog.bind(_this));
+    _this.peerData.on(_peerData.AppEventType.ERROR, _this._onError.bind(_this));
+    _this.peerData.on(_peerData.AppEventType.LOG, _this._onLog.bind(_this));
     return _this;
   }
 
@@ -3449,27 +3446,6 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
           return room.parentNode.removeChild(room);
         }
       });
-    }
-  }, {
-    key: '_onOpen',
-    value: function _onOpen(e) {
-      this.dispatchEvent(new CustomEvent("open", {
-        detail: e
-      }));
-    }
-  }, {
-    key: '_onClose',
-    value: function _onClose(e) {
-      this.dispatchEvent(new CustomEvent("colse", {
-        detail: e
-      }));
-    }
-  }, {
-    key: '_onData',
-    value: function _onData(e) {
-      this.dispatchEvent(new CustomEvent("message", {
-        detail: e
-      }));
     }
   }, {
     key: '_onError',
@@ -4108,8 +4084,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this.disconnect = _this.disconnect.bind(_this);
 
     _this._onSend = _this._onSend.bind(_this);
-    _this._onData = _this._onData.bind(_this);
-    _this._onNewPeer = _this._onNewPeer.bind(_this);
+    _this._onPeer = _this._onPeer.bind(_this);
+    _this._onChannel = _this._onChannel.bind(_this);
     return _this;
   }
 
@@ -4129,8 +4105,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     value: function connect() {
       if (this.peerData && this.id.length > 0) {
         this.peerData.connect(this.id);
-        this.peerData.on(_peerData.DataEventType.DATA, this._onData);
-        this.peerData.on(_peerData.PeerEventType.CREATED, this._onNewPeer);
+        this.peerData.on(_peerData.AppEventType.PEER, this._onPeer);
+        this.peerData.on(_peerData.AppEventType.CHANNEL, this._onChannel);
 
         this.conversation.owner = this._username;
 
@@ -4151,6 +4127,11 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
     }
   }, {
+    key: 'setStream',
+    value: function setStream(stream) {
+      this._stream = stream;
+    }
+  }, {
     key: 'send',
     value: function send(data) {
       this.peerData.send(JSON.stringify({
@@ -4159,37 +4140,29 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }));
     }
   }, {
-    key: 'toggleMic',
-    value: function toggleMic(stream) {
-      var audioTracks = stream.getAudioTracks();
-      for (var i = 0, l = audioTracks.length; i < l; i++) {
-        audioTracks[i].enabled = !audioTracks[i].enabled;
-      }
-    }
-  }, {
-    key: 'setStream',
-    value: function setStream(stream) {
-      this._stream = stream;
-    }
-  }, {
     key: '_onSend',
     value: function _onSend(e) {
       this.send(e.detail);
     }
   }, {
-    key: '_onData',
-    value: function _onData(e) {
+    key: '_onChannel',
+    value: function _onChannel(e) {
+      var _this2 = this;
+
       if (e.room.id !== this._id) {
         return;
       }
 
-      var data = JSON.parse(e.data);
-      this.conversation.addMessage(data.username, data.message, 'income');
+      var channel = e.data;
+      channel.onmessage = function (data) {
+        var msg = JSON.parse(data);
+        _this2.conversation.addMessage(msg.username, msg.message, 'income');
+      };
     }
   }, {
-    key: '_onNewPeer',
-    value: function _onNewPeer(e) {
-      var _this2 = this;
+    key: '_onPeer',
+    value: function _onPeer(e) {
+      var _this3 = this;
 
       if (e.room.id !== this._id) {
         return;
@@ -4198,27 +4171,21 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       var peerElem = this.participants.addPeer(e.caller.id);
 
       this._stream.getTracks().forEach(function (track) {
-        return e.peer.addTrack(track, _this2._stream);
+        return e.data.addTrack(track, _this3._stream);
       });
 
-      e.peer.onconnectionstatechange = function () {
-        switch (e.peer.connectionState) {
-          case "connected":
-            // The connection has become fully connected
-            break;
-          case "disconnected":
-          case "failed":
-          case "closed":
-            var row = peerElem.parentNode;
-            row.removeChild(peerElem);
-            if (row.children.length < 1) {
-              row.parentNode.removeChild(row);
-            }
-            break;
+      e.data.onconnectionstatechange = function (event) {
+        e.data.onconnectionstatechange(event);
+        if (e.data.connectionState === 'closed') {
+          var row = peerElem.parentNode;
+          row.removeChild(peerElem);
+          if (row.children.length < 1) {
+            row.parentNode.removeChild(row);
+          }
         }
       };
 
-      e.peer.ontrack = function (event) {
+      e.data.ontrack = function (event) {
         var stream = event.streams[0];
         if (stream !== peerElem.getStream()) {
           peerElem.setStream(stream);
@@ -9194,4 +9161,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.df22a5bdbe87c7803301.js.map
+//# sourceMappingURL=application.22ae2499825d7377ecae.js.map
