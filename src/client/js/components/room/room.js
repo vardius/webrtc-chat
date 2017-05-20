@@ -78,6 +78,7 @@ export class Room extends HTMLElement {
     hangBtn.style.display = 'none';
     const callBtn = this.querySelector('.btn-call');
     callBtn.style.display = 'block';
+    this.participants.clear();
   }
 
   setStream(stream) {

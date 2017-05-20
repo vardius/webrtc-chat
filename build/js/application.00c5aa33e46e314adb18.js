@@ -3817,6 +3817,7 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
     _this.y = -1;
 
     _this.addPeer = _this.addPeer.bind(_this);
+    _this.clear = _this.clear.bind(_this);
     return _this;
   }
 
@@ -3830,6 +3831,14 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
       container.appendChild(peer);
 
       return peer;
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var container = this.querySelector('.videos');
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
     }
   }]);
 
@@ -4118,6 +4127,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       hangBtn.style.display = 'none';
       var callBtn = this.querySelector('.btn-call');
       callBtn.style.display = 'block';
+      this.participants.clear();
     }
   }, {
     key: 'setStream',
@@ -9150,4 +9160,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.89636ee3496769f50180.js.map
+//# sourceMappingURL=application.00c5aa33e46e314adb18.js.map

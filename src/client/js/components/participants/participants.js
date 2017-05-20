@@ -14,6 +14,7 @@ export class Participants extends HTMLElement {
     this.y = -1;
 
     this.addPeer = this.addPeer.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   addPeer(name) {
@@ -24,5 +25,12 @@ export class Participants extends HTMLElement {
     container.appendChild(peer);
 
     return peer;
+  }
+
+  clear() {
+    const container = this.querySelector('.videos');
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
   }
 }
