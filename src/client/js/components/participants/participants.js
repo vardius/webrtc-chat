@@ -37,6 +37,7 @@ export class Participants extends HTMLElement {
     if (!row) {
       row = document.createElement('div');
       row.className = 'video-row';
+      container.appendChild(row);
     }
 
     let peer = document.createElement('webrtc-peer');
@@ -44,20 +45,5 @@ export class Participants extends HTMLElement {
     row.appendChild(peer);
 
     return peer;
-  }
-
-  removePeer(id) {
-    const container = this.querySelector('.videos');
-    const rows = container.children;
-    Array.from(rows).forEach(row => {
-      const peers = row.children;
-      Array.from(peers).forEach(peer => {
-        if (peer.name === id) {
-          const lastPeer = container.lastChild.lastChild;
-          peer.parentNode.appendChild(lastPeer);
-          peer.parentNode.removeChild(peer);
-        }
-      });
-    });
   }
 }

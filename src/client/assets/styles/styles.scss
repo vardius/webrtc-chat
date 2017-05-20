@@ -21,6 +21,14 @@
     min-height: 100%;
   }
 
+  .video-self {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+  }
+
   .videos {
     height: 100vh;
     width: 100vw;
@@ -45,11 +53,6 @@
         font-size: 0;
         height: 100%;
         width: calc(100% / #{$i});
-        background: url(/../images/avatar.png) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
       }
     }
   }

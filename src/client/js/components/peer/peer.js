@@ -11,7 +11,7 @@ export class Peer extends HTMLElement {
 
     this._name = '';
 
-    this.addStream = this.addStream.bind(this);
+    this.setStream = this.setStream.bind(this);
   }
 
   static get observedAttributes() {
@@ -34,9 +34,16 @@ export class Peer extends HTMLElement {
     this.dispatchEvent(new CustomEvent("disconnected"));
   }
 
-  addStream(stream) {
+  getStream() {
     const video = this.querySelector('video');
-    video.srcObject = stream;
+    return video.srcObject;
+  }
+
+  setStream(stream) {
+    const video = this.querySelector('video');
+    if (video.srcObject !== stream) {
+      video.srcObject = stream;
+    }
   }
 
   _updateRendering() {

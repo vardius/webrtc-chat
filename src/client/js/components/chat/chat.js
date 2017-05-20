@@ -34,17 +34,13 @@ export class Chat extends HTMLElement {
     this.peerData.on(DataEventType.LOG, this._onLog.bind(this));
   }
 
-  createRoom(id, username) {
+  createRoom(id, username, stream) {
     if (id.length > 0 && username.length > 0) {
       let room = document.createElement("webrtc-room");
       room.id = id;
       room.username = username;
       room.peerData = this.peerData;
-
-      navigator.getUserMedia({
-        "audio": true,
-        "video": true
-      }, room.setStream.bind(room));
+      room.setStream(stream);
 
       this.querySelector('.rooms').appendChild(room);
 

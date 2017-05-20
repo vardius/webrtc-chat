@@ -3809,11 +3809,11 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peer-data@^1.1.10:
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.10.tgz#94163cb2564d07f8190bd2dabd947f010c28fc4d"
+peer-data@^1.1.15:
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-1.1.15.tgz#3bc0c4cf741b06c13b87287cb08a414d6954ddbd"
   dependencies:
-    webrtc-adapter "^3.3.4"
+    webrtc-adapter "^3.4.3"
 
 performance-now@^0.2.0:
   version "0.2.0"
@@ -4554,7 +4554,7 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-sdp@^1.0.0, sdp@^1.5.0:
+sdp@^1.5.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/sdp/-/sdp-1.5.2.tgz#57a6f24aa5e606357e7df0760990aadd6495ce9f"
 
@@ -5325,15 +5325,9 @@ webpack@^2.4.1:
     webpack-sources "^0.2.3"
     yargs "^6.0.0"
 
-webrtc-adapter@^2.0.8:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-2.1.0.tgz#612b5bc6ce8e73c9d0660038a21f9255a867bf3e"
-  dependencies:
-    sdp "^1.0.0"
-
-webrtc-adapter@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-3.3.4.tgz#19cbb7e7674033385eec723bd7ab8f5e6a7300b5"
+webrtc-adapter@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-3.4.3.tgz#b636062eee9a6ef158acd0d8501b678434b56f16"
   dependencies:
     sdp "^1.5.0"
 

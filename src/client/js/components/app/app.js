@@ -18,10 +18,14 @@ export class Chat extends HTMLElement {
 
       if (roomname && username && roomname.length > 0 && username.length > 0) {
         const chat = this.querySelector('webrtc-chat');
-        const room = chat.createRoom(roomname, username);
-        if (room) {
+        this._stream = null;
+        navigator.getUserMedia({
+          "audio": true,
+          "video": true
+        }, stream => {
+          const room = chat.createRoom(roomname, username, stream);
           room.connect();
-        }
+        });
       } else {
         const popup = this.querySelector('webrtc-popup');
         popup.show();

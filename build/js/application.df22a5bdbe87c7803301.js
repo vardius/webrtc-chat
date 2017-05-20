@@ -3,10 +3,10 @@ webpackJsonp([0],[
 /***/ (function(module, exports, __webpack_require__) {
 
 var global    = __webpack_require__(2)
-  , core      = __webpack_require__(28)
+  , core      = __webpack_require__(27)
   , hide      = __webpack_require__(13)
   , redefine  = __webpack_require__(14)
-  , ctx       = __webpack_require__(29)
+  , ctx       = __webpack_require__(28)
   , PROTOTYPE = 'prototype';
 
 var $export = function(type, name, source){
@@ -116,7 +116,7 @@ module.exports = !__webpack_require__(3)(function(){
 
 var anObject       = __webpack_require__(1)
   , IE8_DOM_DEFINE = __webpack_require__(109)
-  , toPrimitive    = __webpack_require__(27)
+  , toPrimitive    = __webpack_require__(26)
   , dP             = Object.defineProperty;
 
 exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProperty(O, P, Attributes){
@@ -196,7 +196,7 @@ var global    = __webpack_require__(2)
   , $toString = Function[TO_STRING]
   , TPL       = ('' + $toString).split(TO_STRING);
 
-__webpack_require__(28).inspectSource = function(it){
+__webpack_require__(27).inspectSource = function(it){
   return $toString.call(it);
 };
 
@@ -264,7 +264,7 @@ module.exports = function(it){
 var pIE            = __webpack_require__(52)
   , createDesc     = __webpack_require__(33)
   , toIObject      = __webpack_require__(16)
-  , toPrimitive    = __webpack_require__(27)
+  , toPrimitive    = __webpack_require__(26)
   , has            = __webpack_require__(11)
   , IE8_DOM_DEFINE = __webpack_require__(109)
   , gOPD           = Object.getOwnPropertyDescriptor;
@@ -330,8 +330,7 @@ module.exports = function(method, arg){
 
 /***/ }),
 /* 23 */,
-/* 24 */,
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 0 -> Array#forEach
@@ -341,7 +340,7 @@ module.exports = function(method, arg){
 // 4 -> Array#every
 // 5 -> Array#find
 // 6 -> Array#findIndex
-var ctx      = __webpack_require__(29)
+var ctx      = __webpack_require__(28)
   , IObject  = __webpack_require__(51)
   , toObject = __webpack_require__(10)
   , toLength = __webpack_require__(9)
@@ -380,12 +379,12 @@ module.exports = function(TYPE, $create){
 };
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(0)
-  , core    = __webpack_require__(28)
+  , core    = __webpack_require__(27)
   , fails   = __webpack_require__(3);
 module.exports = function(KEY, exec){
   var fn  = (core.Object || {})[KEY] || Object[KEY]
@@ -395,7 +394,7 @@ module.exports = function(KEY, exec){
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -412,14 +411,14 @@ module.exports = function(it, S){
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports) {
 
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
@@ -444,7 +443,7 @@ module.exports = function(fn, that, length){
 };
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Map     = __webpack_require__(125)
@@ -500,7 +499,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -512,7 +511,7 @@ if(__webpack_require__(6)){
     , $export             = __webpack_require__(0)
     , $typed              = __webpack_require__(64)
     , $buffer             = __webpack_require__(90)
-    , ctx                 = __webpack_require__(29)
+    , ctx                 = __webpack_require__(28)
     , anInstance          = __webpack_require__(35)
     , propertyDesc        = __webpack_require__(33)
     , hide                = __webpack_require__(13)
@@ -520,7 +519,7 @@ if(__webpack_require__(6)){
     , toInteger           = __webpack_require__(34)
     , toLength            = __webpack_require__(9)
     , toIndex             = __webpack_require__(42)
-    , toPrimitive         = __webpack_require__(27)
+    , toPrimitive         = __webpack_require__(26)
     , has                 = __webpack_require__(11)
     , same                = __webpack_require__(122)
     , classof             = __webpack_require__(50)
@@ -533,7 +532,7 @@ if(__webpack_require__(6)){
     , getIterFn           = __webpack_require__(92)
     , uid                 = __webpack_require__(43)
     , wks                 = __webpack_require__(5)
-    , createArrayMethod   = __webpack_require__(25)
+    , createArrayMethod   = __webpack_require__(24)
     , createArrayIncludes = __webpack_require__(54)
     , speciesConstructor  = __webpack_require__(84)
     , ArrayIterators      = __webpack_require__(93)
@@ -985,6 +984,7 @@ if(__webpack_require__(6)){
 } else module.exports = function(){ /* empty */ };
 
 /***/ }),
+/* 31 */,
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1220,7 +1220,7 @@ module.exports = function(key){
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx         = __webpack_require__(29)
+var ctx         = __webpack_require__(28)
   , call        = __webpack_require__(111)
   , isArrayIter = __webpack_require__(75)
   , anObject    = __webpack_require__(1)
@@ -1961,7 +1961,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function(test, buggy, set){
       try {
-        set = __webpack_require__(29)(Function.call, __webpack_require__(18).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(28)(Function.call, __webpack_require__(18).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch(e){ buggy = true; }
@@ -2062,7 +2062,7 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 /* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx                = __webpack_require__(29)
+var ctx                = __webpack_require__(28)
   , invoke             = __webpack_require__(58)
   , html               = __webpack_require__(73)
   , cel                = __webpack_require__(70)
@@ -2422,7 +2422,7 @@ exports[DATA_VIEW] = $DataView;
 /***/ (function(module, exports, __webpack_require__) {
 
 var global         = __webpack_require__(2)
-  , core           = __webpack_require__(28)
+  , core           = __webpack_require__(27)
   , LIBRARY        = __webpack_require__(36)
   , wksExt         = __webpack_require__(124)
   , defineProperty = __webpack_require__(7).f;
@@ -2438,7 +2438,7 @@ module.exports = function(name){
 var classof   = __webpack_require__(50)
   , ITERATOR  = __webpack_require__(5)('iterator')
   , Iterators = __webpack_require__(46);
-module.exports = __webpack_require__(28).getIteratorMethod = function(it){
+module.exports = __webpack_require__(27).getIteratorMethod = function(it){
   if(it != undefined)return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
@@ -2618,7 +2618,7 @@ module.exports = Function.bind || function bind(that /*, args... */){
 var dP          = __webpack_require__(7).f
   , create      = __webpack_require__(37)
   , redefineAll = __webpack_require__(40)
-  , ctx         = __webpack_require__(29)
+  , ctx         = __webpack_require__(28)
   , anInstance  = __webpack_require__(35)
   , defined     = __webpack_require__(21)
   , forOf       = __webpack_require__(45)
@@ -2783,7 +2783,7 @@ var redefineAll       = __webpack_require__(40)
   , isObject          = __webpack_require__(4)
   , anInstance        = __webpack_require__(35)
   , forOf             = __webpack_require__(45)
-  , createArrayMethod = __webpack_require__(25)
+  , createArrayMethod = __webpack_require__(24)
   , $has              = __webpack_require__(11)
   , arrayFind         = createArrayMethod(5)
   , arrayFindIndex    = createArrayMethod(6)
@@ -3174,7 +3174,7 @@ module.exports = __webpack_require__(55)('Set', function(get){
 
 "use strict";
 
-var each         = __webpack_require__(25)(0)
+var each         = __webpack_require__(24)(0)
   , redefine     = __webpack_require__(14)
   , meta         = __webpack_require__(32)
   , assign       = __webpack_require__(114)
@@ -3312,7 +3312,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3343,10 +3343,14 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
 
         if (roomname && username && roomname.length > 0 && username.length > 0) {
           var chat = _this2.querySelector('webrtc-chat');
-          var room = chat.createRoom(roomname, username);
-          if (room) {
+          _this2._stream = null;
+          navigator.getUserMedia({
+            "audio": true,
+            "video": true
+          }, function (stream) {
+            var room = chat.createRoom(roomname, username, stream);
             room.connect();
-          }
+          });
         } else {
           var popup = _this2.querySelector('webrtc-popup');
           popup.show();
@@ -3374,7 +3378,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 var _peerData = __webpack_require__(67);
 
@@ -3422,17 +3426,13 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
 
   _createClass(Chat, [{
     key: 'createRoom',
-    value: function createRoom(id, username) {
+    value: function createRoom(id, username, stream) {
       if (id.length > 0 && username.length > 0) {
         var room = document.createElement("webrtc-room");
         room.id = id;
         room.username = username;
         room.peerData = this.peerData;
-
-        navigator.getUserMedia({
-          "audio": true,
-          "video": true
-        }, room.setStream.bind(room));
+        room.setStream(stream);
 
         this.querySelector('.rooms').appendChild(room);
 
@@ -3506,7 +3506,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3683,7 +3683,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3746,7 +3746,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3819,7 +3819,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3868,6 +3868,7 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
       if (!row) {
         row = document.createElement('div');
         row.className = 'video-row';
+        container.appendChild(row);
       }
 
       var peer = document.createElement('webrtc-peer');
@@ -3875,22 +3876,6 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
       row.appendChild(peer);
 
       return peer;
-    }
-  }, {
-    key: 'removePeer',
-    value: function removePeer(id) {
-      var container = this.querySelector('.videos');
-      var rows = container.children;
-      Array.from(rows).forEach(function (row) {
-        var peers = row.children;
-        Array.from(peers).forEach(function (peer) {
-          if (peer.name === id) {
-            var lastPeer = container.lastChild.lastChild;
-            peer.parentNode.appendChild(lastPeer);
-            peer.parentNode.removeChild(peer);
-          }
-        });
-      });
     }
   }]);
 
@@ -3913,7 +3898,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3933,7 +3918,7 @@ var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer',
 
     _this._name = '';
 
-    _this.addStream = _this.addStream.bind(_this);
+    _this.setStream = _this.setStream.bind(_this);
     return _this;
   }
 
@@ -3957,10 +3942,18 @@ var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer',
       this.dispatchEvent(new CustomEvent("disconnected"));
     }
   }, {
-    key: 'addStream',
-    value: function addStream(stream) {
+    key: 'getStream',
+    value: function getStream() {
       var video = this.querySelector('video');
-      video.srcObject = stream;
+      return video.srcObject;
+    }
+  }, {
+    key: 'setStream',
+    value: function setStream(stream) {
+      var video = this.querySelector('video');
+      if (video.srcObject !== stream) {
+        video.srcObject = stream;
+      }
     }
   }, {
     key: '_updateRendering',
@@ -3996,7 +3989,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4083,7 +4076,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _dec, _class;
 
-var _webComponent = __webpack_require__(24);
+var _webComponent = __webpack_require__(23);
 
 var _peerData = __webpack_require__(67);
 
@@ -4106,7 +4099,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this._id = null;
     _this._username = null;
     _this._stream = null;
-    _this._waitingPeers = [];
 
     _this.peerData = null;
     _this.participants = null;
@@ -4116,9 +4108,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this.disconnect = _this.disconnect.bind(_this);
 
     _this._onSend = _this._onSend.bind(_this);
-    _this._onOpen = _this._onOpen.bind(_this);
-    _this._onClose = _this._onClose.bind(_this);
     _this._onData = _this._onData.bind(_this);
+    _this._onNewPeer = _this._onNewPeer.bind(_this);
     return _this;
   }
 
@@ -4138,14 +4129,18 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     value: function connect() {
       if (this.peerData && this.id.length > 0) {
         this.peerData.connect(this.id);
-        this.peerData.on(_peerData.DataEventType.OPEN, this._onOpen);
-        this.peerData.on(_peerData.DataEventType.CLOSE, this._onClose);
         this.peerData.on(_peerData.DataEventType.DATA, this._onData);
+        this.peerData.on(_peerData.PeerEventType.CREATED, this._onNewPeer);
 
         this.conversation.owner = this._username;
 
         var messageNew = this.conversation.querySelector('webrtc-message-new');
         messageNew.addEventListener('send', this._onSend);
+
+        var self = this.querySelector('.video-self');
+        if (self.srcObject !== this._stream) {
+          self.srcObject = this._stream;
+        }
       }
     }
   }, {
@@ -4164,17 +4159,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }));
     }
   }, {
-    key: 'setStream',
-    value: function setStream(stream) {
-      // selfView.src = URL.createObjectURL(stream);
-      this._stream = stream;
-      this._waitingPeers.forEach(function (peer) {
-        if (peer.connectionState === 'connected') {
-          peer.addStream(stream);
-        }
-      });
-    }
-  }, {
     key: 'toggleMic',
     value: function toggleMic(stream) {
       var audioTracks = stream.getAudioTracks();
@@ -4183,37 +4167,14 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
     }
   }, {
+    key: 'setStream',
+    value: function setStream(stream) {
+      this._stream = stream;
+    }
+  }, {
     key: '_onSend',
     value: function _onSend(e) {
       this.send(e.detail);
-    }
-  }, {
-    key: '_onOpen',
-    value: function _onOpen(e) {
-      if (e.room.id !== this._id) {
-        return;
-      }
-
-      var peer = this.peerData.peers(e.caller.id);
-
-      if (this._stream) {
-        peer.addStream(this._stream);
-      } else {
-        this._waitingPeers.push(peer);
-      }
-
-      var peerElem = this.participants.addPeer(e.caller.id);
-      console.log(peerElem);
-      peer.onaddstream = peerElem.addStream.bind(peerElem);
-    }
-  }, {
-    key: '_onClose',
-    value: function _onClose(e) {
-      if (e.room.id !== this._id) {
-        return;
-      }
-
-      this.participants.removePeer(e.caller.id);
     }
   }, {
     key: '_onData',
@@ -4224,6 +4185,45 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
       var data = JSON.parse(e.data);
       this.conversation.addMessage(data.username, data.message, 'income');
+    }
+  }, {
+    key: '_onNewPeer',
+    value: function _onNewPeer(e) {
+      var _this2 = this;
+
+      if (e.room.id !== this._id) {
+        return;
+      }
+
+      var peerElem = this.participants.addPeer(e.caller.id);
+
+      this._stream.getTracks().forEach(function (track) {
+        return e.peer.addTrack(track, _this2._stream);
+      });
+
+      e.peer.onconnectionstatechange = function () {
+        switch (e.peer.connectionState) {
+          case "connected":
+            // The connection has become fully connected
+            break;
+          case "disconnected":
+          case "failed":
+          case "closed":
+            var row = peerElem.parentNode;
+            row.removeChild(peerElem);
+            if (row.children.length < 1) {
+              row.parentNode.removeChild(row);
+            }
+            break;
+        }
+      };
+
+      e.peer.ontrack = function (event) {
+        var stream = event.streams[0];
+        if (stream !== peerElem.getStream()) {
+          peerElem.setStream(stream);
+        }
+      };
     }
   }], [{
     key: 'observedAttributes',
@@ -4255,7 +4255,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(183);
-module.exports = __webpack_require__(28).RegExp.escape;
+module.exports = __webpack_require__(27).RegExp.escape;
 
 /***/ }),
 /* 175 */
@@ -4296,7 +4296,7 @@ module.exports = function(original, length){
 "use strict";
 
 var anObject    = __webpack_require__(1)
-  , toPrimitive = __webpack_require__(27)
+  , toPrimitive = __webpack_require__(26)
   , NUMBER      = 'number';
 
 module.exports = function(hint){
@@ -4416,7 +4416,7 @@ __webpack_require__(44)('copyWithin');
 "use strict";
 
 var $export = __webpack_require__(0)
-  , $every  = __webpack_require__(25)(4);
+  , $every  = __webpack_require__(24)(4);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].every, true), 'Array', {
   // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
@@ -4443,7 +4443,7 @@ __webpack_require__(44)('fill');
 "use strict";
 
 var $export = __webpack_require__(0)
-  , $filter = __webpack_require__(25)(2);
+  , $filter = __webpack_require__(24)(2);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].filter, true), 'Array', {
   // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
@@ -4460,7 +4460,7 @@ $export($export.P + $export.F * !__webpack_require__(22)([].filter, true), 'Arra
 
 // 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
 var $export = __webpack_require__(0)
-  , $find   = __webpack_require__(25)(6)
+  , $find   = __webpack_require__(24)(6)
   , KEY     = 'findIndex'
   , forced  = true;
 // Shouldn't skip holes
@@ -4480,7 +4480,7 @@ __webpack_require__(44)(KEY);
 
 // 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
 var $export = __webpack_require__(0)
-  , $find   = __webpack_require__(25)(5)
+  , $find   = __webpack_require__(24)(5)
   , KEY     = 'find'
   , forced  = true;
 // Shouldn't skip holes
@@ -4499,7 +4499,7 @@ __webpack_require__(44)(KEY);
 "use strict";
 
 var $export  = __webpack_require__(0)
-  , $forEach = __webpack_require__(25)(0)
+  , $forEach = __webpack_require__(24)(0)
   , STRICT   = __webpack_require__(22)([].forEach, true);
 
 $export($export.P + $export.F * !STRICT, 'Array', {
@@ -4515,7 +4515,7 @@ $export($export.P + $export.F * !STRICT, 'Array', {
 
 "use strict";
 
-var ctx            = __webpack_require__(29)
+var ctx            = __webpack_require__(28)
   , $export        = __webpack_require__(0)
   , toObject       = __webpack_require__(10)
   , call           = __webpack_require__(111)
@@ -4636,7 +4636,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(22)($nati
 "use strict";
 
 var $export = __webpack_require__(0)
-  , $map    = __webpack_require__(25)(1);
+  , $map    = __webpack_require__(24)(1);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].map, true), 'Array', {
   // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
@@ -4743,7 +4743,7 @@ $export($export.P + $export.F * __webpack_require__(3)(function(){
 "use strict";
 
 var $export = __webpack_require__(0)
-  , $some   = __webpack_require__(25)(3);
+  , $some   = __webpack_require__(24)(3);
 
 $export($export.P + $export.F * !__webpack_require__(22)([].some, true), 'Array', {
   // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
@@ -4838,7 +4838,7 @@ $export($export.P + $export.F * (fails(function(){
 
 var $export     = __webpack_require__(0)
   , toObject    = __webpack_require__(10)
-  , toPrimitive = __webpack_require__(27);
+  , toPrimitive = __webpack_require__(26);
 
 $export($export.P + $export.F * __webpack_require__(3)(function(){
   return new Date(NaN).toJSON() !== null || Date.prototype.toJSON.call({toISOString: function(){ return 1; }}) !== 1;
@@ -5224,7 +5224,7 @@ var global            = __webpack_require__(2)
   , has               = __webpack_require__(11)
   , cof               = __webpack_require__(20)
   , inheritIfRequired = __webpack_require__(74)
-  , toPrimitive       = __webpack_require__(27)
+  , toPrimitive       = __webpack_require__(26)
   , fails             = __webpack_require__(3)
   , gOPN              = __webpack_require__(38).f
   , gOPD              = __webpack_require__(18).f
@@ -5569,7 +5569,7 @@ $export($export.S + $export.F * !__webpack_require__(6), 'Object', {defineProper
 var isObject = __webpack_require__(4)
   , meta     = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('freeze', function($freeze){
+__webpack_require__(25)('freeze', function($freeze){
   return function freeze(it){
     return $freeze && isObject(it) ? $freeze(meta(it)) : it;
   };
@@ -5583,7 +5583,7 @@ __webpack_require__(26)('freeze', function($freeze){
 var toIObject                 = __webpack_require__(16)
   , $getOwnPropertyDescriptor = __webpack_require__(18).f;
 
-__webpack_require__(26)('getOwnPropertyDescriptor', function(){
+__webpack_require__(25)('getOwnPropertyDescriptor', function(){
   return function getOwnPropertyDescriptor(it, key){
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
@@ -5594,7 +5594,7 @@ __webpack_require__(26)('getOwnPropertyDescriptor', function(){
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-__webpack_require__(26)('getOwnPropertyNames', function(){
+__webpack_require__(25)('getOwnPropertyNames', function(){
   return __webpack_require__(116).f;
 });
 
@@ -5606,7 +5606,7 @@ __webpack_require__(26)('getOwnPropertyNames', function(){
 var toObject        = __webpack_require__(10)
   , $getPrototypeOf = __webpack_require__(19);
 
-__webpack_require__(26)('getPrototypeOf', function(){
+__webpack_require__(25)('getPrototypeOf', function(){
   return function getPrototypeOf(it){
     return $getPrototypeOf(toObject(it));
   };
@@ -5619,7 +5619,7 @@ __webpack_require__(26)('getPrototypeOf', function(){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isExtensible', function($isExtensible){
+__webpack_require__(25)('isExtensible', function($isExtensible){
   return function isExtensible(it){
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
@@ -5632,7 +5632,7 @@ __webpack_require__(26)('isExtensible', function($isExtensible){
 // 19.1.2.12 Object.isFrozen(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isFrozen', function($isFrozen){
+__webpack_require__(25)('isFrozen', function($isFrozen){
   return function isFrozen(it){
     return isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
   };
@@ -5645,7 +5645,7 @@ __webpack_require__(26)('isFrozen', function($isFrozen){
 // 19.1.2.13 Object.isSealed(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isSealed', function($isSealed){
+__webpack_require__(25)('isSealed', function($isSealed){
   return function isSealed(it){
     return isObject(it) ? $isSealed ? $isSealed(it) : false : true;
   };
@@ -5667,7 +5667,7 @@ $export($export.S, 'Object', {is: __webpack_require__(122)});
 var toObject = __webpack_require__(10)
   , $keys    = __webpack_require__(39);
 
-__webpack_require__(26)('keys', function(){
+__webpack_require__(25)('keys', function(){
   return function keys(it){
     return $keys(toObject(it));
   };
@@ -5681,7 +5681,7 @@ __webpack_require__(26)('keys', function(){
 var isObject = __webpack_require__(4)
   , meta     = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('preventExtensions', function($preventExtensions){
+__webpack_require__(25)('preventExtensions', function($preventExtensions){
   return function preventExtensions(it){
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
@@ -5695,7 +5695,7 @@ __webpack_require__(26)('preventExtensions', function($preventExtensions){
 var isObject = __webpack_require__(4)
   , meta     = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('seal', function($seal){
+__webpack_require__(25)('seal', function($seal){
   return function seal(it){
     return $seal && isObject(it) ? $seal(meta(it)) : it;
   };
@@ -5751,7 +5751,7 @@ $export($export.G + $export.F * (parseInt != $parseInt), {parseInt: $parseInt});
 
 var LIBRARY            = __webpack_require__(36)
   , global             = __webpack_require__(2)
-  , ctx                = __webpack_require__(29)
+  , ctx                = __webpack_require__(28)
   , classof            = __webpack_require__(50)
   , $export            = __webpack_require__(0)
   , isObject           = __webpack_require__(4)
@@ -5980,7 +5980,7 @@ if(!USE_NATIVE){
 $export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
 __webpack_require__(47)($Promise, PROMISE);
 __webpack_require__(41)(PROMISE);
-Wrapper = __webpack_require__(28)[PROMISE];
+Wrapper = __webpack_require__(27)[PROMISE];
 
 // statics
 $export($export.S + $export.F * !USE_NATIVE, PROMISE, {
@@ -6129,7 +6129,7 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 var dP          = __webpack_require__(7)
   , $export     = __webpack_require__(0)
   , anObject    = __webpack_require__(1)
-  , toPrimitive = __webpack_require__(27);
+  , toPrimitive = __webpack_require__(26);
 
 // MS Edge has broken Reflect.defineProperty - throwing instead of returning false
 $export($export.S + $export.F * __webpack_require__(3)(function(){
@@ -6943,7 +6943,7 @@ var global         = __webpack_require__(2)
   , isArray        = __webpack_require__(76)
   , anObject       = __webpack_require__(1)
   , toIObject      = __webpack_require__(16)
-  , toPrimitive    = __webpack_require__(27)
+  , toPrimitive    = __webpack_require__(26)
   , createDesc     = __webpack_require__(33)
   , _create        = __webpack_require__(37)
   , gOPNExt        = __webpack_require__(116)
@@ -7224,7 +7224,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(64).ABV, {
 /* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Float32', 4, function(init){
+__webpack_require__(30)('Float32', 4, function(init){
   return function Float32Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7234,7 +7234,7 @@ __webpack_require__(31)('Float32', 4, function(init){
 /* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Float64', 8, function(init){
+__webpack_require__(30)('Float64', 8, function(init){
   return function Float64Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7244,7 +7244,7 @@ __webpack_require__(31)('Float64', 8, function(init){
 /* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Int16', 2, function(init){
+__webpack_require__(30)('Int16', 2, function(init){
   return function Int16Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7254,7 +7254,7 @@ __webpack_require__(31)('Int16', 2, function(init){
 /* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Int32', 4, function(init){
+__webpack_require__(30)('Int32', 4, function(init){
   return function Int32Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7264,7 +7264,7 @@ __webpack_require__(31)('Int32', 4, function(init){
 /* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Int8', 1, function(init){
+__webpack_require__(30)('Int8', 1, function(init){
   return function Int8Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7274,7 +7274,7 @@ __webpack_require__(31)('Int8', 1, function(init){
 /* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Uint16', 2, function(init){
+__webpack_require__(30)('Uint16', 2, function(init){
   return function Uint16Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7284,7 +7284,7 @@ __webpack_require__(31)('Uint16', 2, function(init){
 /* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Uint32', 4, function(init){
+__webpack_require__(30)('Uint32', 4, function(init){
   return function Uint32Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7294,7 +7294,7 @@ __webpack_require__(31)('Uint32', 4, function(init){
 /* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Uint8', 1, function(init){
+__webpack_require__(30)('Uint8', 1, function(init){
   return function Uint8Array(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7304,7 +7304,7 @@ __webpack_require__(31)('Uint8', 1, function(init){
 /* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(31)('Uint8', 1, function(init){
+__webpack_require__(30)('Uint8', 1, function(init){
   return function Uint8ClampedArray(data, byteOffset, length){
     return init(this, data, byteOffset, length);
   };
@@ -7542,7 +7542,7 @@ $export($export.S, 'Object', {
 
 var $export                  = __webpack_require__(0)
   , toObject                 = __webpack_require__(10)
-  , toPrimitive              = __webpack_require__(27)
+  , toPrimitive              = __webpack_require__(26)
   , getPrototypeOf           = __webpack_require__(19)
   , getOwnPropertyDescriptor = __webpack_require__(18).f;
 
@@ -7566,7 +7566,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(61), 'Object',
 
 var $export                  = __webpack_require__(0)
   , toObject                 = __webpack_require__(10)
-  , toPrimitive              = __webpack_require__(27)
+  , toPrimitive              = __webpack_require__(26)
   , getPrototypeOf           = __webpack_require__(19)
   , getOwnPropertyDescriptor = __webpack_require__(18).f;
 
@@ -7605,7 +7605,7 @@ $export($export.S, 'Object', {
 // https://github.com/zenparsing/es-observable
 var $export     = __webpack_require__(0)
   , global      = __webpack_require__(2)
-  , core        = __webpack_require__(28)
+  , core        = __webpack_require__(27)
   , microtask   = __webpack_require__(81)()
   , OBSERVABLE  = __webpack_require__(5)('observable')
   , aFunction   = __webpack_require__(12)
@@ -7805,7 +7805,7 @@ __webpack_require__(41)('Observable');
 /* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata                  = __webpack_require__(30)
+var metadata                  = __webpack_require__(29)
   , anObject                  = __webpack_require__(1)
   , toMetaKey                 = metadata.key
   , ordinaryDefineOwnMetadata = metadata.set;
@@ -7818,7 +7818,7 @@ metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue
 /* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata               = __webpack_require__(30)
+var metadata               = __webpack_require__(29)
   , anObject               = __webpack_require__(1)
   , toMetaKey              = metadata.key
   , getOrCreateMetadataMap = metadata.map
@@ -7840,7 +7840,7 @@ metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, ta
 
 var Set                     = __webpack_require__(127)
   , from                    = __webpack_require__(103)
-  , metadata                = __webpack_require__(30)
+  , metadata                = __webpack_require__(29)
   , anObject                = __webpack_require__(1)
   , getPrototypeOf          = __webpack_require__(19)
   , ordinaryOwnMetadataKeys = metadata.keys
@@ -7862,7 +7862,7 @@ metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */)
 /* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata               = __webpack_require__(30)
+var metadata               = __webpack_require__(29)
   , anObject               = __webpack_require__(1)
   , getPrototypeOf         = __webpack_require__(19)
   , ordinaryHasOwnMetadata = metadata.has
@@ -7884,7 +7884,7 @@ metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKe
 /* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata                = __webpack_require__(30)
+var metadata                = __webpack_require__(29)
   , anObject                = __webpack_require__(1)
   , ordinaryOwnMetadataKeys = metadata.keys
   , toMetaKey               = metadata.key;
@@ -7897,7 +7897,7 @@ metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetK
 /* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata               = __webpack_require__(30)
+var metadata               = __webpack_require__(29)
   , anObject               = __webpack_require__(1)
   , ordinaryGetOwnMetadata = metadata.get
   , toMetaKey              = metadata.key;
@@ -7911,7 +7911,7 @@ metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, ta
 /* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata               = __webpack_require__(30)
+var metadata               = __webpack_require__(29)
   , anObject               = __webpack_require__(1)
   , getPrototypeOf         = __webpack_require__(19)
   , ordinaryHasOwnMetadata = metadata.has
@@ -7932,7 +7932,7 @@ metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKe
 /* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata               = __webpack_require__(30)
+var metadata               = __webpack_require__(29)
   , anObject               = __webpack_require__(1)
   , ordinaryHasOwnMetadata = metadata.has
   , toMetaKey              = metadata.key;
@@ -7946,7 +7946,7 @@ metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, ta
 /* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata                  = __webpack_require__(30)
+var metadata                  = __webpack_require__(29)
   , anObject                  = __webpack_require__(1)
   , aFunction                 = __webpack_require__(12)
   , toMetaKey                 = metadata.key
@@ -8344,7 +8344,7 @@ __webpack_require__(331);
 __webpack_require__(353);
 __webpack_require__(352);
 __webpack_require__(351);
-module.exports = __webpack_require__(28);
+module.exports = __webpack_require__(27);
 
 /***/ }),
 /* 355 */,
@@ -8419,7 +8419,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> ";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay class=video-self></video>";
 
 /***/ }),
 /* 380 */,
@@ -9184,7 +9184,8 @@ module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversati
 /* 397 */,
 /* 398 */,
 /* 399 */,
-/* 400 */
+/* 400 */,
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(145);
@@ -9192,5 +9193,5 @@ module.exports = __webpack_require__(144);
 
 
 /***/ })
-],[400]);
-//# sourceMappingURL=application.83a5ec17b0837e05a474.js.map
+],[401]);
+//# sourceMappingURL=application.df22a5bdbe87c7803301.js.map

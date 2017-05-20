@@ -2,7 +2,8 @@ import {
   WebComponent
 } from 'web-component';
 import {
-  DataEventType
+  DataEventType,
+  PeerEventType
 } from 'peer-data';
 
 @WebComponent('webrtc-room', {
@@ -15,7 +16,6 @@ export class Room extends HTMLElement {
     this._id = null;
     this._username = null;
     this._stream = null;
-    this._waitingPeers = [];
 
     this.peerData = null;
     this.participants = null;
@@ -25,9 +25,8 @@ export class Room extends HTMLElement {
     this.disconnect = this.disconnect.bind(this);
 
     this._onSend = this._onSend.bind(this);
-    this._onOpen = this._onOpen.bind(this);
-    this._onClose = this._onClose.bind(this);
     this._onData = this._onData.bind(this);
+    this._onNewPeer = this._onNewPeer.bind(this);
   }
 
   static get observedAttributes() {
@@ -46,14 +45,18 @@ export class Room extends HTMLElement {
   connect() {
     if (this.peerData && this.id.length > 0) {
       this.peerData.connect(this.id);
-      this.peerData.on(DataEventType.OPEN, this._onOpen);
-      this.peerData.on(DataEventType.CLOSE, this._onClose);
       this.peerData.on(DataEventType.DATA, this._onData);
+      this.peerData.on(PeerEventType.CREATED, this._onNewPeer);
 
       this.conversation.owner = this._username;
 
       const messageNew = this.conversation.querySelector('webrtc-message-new');
-      messageNew.addEventListener('send', this._onSend)
+      messageNew.addEventListener('send', this._onSend);
+
+      const self = this.querySelector('.video-self');
+      if (self.srcObject !== this._stream) {
+        self.srcObject = this._stream;
+      }
     }
   }
 
@@ -70,16 +73,6 @@ export class Room extends HTMLElement {
     }));
   }
 
-  setStream(stream) {
-    // selfView.src = URL.createObjectURL(stream);
-    this._stream = stream;
-    this._waitingPeers.forEach(peer => {
-      if (peer.connectionState === 'connected') {
-        peer.addStream(stream);
-      }
-    });
-  }
-
   toggleMic(stream) {
     const audioTracks = stream.getAudioTracks();
     for (let i = 0, l = audioTracks.length; i < l; i++) {
@@ -87,33 +80,12 @@ export class Room extends HTMLElement {
     }
   }
 
+  setStream(stream) {
+    this._stream = stream;
+  }
+
   _onSend(e) {
     this.send(e.detail);
-  }
-
-  _onOpen(e) {
-    if (e.room.id !== this._id) {
-      return;
-    }
-
-    const peer = this.peerData.peers(e.caller.id);
-
-    if (this._stream) {
-      peer.addStream(this._stream);
-    } else {
-      this._waitingPeers.push(peer);
-    }
-
-    const peerElem = this.participants.addPeer(e.caller.id);
-    peer.onaddstream = peerElem.addStream.bind(peerElem);
-  }
-
-  _onClose(e) {
-    if (e.room.id !== this._id) {
-      return;
-    }
-
-    this.participants.removePeer(e.caller.id);
   }
 
   _onData(e) {
@@ -123,5 +95,39 @@ export class Room extends HTMLElement {
 
     const data = JSON.parse(e.data)
     this.conversation.addMessage(data.username, data.message, 'income');
+  }
+
+  _onNewPeer(e) {
+    if (e.room.id !== this._id) {
+      return;
+    }
+
+    const peerElem = this.participants.addPeer(e.caller.id);
+
+    this._stream.getTracks().forEach(track => e.peer.addTrack(track, this._stream));
+
+    e.peer.onconnectionstatechange = () => {
+      switch (e.peer.connectionState) {
+        case "connected":
+          // The connection has become fully connected
+          break;
+        case "disconnected":
+        case "failed":
+        case "closed":
+          const row = peerElem.parentNode;
+          row.removeChild(peerElem);
+          if (row.children.length < 1) {
+            row.parentNode.removeChild(row)
+          }
+          break;
+      }
+    }
+
+    e.peer.ontrack = event => {
+      const stream = event.streams[0];
+      if (stream !== peerElem.getStream()) {
+        peerElem.setStream(stream);
+      }
+    };
   }
 }

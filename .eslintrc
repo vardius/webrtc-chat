@@ -21,6 +21,7 @@
   "rules": {
     "object-curly-spacing": 0,
     "no-use-before-define": 0,
+    "no-case-declarations": 0,
     "no-empty": 0
   }
 }
