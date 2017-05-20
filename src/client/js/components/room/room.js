@@ -1,4 +1,9 @@
-import { WebComponent } from 'web-component';
+import {
+  WebComponent
+} from 'web-component';
+import {
+  AppEventType
+} from 'peer-data';
 
 @WebComponent('webrtc-room', {
   template: require('./room.html')
@@ -7,57 +12,111 @@ export class Room extends HTMLElement {
   constructor() {
     super();
 
-    this.addPeer = this.addPeer.bind(this);
-    this.onSearch = this.onSearch.bind(this);
+    this._id = null;
+    this._username = null;
+    this._stream = null;
+
+    this.peerData = null;
+    this.participants = null;
+    this.conversation = null;
+
+    this.connect = this.connect.bind(this);
+    this.disconnect = this.disconnect.bind(this);
+
+    this._onSend = this._onSend.bind(this);
+    this._onPeer = this._onPeer.bind(this);
+    this._onChannel = this._onChannel.bind(this);
+  }
+
+  static get observedAttributes() {
+    return ['id', 'username'];
   }
 
   connectedCallback() {
-    const roomSearch = this.querySelector('webrtc-peer-search');
-    roomSearch.addEventListener('peer-search', this.onSearch);
-
-    const children = this.querySelector('.room').children;
-    Array.from(children).forEach((element) => {
-      element.addEventListener('click', this.onClick.bind(this))
-    });
+    this.participants = this.querySelector('webrtc-participants');
+    this.conversation = this.querySelector('webrtc-conversation');
   }
 
-  onSearch(e) {
-    var matcher = new RegExp(e.detail, "gi");
-    const children = this.querySelector('.room').children;
-    Array.from(children).forEach((element) => {
-      if (matcher.test(element.textContent)) {
-        element.style.display = "inline-block";
-      } else {
-        element.style.display = "none";
+  disconnectedCallback() {
+    this.disconnect();
+  }
+
+  connect() {
+    if (this.peerData && this.id.length > 0) {
+      this.peerData.connect(this.id);
+      this.peerData.on(AppEventType.PEER, this._onPeer);
+      this.peerData.on(AppEventType.CHANNEL, this._onChannel);
+
+      this.conversation.owner = this._username;
+
+      const messageNew = this.conversation.querySelector('webrtc-message-new');
+      messageNew.addEventListener('send', this._onSend);
+
+      const self = this.querySelector('.video-self');
+      if (self.srcObject !== this._stream) {
+        self.srcObject = this._stream;
       }
-    });
+    }
   }
 
-  onClick(e) {
-    const event = new CustomEvent("select", {
-      room: this.findPeer(e.target)
-    });
-    this.dispatchEvent(event);
+  disconnect() {
+    if (this.peerData) {
+      this.peerData.disconnect(this.id);
+    }
   }
 
-  findPeer(el) {
-    while ((el = el.parentElement) && el.nodeName !== 'WEBRTC-PEER') {}
-    return el;
+  setStream(stream) {
+    this._stream = stream;
   }
 
-  addPeer(id) {
-    let msg = document.createElement('webrtc-peer');
-    msg.title = id;
-
-    this.querySelector('.room').appendChild(msg);
+  send(data) {
+    this.peerData.send(JSON.stringify({
+      message: data,
+      username: this.username
+    }));
   }
 
-  removePeer(id) {
-    const children = this.querySelector('.room').children;
-    Array.from(children).forEach((element) => {
-      if (element.title === id) {
-        return element.parentNode.removeChild(element);
+  _onSend(e) {
+    this.send(e.detail);
+  }
+
+  _onChannel(e) {
+    if (e.room.id !== this._id) {
+      return;
+    }
+
+    const channel = e.data;
+    channel.onmessage = data => {
+      const msg = JSON.parse(data)
+      this.conversation.addMessage(msg.username, msg.message, 'income');
+    };
+  }
+
+  _onPeer(e) {
+    if (e.room.id !== this._id) {
+      return;
+    }
+
+    const peerElem = this.participants.addPeer(e.caller.id);
+
+    this._stream.getTracks().forEach(track => e.data.addTrack(track, this._stream));
+
+    e.data.onconnectionstatechange = event => {
+      e.data.onconnectionstatechange(event);
+      if (e.data.connectionState === 'closed') {
+        const row = peerElem.parentNode;
+        row.removeChild(peerElem);
+        if (row.children.length < 1) {
+          row.parentNode.removeChild(row)
+        }
       }
-    });
+    }
+
+    e.data.ontrack = event => {
+      const stream = event.streams[0];
+      if (stream !== peerElem.getStream()) {
+        peerElem.setStream(stream);
+      }
+    };
   }
 }

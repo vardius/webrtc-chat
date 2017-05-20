@@ -3,3 +3,4 @@ require('client/assets/styles/styles.scss');
 
 // JavaScript components files
 require('client/js/components');
+
