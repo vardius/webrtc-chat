@@ -8357,7 +8357,7 @@ module.exports = "<p></p>";
 /* 376 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=videos> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> <webrtc-peer name=test></webrtc-peer> </div> ";
+module.exports = "<div class=videos></div>";
 
 /***/ }),
 /* 377 */
@@ -9150,4 +9150,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.f2db48ac98dadb262541.js.map
+//# sourceMappingURL=application.eb0b6b1500513b1b7393.js.map
