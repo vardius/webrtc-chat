@@ -4261,7 +4261,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       Array.from(giuElements).forEach(function (element) {
         $(element).fadeIn();
       });
-      this._timeout = setTimeout(this._onMouseLeave, 10000);
+      this._timeout = setTimeout(this._onMouseLeave, 5000);
     }
   }, {
     key: '_onMouseLeave',
@@ -9307,4 +9307,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.0996f7b4a378aaabc3fc.js.map
+//# sourceMappingURL=application.0c6ad063b758af5dd0ab.js.map

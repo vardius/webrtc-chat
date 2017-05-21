@@ -184,7 +184,7 @@ export class Room extends HTMLElement {
     Array.from(giuElements).forEach(element => {
       $(element).fadeIn();
     });
-    this._timeout = setTimeout(this._onMouseLeave, 10000);
+    this._timeout = setTimeout(this._onMouseLeave, 5000);
   }
 
   _onMouseLeave() {
