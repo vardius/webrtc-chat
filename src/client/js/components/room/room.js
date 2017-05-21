@@ -49,6 +49,11 @@ export class Room extends HTMLElement {
     if (self.srcObject !== this._stream) {
       self.srcObject = this._stream;
     }
+
+    this.peerData.on(AppEventType.PEER, this._onPeer);
+    this.peerData.on(AppEventType.CHANNEL, this._onChannel);
+
+    this.conversation.owner = this._username;
   }
 
   disconnectedCallback() {
@@ -58,10 +63,6 @@ export class Room extends HTMLElement {
   connect() {
     if (this.peerData && this.id.length > 0) {
       this.peerData.connect(this.id);
-      this.peerData.on(AppEventType.PEER, this._onPeer);
-      this.peerData.on(AppEventType.CHANNEL, this._onChannel);
-
-      this.conversation.owner = this._username;
 
       const hangBtn = this.querySelector('.btn-hang');
       hangBtn.style.display = 'block';
