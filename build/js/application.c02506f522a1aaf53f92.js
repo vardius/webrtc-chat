@@ -4187,16 +4187,22 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         }
       };
 
-      e.data.ontrack = function (event) {
-        var stream = event.streams[0];
-        if (stream !== peerElem.getStream()) {
-          peerElem.setStream(stream);
+      e.data.oniceconnectionstatechange = function () {
+        if (e.data.iceConnectionState == 'disconnected') {
+          peerElem.parentNode.removeChild(peerElem);
         }
       };
 
       e.data.onsignalingstatechange = function () {
         if (e.data.signalingState === "closed") {
           peerElem.parentNode.removeChild(peerElem);
+        }
+      };
+
+      e.data.ontrack = function (event) {
+        var stream = event.streams[0];
+        if (stream !== peerElem.getStream()) {
+          peerElem.setStream(stream);
         }
       };
     }
@@ -9169,4 +9175,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.355b1b5f85189c0d3ddf.js.map
+//# sourceMappingURL=application.c02506f522a1aaf53f92.js.map

@@ -127,16 +127,22 @@ export class Room extends HTMLElement {
       }
     }
 
-    e.data.ontrack = event => {
-      const stream = event.streams[0];
-      if (stream !== peerElem.getStream()) {
-        peerElem.setStream(stream);
+    e.data.oniceconnectionstatechange = function () {
+      if (e.data.iceConnectionState == 'disconnected') {
+        peerElem.parentNode.removeChild(peerElem);
       }
     };
 
     e.data.onsignalingstatechange = () => {
       if (e.data.signalingState === "closed") {
         peerElem.parentNode.removeChild(peerElem);
+      }
+    };
+
+    e.data.ontrack = event => {
+      const stream = event.streams[0];
+      if (stream !== peerElem.getStream()) {
+        peerElem.setStream(stream);
       }
     };
   }
