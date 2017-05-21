@@ -23,10 +23,10 @@
 
   .video-self {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100px;
+    top: 5px;
+    left: 5px;
+    max-width: 150px;
+    max-height: 150px;
   }
 
   .videos {
