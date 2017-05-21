@@ -4177,9 +4177,10 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         return e.data.addTrack(track, _this3._stream);
       });
 
+      var onconnectionstatechange = e.data.onconnectionstatechange;
       e.data.onconnectionstatechange = function (event) {
-        if (e.data.onconnectionstatechange) {
-          e.data.onconnectionstatechange(event);
+        if (onconnectionstatechange) {
+          onconnectionstatechange(event);
         }
         if (e.data.connectionState === 'closed') {
           peerElem.parentNode.removeChild(peerElem);
@@ -4193,10 +4194,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         }
       };
 
-      e.data.onsignalingstatechange = function (event) {
-        if (e.data.onsignalingstatechange) {
-          e.data.onsignalingstatechange(event);
-        }
+      e.data.onsignalingstatechange = function () {
         if (e.data.signalingState === "closed") {
           peerElem.parentNode.removeChild(peerElem);
         }
@@ -9171,4 +9169,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.943ddd4e490be225f262.js.map
+//# sourceMappingURL=application.355b1b5f85189c0d3ddf.js.map

@@ -117,9 +117,10 @@ export class Room extends HTMLElement {
 
     this._stream.getTracks().forEach(track => e.data.addTrack(track, this._stream));
 
+    const onconnectionstatechange = e.data.onconnectionstatechange;
     e.data.onconnectionstatechange = event => {
-      if (e.data.onconnectionstatechange) {
-        e.data.onconnectionstatechange(event);
+      if (onconnectionstatechange) {
+        onconnectionstatechange(event);
       }
       if (e.data.connectionState === 'closed') {
         peerElem.parentNode.removeChild(peerElem);
@@ -133,10 +134,7 @@ export class Room extends HTMLElement {
       }
     };
 
-    e.data.onsignalingstatechange = event => {
-      if (e.data.onsignalingstatechange) {
-        e.data.onsignalingstatechange(event);
-      }
+    e.data.onsignalingstatechange = () => {
       if (e.data.signalingState === "closed") {
         peerElem.parentNode.removeChild(peerElem);
       }
