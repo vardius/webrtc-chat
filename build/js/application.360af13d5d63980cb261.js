@@ -3997,6 +3997,10 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
 
       var name = this.querySelector('.username-query');
       name.addEventListener('keypress', this._onKeyPress);
+
+      $('#enter-modal').on('shown.bs.modal', function () {
+        $(room).focus();
+      });
     }
   }, {
     key: 'show',
@@ -9307,4 +9311,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.0c6ad063b758af5dd0ab.js.map
+//# sourceMappingURL=application.360af13d5d63980cb261.js.map

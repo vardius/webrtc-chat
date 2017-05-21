@@ -25,6 +25,10 @@ export class Popup extends HTMLElement {
 
     const name = this.querySelector('.username-query');
     name.addEventListener('keypress', this._onKeyPress);
+
+    $('#enter-modal').on('shown.bs.modal', () => {
+      $(room).focus();
+    });
   }
 
   show() {
