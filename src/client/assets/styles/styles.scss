@@ -115,14 +115,7 @@
     border-radius: 25px;
   }
 
-  .btn-hang {
-    position: absolute;
-    display: none;
-    top: 5px;
-    right: 5px;
-  }
-
-  .btn-call {
+  .btn-enter {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -138,4 +131,10 @@
     position: absolute;
     top: 5px;
     right: 115px;
+  }
+
+  .btn-fullscreen {
+    position: absolute;
+    top: 5px;
+    right: 170px;
   }

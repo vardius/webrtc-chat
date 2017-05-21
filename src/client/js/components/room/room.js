@@ -15,6 +15,8 @@ export class Room extends HTMLElement {
     this._id = null;
     this._username = null;
     this._stream = null;
+    this._timeout = null;
+    this._isConnected = false;
 
     this.peerData = null;
     this.participants = null;
@@ -28,6 +30,9 @@ export class Room extends HTMLElement {
     this._onChannel = this._onChannel.bind(this);
     this._toggleAudio = this._toggleAudio.bind(this);
     this._toggleVideo = this._toggleVideo.bind(this);
+    this._toggleFullScreen = this._toggleFullScreen.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
   static get observedAttributes() {
@@ -38,17 +43,20 @@ export class Room extends HTMLElement {
     this.participants = this.querySelector('webrtc-participants');
     this.conversation = this.querySelector('webrtc-conversation');
 
-    const callBtn = this.querySelector('.btn-call');
-    callBtn.addEventListener('click', this.connect);
+    this.addEventListener("mousemove", this._onMouseMove);
+    this.addEventListener("mouseleave", this._onMouseLeave);
 
-    const hangBtn = this.querySelector('.btn-hang');
-    hangBtn.addEventListener('click', this.disconnect);
+    const enterBtn = this.querySelector('.btn-enter');
+    enterBtn.addEventListener('click', this.connect);
+    enterBtn.addEventListener('click', this.disconnect);
 
     const muteBtn = this.querySelector('.btn-mute');
     muteBtn.addEventListener('click', this._toggleAudio);
 
     const camBtn = this.querySelector('.btn-cam');
     camBtn.addEventListener('click', this._toggleVideo);
+    const fsBtn = this.querySelector('.btn-fullscreen');
+    fsBtn.addEventListener('click', this._toggleFullScreen);
 
     const messageNew = this.conversation.querySelector('webrtc-message-new');
     messageNew.addEventListener('send', this._onSend);
@@ -69,24 +77,39 @@ export class Room extends HTMLElement {
   }
 
   connect() {
-    if (this.peerData && this.id.length > 0) {
-      this.peerData.connect(this.id);
-      const hangBtn = this.querySelector('.btn-hang');
-      hangBtn.style.display = 'block';
-      const callBtn = this.querySelector('.btn-call');
-      callBtn.style.display = 'none';
+    if (!this._isConnected) {
+      if (this.peerData && this.id.length > 0) {
+        this.peerData.connect(this.id);
+
+        const enterBtn = this.querySelector('.btn-enter');
+        enterBtn.classList.remove('btn-success');
+        enterBtn.classList.add('btn-danger');
+        const enterIcon = this.querySelector('.icon-enter');
+        enterIcon.classList.remove('fa-sign-in');
+        enterIcon.classList.add('fa-sign-out');
+
+        setTimeout(() => this._isConnected = true, 500);
+      }
     }
   }
 
   disconnect() {
-    if (this.peerData) {
-      this.peerData.disconnect(this.id);
+    if (this._isConnected) {
+      if (this.peerData) {
+        this.peerData.disconnect(this.id);
+      }
+
+      this.participants.clear();
+
+      const enterBtn = this.querySelector('.btn-enter');
+      enterBtn.classList.add('btn-success');
+      enterBtn.classList.remove('btn-danger');
+      const enterIcon = this.querySelector('.icon-enter');
+      enterIcon.classList.add('fa-sign-in');
+      enterIcon.classList.remove('fa-sign-out');
+
+      setTimeout(() => this._isConnected = false, 500);
     }
-    const hangBtn = this.querySelector('.btn-hang');
-    hangBtn.style.display = 'none';
-    const callBtn = this.querySelector('.btn-call');
-    callBtn.style.display = 'block';
-    this.participants.clear();
   }
 
   setStream(stream) {
@@ -153,6 +176,48 @@ export class Room extends HTMLElement {
         peerElem.setStream(stream);
       }
     };
+  }
+
+  _onMouseMove() {
+    clearTimeout(this._timeout);
+    const giuElements = this.querySelectorAll(".gui");
+    Array.from(giuElements).forEach(element => {
+      $(element).fadeIn();
+    });
+    this._timeout = setTimeout(this._onMouseLeave, 10000);
+  }
+
+  _onMouseLeave() {
+    clearTimeout(this._timeout);
+    const giuElements = this.querySelectorAll(".gui");
+    Array.from(giuElements).forEach(element => {
+      $(element).fadeOut();
+    });
+  }
+
+  _toggleFullScreen() {
+    if (!document.fullscreenElement &&
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
   }
 
   _toggleAudio() {
