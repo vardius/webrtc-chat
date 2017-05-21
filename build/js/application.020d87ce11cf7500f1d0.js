@@ -4081,6 +4081,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this._onSend = _this._onSend.bind(_this);
     _this._onPeer = _this._onPeer.bind(_this);
     _this._onChannel = _this._onChannel.bind(_this);
+    _this._toggleAudio = _this._toggleAudio.bind(_this);
+    _this._toggleVideo = _this._toggleVideo.bind(_this);
     return _this;
   }
 
@@ -4095,6 +4097,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
       var hangBtn = this.querySelector('.btn-hang');
       hangBtn.addEventListener('click', this.disconnect);
+
+      var muteBtn = this.querySelector('.btn-mute');
+      muteBtn.addEventListener('click', this._toggleAudio);
+
+      var camBtn = this.querySelector('.btn-cam');
+      camBtn.addEventListener('click', this._toggleVideo);
 
       var messageNew = this.conversation.querySelector('webrtc-message-new');
       messageNew.addEventListener('send', this._onSend);
@@ -4213,6 +4221,46 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
           peerElem.setStream(stream);
         }
       };
+    }
+  }, {
+    key: '_toggleAudio',
+    value: function _toggleAudio() {
+      if (this._stream) {
+        var audioTracks = this._stream.getAudioTracks();
+        if (audioTracks[0]) {
+          var enabled = !audioTracks[0].enabled;
+          audioTracks[0].enabled = enabled;
+
+          var muteBtn = this.querySelector('.btn-mute');
+          if (enabled) {
+            muteBtn.classList.remove('btn-success');
+            muteBtn.classList.add('btn-danger');
+          } else {
+            muteBtn.classList.remove('btn-success');
+            muteBtn.classList.add('btn-danger');
+          }
+        }
+      }
+    }
+  }, {
+    key: '_toggleVideo',
+    value: function _toggleVideo() {
+      if (this._stream) {
+        var videoTracks = this._stream.getVideoTracks();
+        if (videoTracks[0]) {
+          var enabled = !videoTracks[0].enabled;
+          videoTracks[0].enabled = enabled;
+
+          var camBtn = this.querySelector('.btn-cam');
+          if (enabled) {
+            camBtn.classList.remove('btn-success');
+            camBtn.classList.add('btn-danger');
+          } else {
+            camBtn.classList.remove('btn-success');
+            camBtn.classList.add('btn-danger');
+          }
+        }
+      }
     }
   }], [{
     key: 'observedAttributes',
@@ -8408,7 +8456,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-call btn-success btn-circle\"> <i class=\"fa fa-sign-in\" aria-hidden=true> </i></button> <button type=button class=\"btn btn-hang btn-danger btn-circle\"> <i class=\"fa fa-sign-out\" aria-hidden=true></i> </button> ";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-cam btn-danger btn-circle\"> <i class=\"fa video-camera\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-mute btn-danger btn-circle\"> <i class=\"fa fa-deaf\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-call btn-success btn-circle\"> <i class=\"fa fa-sign-in\" aria-hidden=true> </i></button> <button type=button class=\"btn btn-hang btn-danger btn-circle\"> <i class=\"fa fa-sign-out\" aria-hidden=true></i> </button> ";
 
 /***/ }),
 /* 380 */,
@@ -9183,4 +9231,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.91b8b699ec7fbbed4798.js.map
+//# sourceMappingURL=application.020d87ce11cf7500f1d0.js.map

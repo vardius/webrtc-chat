@@ -26,6 +26,8 @@ export class Room extends HTMLElement {
     this._onSend = this._onSend.bind(this);
     this._onPeer = this._onPeer.bind(this);
     this._onChannel = this._onChannel.bind(this);
+    this._toggleAudio = this._toggleAudio.bind(this);
+    this._toggleVideo = this._toggleVideo.bind(this);
   }
 
   static get observedAttributes() {
@@ -41,6 +43,12 @@ export class Room extends HTMLElement {
 
     const hangBtn = this.querySelector('.btn-hang');
     hangBtn.addEventListener('click', this.disconnect);
+
+    const muteBtn = this.querySelector('.btn-mute');
+    muteBtn.addEventListener('click', this._toggleAudio);
+
+    const camBtn = this.querySelector('.btn-cam');
+    camBtn.addEventListener('click', this._toggleVideo);
 
     const messageNew = this.conversation.querySelector('webrtc-message-new');
     messageNew.addEventListener('send', this._onSend);
@@ -145,5 +153,43 @@ export class Room extends HTMLElement {
         peerElem.setStream(stream);
       }
     };
+  }
+
+  _toggleAudio() {
+    if (this._stream) {
+      const audioTracks = this._stream.getAudioTracks();
+      if (audioTracks[0]) {
+        const enabled = !audioTracks[0].enabled;
+        audioTracks[0].enabled = enabled;
+
+        const muteBtn = this.querySelector('.btn-mute');
+        if (enabled) {
+          muteBtn.classList.remove('btn-success');
+          muteBtn.classList.add('btn-danger');
+        } else {
+          muteBtn.classList.remove('btn-success');
+          muteBtn.classList.add('btn-danger');
+        }
+      }
+    }
+  }
+
+  _toggleVideo() {
+    if (this._stream) {
+      const videoTracks = this._stream.getVideoTracks();
+      if (videoTracks[0]) {
+        const enabled = !videoTracks[0].enabled;
+        videoTracks[0].enabled = enabled;
+
+        const camBtn = this.querySelector('.btn-cam');
+        if (enabled) {
+          camBtn.classList.remove('btn-success');
+          camBtn.classList.add('btn-danger');
+        } else {
+          camBtn.classList.remove('btn-success');
+          camBtn.classList.add('btn-danger');
+        }
+      }
+    }
   }
 }
