@@ -4095,6 +4095,11 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       if (self.srcObject !== this._stream) {
         self.srcObject = this._stream;
       }
+
+      this.peerData.on(_peerData.AppEventType.PEER, this._onPeer);
+      this.peerData.on(_peerData.AppEventType.CHANNEL, this._onChannel);
+
+      this.conversation.owner = this._username;
     }
   }, {
     key: 'disconnectedCallback',
@@ -4106,10 +4111,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     value: function connect() {
       if (this.peerData && this.id.length > 0) {
         this.peerData.connect(this.id);
-        this.peerData.on(_peerData.AppEventType.PEER, this._onPeer);
-        this.peerData.on(_peerData.AppEventType.CHANNEL, this._onChannel);
-
-        this.conversation.owner = this._username;
 
         var hangBtn = this.querySelector('.btn-hang');
         hangBtn.style.display = 'block';
@@ -9160,4 +9161,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.00c5aa33e46e314adb18.js.map
+//# sourceMappingURL=application.28e6a160d3eb487f3334.js.map
