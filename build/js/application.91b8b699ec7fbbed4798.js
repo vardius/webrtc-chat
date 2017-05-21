@@ -3342,13 +3342,21 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
         var username = searchParams.get('username');
 
         if (roomname && username && roomname.length > 0 && username.length > 0) {
-          var chat = _this2.querySelector('webrtc-chat');
           _this2._stream = null;
-          navigator.getUserMedia({
+          var chat = _this2.querySelector('webrtc-chat');
+          var constraints = {
             "audio": true,
             "video": true
-          }, function (stream) {
-            chat.createRoom(roomname, username, stream);
+          };
+          navigator.getUserMedia(constraints, function (stream) {
+            return chat.createRoom(roomname, username, stream);
+          }, function (error) {
+            if (error.name === 'ConstraintNotSatisfiedError') {
+              alert('The resolution ' + constraints.video.width.exact + 'x' + constraints.video.width.exact + ' px is not supported by your device.');
+            } else if (error.name === 'PermissionDeniedError') {
+              alert('Permissions have not been granted to use your camera and ' + 'microphone, you need to allow the page access to your devices in ' + 'order for the demo to work.');
+            }
+            alert('getUserMedia error: ' + error.name, error);
           });
         } else {
           var popup = _this2.querySelector('webrtc-popup');
@@ -9175,4 +9183,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.c02506f522a1aaf53f92.js.map
+//# sourceMappingURL=application.91b8b699ec7fbbed4798.js.map
