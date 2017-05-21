@@ -164,8 +164,8 @@ export class Room extends HTMLElement {
 
         const muteBtn = this.querySelector('.btn-mute');
         if (enabled) {
-          muteBtn.classList.remove('btn-success');
-          muteBtn.classList.add('btn-danger');
+          muteBtn.classList.add('btn-success');
+          muteBtn.classList.remove('btn-danger');
         } else {
           muteBtn.classList.remove('btn-success');
           muteBtn.classList.add('btn-danger');
@@ -183,8 +183,8 @@ export class Room extends HTMLElement {
 
         const camBtn = this.querySelector('.btn-cam');
         if (enabled) {
-          camBtn.classList.remove('btn-success');
-          camBtn.classList.add('btn-danger');
+          camBtn.classList.add('btn-success');
+          camBtn.classList.remove('btn-danger');
         } else {
           camBtn.classList.remove('btn-success');
           camBtn.classList.add('btn-danger');
