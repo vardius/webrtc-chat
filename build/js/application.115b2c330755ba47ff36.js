@@ -8456,7 +8456,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-cam btn-success btn-circle\"> <i class=\"fa fa-video-camera\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-mute btn-success btn-circle\"> <i class=\"fa fa-deaf\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-call btn-success btn-circle\"> <i class=\"fa fa-sign-in\" aria-hidden=true> </i></button> <button type=button class=\"btn btn-hang btn-danger btn-circle\"> <i class=\"fa fa-sign-out\" aria-hidden=true></i> </button> ";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation></webrtc-conversation> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-cam btn-success btn-circle\" title=\"Toggle camera\"> <i class=\"fa fa-video-camera\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-mute btn-success btn-circle\" title=\"Toggle microphone\"> <i class=\"fa fa-deaf\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-call btn-success btn-circle\" title=\"Enter room\"> <i class=\"fa fa-sign-in\" aria-hidden=true> </i></button> <button type=button class=\"btn btn-hang btn-danger btn-circle\" title=\"Exit room\"> <i class=\"fa fa-sign-out\" aria-hidden=true></i> </button> ";
 
 /***/ }),
 /* 380 */,
@@ -9231,4 +9231,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.998ad1a4d5ba50cf4f4b.js.map
+//# sourceMappingURL=application.115b2c330755ba47ff36.js.map
