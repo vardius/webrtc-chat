@@ -4111,7 +4111,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     value: function connect() {
       if (this.peerData && this.id.length > 0) {
         this.peerData.connect(this.id);
-
         var hangBtn = this.querySelector('.btn-hang');
         hangBtn.style.display = 'block';
         var callBtn = this.querySelector('.btn-call');
@@ -4179,7 +4178,9 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       });
 
       e.data.onconnectionstatechange = function (event) {
-        e.data.onconnectionstatechange(event);
+        if (e.data.onconnectionstatechange) {
+          e.data.onconnectionstatechange(event);
+        }
         if (e.data.connectionState === 'closed') {
           peerElem.parentNode.removeChild(peerElem);
         }
@@ -4189,6 +4190,15 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         var stream = event.streams[0];
         if (stream !== peerElem.getStream()) {
           peerElem.setStream(stream);
+        }
+      };
+
+      e.data.onsignalingstatechange = function (event) {
+        if (e.data.onsignalingstatechange) {
+          e.data.onsignalingstatechange(event);
+        }
+        if (e.data.signalingState === "closed") {
+          peerElem.parentNode.removeChild(peerElem);
         }
       };
     }
@@ -9161,4 +9171,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.28e6a160d3eb487f3334.js.map
+//# sourceMappingURL=application.943ddd4e490be225f262.js.map

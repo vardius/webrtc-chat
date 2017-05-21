@@ -63,7 +63,6 @@ export class Room extends HTMLElement {
   connect() {
     if (this.peerData && this.id.length > 0) {
       this.peerData.connect(this.id);
-
       const hangBtn = this.querySelector('.btn-hang');
       hangBtn.style.display = 'block';
       const callBtn = this.querySelector('.btn-call');
@@ -119,7 +118,9 @@ export class Room extends HTMLElement {
     this._stream.getTracks().forEach(track => e.data.addTrack(track, this._stream));
 
     e.data.onconnectionstatechange = event => {
-      e.data.onconnectionstatechange(event);
+      if (e.data.onconnectionstatechange) {
+        e.data.onconnectionstatechange(event);
+      }
       if (e.data.connectionState === 'closed') {
         peerElem.parentNode.removeChild(peerElem);
       }
@@ -129,6 +130,15 @@ export class Room extends HTMLElement {
       const stream = event.streams[0];
       if (stream !== peerElem.getStream()) {
         peerElem.setStream(stream);
+      }
+    };
+
+    e.data.onsignalingstatechange = event => {
+      if (e.data.onsignalingstatechange) {
+        e.data.onsignalingstatechange(event);
+      }
+      if (e.data.signalingState === "closed") {
+        peerElem.parentNode.removeChild(peerElem);
       }
     };
   }
