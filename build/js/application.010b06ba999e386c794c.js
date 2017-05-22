@@ -4091,7 +4091,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
     _this._toggleVideo = _this._toggleVideo.bind(_this);
     _this._toggleFullScreen = _this._toggleFullScreen.bind(_this);
     _this._onMouseMove = _this._onMouseMove.bind(_this);
-    _this._onMouseLeave = _this._onMouseLeave.bind(_this);
     return _this;
   }
 
@@ -4102,7 +4101,6 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       this.conversation = this.querySelector('webrtc-conversation');
 
       this.addEventListener("mousemove", this._onMouseMove);
-      this.addEventListener("mouseleave", this._onMouseLeave);
 
       var enterBtn = this.querySelector('.btn-enter');
       enterBtn.addEventListener('click', this.connect);
@@ -4260,21 +4258,20 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
   }, {
     key: '_onMouseMove',
     value: function _onMouseMove() {
+      var _this6 = this;
+
       clearTimeout(this._timeout);
       var giuElements = this.querySelectorAll(".gui");
       Array.from(giuElements).forEach(function (element) {
         $(element).fadeIn();
       });
-      this._timeout = setTimeout(this._onMouseLeave, 5000);
-    }
-  }, {
-    key: '_onMouseLeave',
-    value: function _onMouseLeave() {
-      clearTimeout(this._timeout);
-      var giuElements = this.querySelectorAll(".gui");
-      Array.from(giuElements).forEach(function (element) {
-        $(element).fadeOut();
-      });
+      this._timeout = setTimeout(function () {
+        if (_this6._isConnected) {
+          Array.from(giuElements).forEach(function (element) {
+            $(element).fadeOut();
+          });
+        }
+      }, 10000);
     }
   }, {
     key: '_toggleFullScreen',
@@ -9311,4 +9308,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.360af13d5d63980cb261.js.map
+//# sourceMappingURL=application.010b06ba999e386c794c.js.map

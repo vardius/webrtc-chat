@@ -32,7 +32,6 @@ export class Room extends HTMLElement {
     this._toggleVideo = this._toggleVideo.bind(this);
     this._toggleFullScreen = this._toggleFullScreen.bind(this);
     this._onMouseMove = this._onMouseMove.bind(this);
-    this._onMouseLeave = this._onMouseLeave.bind(this);
   }
 
   static get observedAttributes() {
@@ -44,7 +43,6 @@ export class Room extends HTMLElement {
     this.conversation = this.querySelector('webrtc-conversation');
 
     this.addEventListener("mousemove", this._onMouseMove);
-    this.addEventListener("mouseleave", this._onMouseLeave);
 
     const enterBtn = this.querySelector('.btn-enter');
     enterBtn.addEventListener('click', this.connect);
@@ -184,15 +182,13 @@ export class Room extends HTMLElement {
     Array.from(giuElements).forEach(element => {
       $(element).fadeIn();
     });
-    this._timeout = setTimeout(this._onMouseLeave, 5000);
-  }
-
-  _onMouseLeave() {
-    clearTimeout(this._timeout);
-    const giuElements = this.querySelectorAll(".gui");
-    Array.from(giuElements).forEach(element => {
-      $(element).fadeOut();
-    });
+    this._timeout = setTimeout(() => {
+      if (this._isConnected) {
+        Array.from(giuElements).forEach(element => {
+          $(element).fadeOut();
+        });
+      }
+    }, 10000);
   }
 
   _toggleFullScreen() {
