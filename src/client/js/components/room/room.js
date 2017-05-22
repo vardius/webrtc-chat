@@ -192,6 +192,7 @@ export class Room extends HTMLElement {
   }
 
   _toggleFullScreen() {
+    const fullscreenBtn = this.querySelector('.btn-fullscreen');
     if (!document.fullscreenElement &&
       !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
       if (document.documentElement.requestFullscreen) {
@@ -203,6 +204,8 @@ export class Room extends HTMLElement {
       } else if (document.documentElement.webkitRequestFullscreen) {
         document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
+      fullscreenBtn.classList.add('btn-info');
+      fullscreenBtn.classList.remove('btn-default');
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -213,6 +216,8 @@ export class Room extends HTMLElement {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
+      fullscreenBtn.classList.remove('btn-info');
+      fullscreenBtn.classList.add('btn-default');
     }
   }
 
@@ -225,11 +230,11 @@ export class Room extends HTMLElement {
 
         const muteBtn = this.querySelector('.btn-mute');
         if (enabled) {
-          muteBtn.classList.add('btn-success');
           muteBtn.classList.remove('btn-danger');
+          muteBtn.classList.add('btn-default');
         } else {
-          muteBtn.classList.remove('btn-success');
           muteBtn.classList.add('btn-danger');
+          muteBtn.classList.remove('btn-default');
         }
       }
     }
@@ -244,11 +249,11 @@ export class Room extends HTMLElement {
 
         const camBtn = this.querySelector('.btn-cam');
         if (enabled) {
-          camBtn.classList.add('btn-success');
           camBtn.classList.remove('btn-danger');
+          camBtn.classList.add('btn-default');
         } else {
-          camBtn.classList.remove('btn-success');
           camBtn.classList.add('btn-danger');
+          camBtn.classList.remove('btn-default');
         }
       }
     }

@@ -4276,6 +4276,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
   }, {
     key: '_toggleFullScreen',
     value: function _toggleFullScreen() {
+      var fullscreenBtn = this.querySelector('.btn-fullscreen');
       if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen();
@@ -4286,6 +4287,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         } else if (document.documentElement.webkitRequestFullscreen) {
           document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
         }
+        fullscreenBtn.classList.add('btn-info');
+        fullscreenBtn.classList.remove('btn-default');
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -4296,6 +4299,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen();
         }
+        fullscreenBtn.classList.remove('btn-info');
+        fullscreenBtn.classList.add('btn-default');
       }
     }
   }, {
@@ -4309,11 +4314,11 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
           var muteBtn = this.querySelector('.btn-mute');
           if (enabled) {
-            muteBtn.classList.add('btn-success');
             muteBtn.classList.remove('btn-danger');
+            muteBtn.classList.add('btn-default');
           } else {
-            muteBtn.classList.remove('btn-success');
             muteBtn.classList.add('btn-danger');
+            muteBtn.classList.remove('btn-default');
           }
         }
       }
@@ -4329,11 +4334,11 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
           var camBtn = this.querySelector('.btn-cam');
           if (enabled) {
-            camBtn.classList.add('btn-success');
             camBtn.classList.remove('btn-danger');
+            camBtn.classList.add('btn-default');
           } else {
-            camBtn.classList.remove('btn-success');
             camBtn.classList.add('btn-danger');
+            camBtn.classList.remove('btn-default');
           }
         }
       }
@@ -8533,7 +8538,7 @@ module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dial
 /* 379 */
 /***/ (function(module, exports) {
 
-module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation class=gui></webrtc-conversation> <video autoplay muted class=\"video-self gui\"></video> <button type=button class=\"btn btn-cam btn-success btn-circle gui\" title=\"Toggle camera\"> <i class=\"fa fa-video-camera\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-mute btn-success btn-circle gui\" title=\"Toggle microphone\"> <i class=\"fa fa-deaf\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-fullscreen btn-primary btn-circle gui\" title=\"Exit room\"> <i class=\"fa fa-arrows-alt\" aria-hidden=true></i> </button> <button type=button class=\"btn btn-enter btn-success btn-circle gui\" title=\"Enter room\"> <i class=\"icon-enter fa fa-sign-in\" aria-hidden=true> </i></button> ";
+module.exports = "<webrtc-participants></webrtc-participants> <webrtc-conversation class=gui></webrtc-conversation> <div class=gui> <video autoplay muted class=video-self></video> <button type=button class=\"btn btn-enter btn-transparent btn-success\" title=\"Enter room\"><i class=\"icon-enter fa fa-sign-in\" aria-hidden=true></i></button> <div class=\"btn-group btn-actions\" role=group> <button type=button class=\"btn btn-cam btn-transparent btn-default\" title=\"Toggle camera\"><i class=\"fa fa-video-camera\" aria-hidden=true></i></button> <button type=button class=\"btn btn-mute btn-transparent btn-default\" title=\"Toggle microphone\"><i class=\"fa fa-deaf\" aria-hidden=true></i></button> <button type=button class=\"btn btn-fullscreen btn-transparent btn-default\" title=\"Toggle Fullscreen\"><i class=\"fa fa-arrows-alt\" aria-hidden=true></i></button> </div> </div> ";
 
 /***/ }),
 /* 380 */,
@@ -9308,4 +9313,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.010b06ba999e386c794c.js.map
+//# sourceMappingURL=application.d38477fdbbf07cde9e17.js.map

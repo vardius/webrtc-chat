@@ -1,15 +1,11 @@
 <webrtc-participants></webrtc-participants>
 <webrtc-conversation class="gui"></webrtc-conversation>
-<video autoplay muted class="video-self gui"></video>
-<button type="button" class="btn btn-cam btn-success btn-circle gui" title="Toggle camera">
-<i class="fa fa-video-camera" aria-hidden="true"></i>
-    </button>
-<button type="button" class="btn btn-mute btn-success btn-circle gui" title="Toggle microphone">
-    <i class="fa fa-deaf" aria-hidden="true"></i>
-</button>
-<button type="button" class="btn btn-fullscreen btn-primary btn-circle gui" title="Exit room">
-    <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-</button>
-<button type="button" class="btn btn-enter btn-success btn-circle gui" title="Enter room">
-    <i class="icon-enter fa fa-sign-in" aria-hidden="true">
-</button>
+<div class="gui">
+  <video autoplay muted class="video-self"></video>
+    <button type="button" class="btn btn-enter btn-transparent btn-success" title="Enter room"><i class="icon-enter fa fa-sign-in" aria-hidden="true"></button>
+  <div class="btn-group btn-actions" role="group">
+    <button type="button" class="btn btn-cam btn-transparent btn-default" title="Toggle camera"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-mute btn-transparent btn-default" title="Toggle microphone"><i class="fa fa-deaf" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-fullscreen btn-transparent btn-default" title="Toggle Fullscreen"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+  </div>
+</div>
