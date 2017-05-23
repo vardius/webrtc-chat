@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "WebRTC Chat",
+  "version": "1.0",
+  "minimum_chrome_version": "32",
+  "icons": {
+    "16": "./build/images/icon_16.png",
+    "128": "./build/images/icon_128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["./bin/chrome.js"]
+    }
+  }
+}
