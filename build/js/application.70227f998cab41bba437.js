@@ -3989,7 +3989,7 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
   _createClass(Popup, [{
     key: 'connectedCallback',
     value: function connectedCallback() {
-      var btnSend = this.querySelector('.btn-enter');
+      var btnSend = this.querySelector('.btn-login');
       btnSend.addEventListener('click', this._onEnter);
 
       var room = this.querySelector('.room-query');
@@ -8532,7 +8532,7 @@ module.exports = "<video autoplay class=video-remote></video>";
 /* 378 */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dialog> <div class=modal-dialog role=document> <div class=modal-content> <div class=modal-header> <h4 class=modal-title>Room Name</h4> </div> <div class=modal-body> <div class=form-group> <label for=exampleInputFile>Room</label> <input class=\"form-control room-query\"/> </div> <div class=form-group> <label for=exampleInputFile>Username</label> <input class=\"form-control username-query\"/> </div> </div> <div class=modal-footer> <button type=button class=\"btn btn-primary btn-enter\">Enter</button> </div> </div> </div> </div> ";
+module.exports = "<div id=enter-modal class=\"modal fade\" tabindex=-1 role=dialog> <div class=modal-dialog role=document> <div class=modal-content> <div class=modal-header> <h4 class=modal-title>Room Name</h4> </div> <div class=modal-body> <div class=form-group> <label for=exampleInputFile>Room</label> <input class=\"form-control room-query\"/> </div> <div class=form-group> <label for=exampleInputFile>Username</label> <input class=\"form-control username-query\"/> </div> </div> <div class=modal-footer> <button type=button class=\"btn btn-primary btn-login\">Enter</button> </div> </div> </div> </div> ";
 
 /***/ }),
 /* 379 */
@@ -9313,4 +9313,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.d38477fdbbf07cde9e17.js.map
+//# sourceMappingURL=application.70227f998cab41bba437.js.map

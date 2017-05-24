@@ -17,7 +17,7 @@ export class Popup extends HTMLElement {
   }
 
   connectedCallback() {
-    const btnSend = this.querySelector('.btn-enter');
+    const btnSend = this.querySelector('.btn-login');
     btnSend.addEventListener('click', this._onEnter);
 
     const room = this.querySelector('.room-query');
