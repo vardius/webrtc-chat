@@ -26,14 +26,23 @@ export class Chat extends HTMLElement {
         navigator.getUserMedia(constraints,
           stream => chat.createRoom(roomname, username, stream),
           error => {
-            if (error.name === 'ConstraintNotSatisfiedError') {
-              alert('The resolution ' + constraints.video.width.exact + 'x' + constraints.video.width.exact + ' px is not supported by your device.');
-            } else if (error.name === 'PermissionDeniedError') {
-              alert('Permissions have not been granted to use your camera and ' +
-                'microphone, you need to allow the page access to your devices in ' +
-                'order for the demo to work.');
+            if (error.name === 'AbortError') {
+              alert('Some problem occurred which prevented media device from being used. ' + error.message);
+
+            } else if (error.name === 'NotAllowedError') {
+              alert('The access to the media device has been denied. ' + error.message);
+
+            } else if (error.name === 'NotFoundError') {
+              alert('No media tracks of the type specified were found. ' + error.message);
+
+            } else if (error.name === 'NotReadableError') {
+              alert('Access to the media device was prevented by a hardware error occurred at the operating system. ' + error.message);
+
+            } else if (error.name === 'SecurityError') {
+              alert('Media support is disabled. ' + error.message);
+            } else {
+              alert(error.name + ': ' + error.message);
             }
-            alert('getUserMedia error: ' + error.name, error);
           });
       } else {
         const popup = this.querySelector('webrtc-popup');

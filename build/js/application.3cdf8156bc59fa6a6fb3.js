@@ -3351,12 +3351,19 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
           navigator.getUserMedia(constraints, function (stream) {
             return chat.createRoom(roomname, username, stream);
           }, function (error) {
-            if (error.name === 'ConstraintNotSatisfiedError') {
-              alert('The resolution ' + constraints.video.width.exact + 'x' + constraints.video.width.exact + ' px is not supported by your device.');
-            } else if (error.name === 'PermissionDeniedError') {
-              alert('Permissions have not been granted to use your camera and ' + 'microphone, you need to allow the page access to your devices in ' + 'order for the demo to work.');
+            if (error.name === 'AbortError') {
+              alert('Some problem occurred which prevented media device from being used. ' + error.message);
+            } else if (error.name === 'NotAllowedError') {
+              alert('The access to the media device has been denied. ' + error.message);
+            } else if (error.name === 'NotFoundError') {
+              alert('No media tracks of the type specified were found. ' + error.message);
+            } else if (error.name === 'NotReadableError') {
+              alert('Access to the media device was prevented by a hardware error occurred at the operating system. ' + error.message);
+            } else if (error.name === 'SecurityError') {
+              alert('Media support is disabled. ' + error.message);
+            } else {
+              alert(error.name + ': ' + error.message);
             }
-            alert('getUserMedia error: ' + error.name, error);
           });
         } else {
           var popup = _this2.querySelector('webrtc-popup');
@@ -9313,4 +9320,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.70227f998cab41bba437.js.map
+//# sourceMappingURL=application.3cdf8156bc59fa6a6fb3.js.map
