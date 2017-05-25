@@ -3320,7 +3320,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', {
+var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)("webrtc-app", {
   template: __webpack_require__(371)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Chat, _HTMLElement);
@@ -3332,41 +3332,41 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-app', 
   }
 
   _createClass(Chat, [{
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
       var _this2 = this;
 
-      window.addEventListener('WebComponentsReady', function () {
+      window.addEventListener("WebComponentsReady", function () {
         var searchParams = new URLSearchParams(window.location.href);
-        var roomname = searchParams.get('room');
-        var username = searchParams.get('username');
+        var roomname = searchParams.get("room");
+        var username = searchParams.get("username");
 
         if (roomname && username && roomname.length > 0 && username.length > 0) {
           _this2._stream = null;
-          var chat = _this2.querySelector('webrtc-chat');
+          var chat = _this2.querySelector("webrtc-chat");
           var constraints = {
-            "audio": true,
-            "video": true
+            audio: true,
+            video: true
           };
           navigator.getUserMedia(constraints, function (stream) {
             return chat.createRoom(roomname, username, stream);
           }, function (error) {
-            if (error.name === 'AbortError') {
-              alert('Some problem occurred which prevented media device from being used. ' + error.message);
-            } else if (error.name === 'NotAllowedError') {
-              alert('The access to the media device has been denied. ' + error.message);
-            } else if (error.name === 'NotFoundError') {
-              alert('No media tracks of the type specified were found. ' + error.message);
-            } else if (error.name === 'NotReadableError') {
-              alert('Access to the media device was prevented by a hardware error occurred at the operating system. ' + error.message);
-            } else if (error.name === 'SecurityError') {
-              alert('Media support is disabled. ' + error.message);
+            if (error.name === "AbortError") {
+              alert("Some problem occurred which prevented media device from being used. " + error.message);
+            } else if (error.name === "NotAllowedError") {
+              alert("The access to the media device has been denied. " + error.message);
+            } else if (error.name === "NotFoundError") {
+              alert("No media tracks of the type specified were found. " + error.message);
+            } else if (error.name === "NotReadableError") {
+              alert("Access to the media device was prevented by a hardware error occurred at the operating system. " + error.message);
+            } else if (error.name === "SecurityError") {
+              alert("Media support is disabled. " + error.message);
             } else {
-              alert(error.name + ': ' + error.message);
+              alert(error.name + ": " + error.message);
             }
           });
         } else {
-          var popup = _this2.querySelector('webrtc-popup');
+          var popup = _this2.querySelector("webrtc-popup");
           popup.show();
         }
       });
@@ -3406,7 +3406,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat', {
+var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)("webrtc-chat", {
   template: __webpack_require__(372)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Chat, _HTMLElement);
@@ -3436,7 +3436,7 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
   }
 
   _createClass(Chat, [{
-    key: 'createRoom',
+    key: "createRoom",
     value: function createRoom(id, username, stream) {
       if (id.length > 0 && username.length > 0) {
         var room = document.createElement("webrtc-room");
@@ -3445,15 +3445,15 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
         room.peerData = this.peerData;
         room.setStream(stream);
 
-        this.querySelector('.rooms').appendChild(room);
+        this.querySelector(".rooms").appendChild(room);
 
         return room;
       }
     }
   }, {
-    key: 'removeRoom',
+    key: "removeRoom",
     value: function removeRoom(id) {
-      var children = this.querySelector('.rooms').children;
+      var children = this.querySelector(".rooms").children;
       Array.from(children).forEach(function (room) {
         if (room.id === id) {
           room.disconnect();
@@ -3462,14 +3462,14 @@ var Chat = exports.Chat = (_dec = (0, _webComponent.WebComponent)('webrtc-chat',
       });
     }
   }, {
-    key: '_onError',
+    key: "_onError",
     value: function _onError(e) {
       this.dispatchEvent(new CustomEvent("error", {
         detail: e
       }));
     }
   }, {
-    key: '_onLog',
+    key: "_onLog",
     value: function _onLog(e) {
       this.dispatchEvent(new CustomEvent("log", {
         detail: e
@@ -3504,7 +3504,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Conversation = exports.Conversation = (_dec = (0, _webComponent.WebComponent)('webrtc-conversation', {
+var Conversation = exports.Conversation = (_dec = (0, _webComponent.WebComponent)("webrtc-conversation", {
   template: __webpack_require__(373)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Conversation, _HTMLElement);
@@ -3514,7 +3514,7 @@ var Conversation = exports.Conversation = (_dec = (0, _webComponent.WebComponent
 
     var _this = _possibleConstructorReturn(this, (Conversation.__proto__ || Object.getPrototypeOf(Conversation)).call(this));
 
-    _this._owner = '';
+    _this._owner = "";
 
     _this.addMessage = _this.addMessage.bind(_this);
     _this.scrollDown = _this.scrollDown.bind(_this);
@@ -3524,41 +3524,41 @@ var Conversation = exports.Conversation = (_dec = (0, _webComponent.WebComponent
   }
 
   _createClass(Conversation, [{
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
-      var messageNew = this.querySelector('webrtc-message-new');
-      messageNew.addEventListener('send', this._onSend);
+      var messageNew = this.querySelector("webrtc-message-new");
+      messageNew.addEventListener("send", this._onSend);
     }
   }, {
-    key: 'addMessage',
+    key: "addMessage",
     value: function addMessage(author, body, type) {
       var msg = document.createElement("webrtc-message");
       msg.author = author;
       msg.body = body;
       msg.type = type;
 
-      this.querySelector('.conversation').appendChild(msg);
+      this.querySelector(".conversation").appendChild(msg);
       this.scrollDown();
     }
   }, {
-    key: 'scrollDown',
+    key: "scrollDown",
     value: function scrollDown() {
-      var elem = this.querySelector('.conversation');
+      var elem = this.querySelector(".conversation");
       elem.scrollTop = elem.scrollHeight;
     }
   }, {
-    key: '_onSend',
+    key: "_onSend",
     value: function _onSend(e) {
       var msg = e.detail;
       if (msg) {
-        this.addMessage(this._owner, e.detail, 'outcome');
+        this.addMessage(this._owner, e.detail, "outcome");
         this.scrollDown();
       }
     }
   }], [{
-    key: 'observedAttributes',
+    key: "observedAttributes",
     get: function get() {
-      return ['owner'];
+      return ["owner"];
     }
   }]);
 
@@ -3578,7 +3578,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _app = __webpack_require__(149);
 
-Object.defineProperty(exports, 'App', {
+Object.defineProperty(exports, "App", {
   enumerable: true,
   get: function get() {
     return _app.App;
@@ -3587,7 +3587,7 @@ Object.defineProperty(exports, 'App', {
 
 var _popup = __webpack_require__(157);
 
-Object.defineProperty(exports, 'Popup', {
+Object.defineProperty(exports, "Popup", {
   enumerable: true,
   get: function get() {
     return _popup.Popup;
@@ -3596,7 +3596,7 @@ Object.defineProperty(exports, 'Popup', {
 
 var _chat = __webpack_require__(150);
 
-Object.defineProperty(exports, 'Chat', {
+Object.defineProperty(exports, "Chat", {
   enumerable: true,
   get: function get() {
     return _chat.Chat;
@@ -3605,7 +3605,7 @@ Object.defineProperty(exports, 'Chat', {
 
 var _room = __webpack_require__(158);
 
-Object.defineProperty(exports, 'Room', {
+Object.defineProperty(exports, "Room", {
   enumerable: true,
   get: function get() {
     return _room.Room;
@@ -3614,7 +3614,7 @@ Object.defineProperty(exports, 'Room', {
 
 var _participants = __webpack_require__(155);
 
-Object.defineProperty(exports, 'Participants', {
+Object.defineProperty(exports, "Participants", {
   enumerable: true,
   get: function get() {
     return _participants.Participants;
@@ -3623,7 +3623,7 @@ Object.defineProperty(exports, 'Participants', {
 
 var _conversation = __webpack_require__(151);
 
-Object.defineProperty(exports, 'Conversation', {
+Object.defineProperty(exports, "Conversation", {
   enumerable: true,
   get: function get() {
     return _conversation.Conversation;
@@ -3632,7 +3632,7 @@ Object.defineProperty(exports, 'Conversation', {
 
 var _peer = __webpack_require__(156);
 
-Object.defineProperty(exports, 'Peer', {
+Object.defineProperty(exports, "Peer", {
   enumerable: true,
   get: function get() {
     return _peer.Peer;
@@ -3641,7 +3641,7 @@ Object.defineProperty(exports, 'Peer', {
 
 var _message = __webpack_require__(154);
 
-Object.defineProperty(exports, 'Message', {
+Object.defineProperty(exports, "Message", {
   enumerable: true,
   get: function get() {
     return _message.Message;
@@ -3650,7 +3650,7 @@ Object.defineProperty(exports, 'Message', {
 
 var _messageNew = __webpack_require__(153);
 
-Object.defineProperty(exports, 'MessageNew', {
+Object.defineProperty(exports, "MessageNew", {
   enumerable: true,
   get: function get() {
     return _messageNew.MessageNew;
@@ -3681,7 +3681,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MessageNew = exports.MessageNew = (_dec = (0, _webComponent.WebComponent)('webrtc-message-new', {
+var MessageNew = exports.MessageNew = (_dec = (0, _webComponent.WebComponent)("webrtc-message-new", {
   template: __webpack_require__(374)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(MessageNew, _HTMLElement);
@@ -3696,17 +3696,17 @@ var MessageNew = exports.MessageNew = (_dec = (0, _webComponent.WebComponent)('w
   }
 
   _createClass(MessageNew, [{
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
-      var area = this.querySelector('textarea');
-      area.addEventListener('keypress', this._onKeyPress);
+      var area = this.querySelector("textarea");
+      area.addEventListener("keypress", this._onKeyPress);
     }
   }, {
-    key: '_onKeyPress',
+    key: "_onKeyPress",
     value: function _onKeyPress(e) {
       if (e.keyCode === 13 && !event.shiftKey) {
         e.preventDefault();
-        var area = this.querySelector('textarea');
+        var area = this.querySelector("textarea");
         var msg = area.value;
         area.value = "";
 
@@ -3744,7 +3744,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Message = exports.Message = (_dec = (0, _webComponent.WebComponent)('webrtc-message', {
+var Message = exports.Message = (_dec = (0, _webComponent.WebComponent)("webrtc-message", {
   template: __webpack_require__(375)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Message, _HTMLElement);
@@ -3754,39 +3754,39 @@ var Message = exports.Message = (_dec = (0, _webComponent.WebComponent)('webrtc-
 
     var _this = _possibleConstructorReturn(this, (Message.__proto__ || Object.getPrototypeOf(Message)).call(this));
 
-    _this._type = 'system';
+    _this._type = "system";
     _this._time = new Date().getTime();
-    _this._author = '';
-    _this._body = '';
+    _this._author = "";
+    _this._body = "";
     return _this;
   }
 
   _createClass(Message, [{
-    key: 'attributeChangedCallback',
+    key: "attributeChangedCallback",
     value: function attributeChangedCallback(name, oldValue, newValue) {
       if (oldValue !== newValue) {
         this._updateRendering();
       }
     }
   }, {
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
       this._updateRendering();
     }
   }, {
-    key: '_updateRendering',
+    key: "_updateRendering",
     value: function _updateRendering() {
-      var container = this.querySelector('p');
+      var container = this.querySelector("p");
       if (container) {
-        container.innerHTML = '<b>' + this._author + ': </b>' + this._body;
-        container.className = 'message ' + this._type;
+        container.innerHTML = "<b>" + this._author + ": </b>" + this._body;
+        container.className = "message " + this._type;
         container.setAttribute("title", new Date(this._time));
       }
     }
   }], [{
-    key: 'observedAttributes',
+    key: "observedAttributes",
     get: function get() {
-      return ['type', 'body', 'time', 'author'];
+      return ["type", "body", "time", "author"];
     }
   }]);
 
@@ -3817,7 +3817,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent)('webrtc-participants', {
+var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent)("webrtc-participants", {
   template: __webpack_require__(376)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Participants, _HTMLElement);
@@ -3837,20 +3837,20 @@ var Participants = exports.Participants = (_dec = (0, _webComponent.WebComponent
   }
 
   _createClass(Participants, [{
-    key: 'addPeer',
+    key: "addPeer",
     value: function addPeer(name) {
-      var container = this.querySelector('.videos');
+      var container = this.querySelector(".videos");
 
-      var peer = document.createElement('webrtc-peer');
+      var peer = document.createElement("webrtc-peer");
       peer.name = name;
       container.appendChild(peer);
 
       return peer;
     }
   }, {
-    key: 'clear',
+    key: "clear",
     value: function clear() {
-      var container = this.querySelector('.videos');
+      var container = this.querySelector(".videos");
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
@@ -3884,7 +3884,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer', {
+var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)("webrtc-peer", {
   template: __webpack_require__(377)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Peer, _HTMLElement);
@@ -3894,57 +3894,57 @@ var Peer = exports.Peer = (_dec = (0, _webComponent.WebComponent)('webrtc-peer',
 
     var _this = _possibleConstructorReturn(this, (Peer.__proto__ || Object.getPrototypeOf(Peer)).call(this));
 
-    _this._name = '';
+    _this._name = "";
 
     _this.setStream = _this.setStream.bind(_this);
     return _this;
   }
 
   _createClass(Peer, [{
-    key: 'attributeChangedCallback',
+    key: "attributeChangedCallback",
     value: function attributeChangedCallback(name, oldValue, newValue) {
       if (oldValue !== newValue) {
         this._updateRendering();
       }
     }
   }, {
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
       this._updateRendering();
 
       this.dispatchEvent(new CustomEvent("connected"));
     }
   }, {
-    key: 'disconnectedCallback',
+    key: "disconnectedCallback",
     value: function disconnectedCallback() {
       this.dispatchEvent(new CustomEvent("disconnected"));
     }
   }, {
-    key: 'getStream',
+    key: "getStream",
     value: function getStream() {
-      var video = this.querySelector('video');
+      var video = this.querySelector("video");
       return video.srcObject;
     }
   }, {
-    key: 'setStream',
+    key: "setStream",
     value: function setStream(stream) {
-      var video = this.querySelector('video');
+      var video = this.querySelector("video");
       if (video.srcObject !== stream) {
         video.srcObject = stream;
       }
     }
   }, {
-    key: '_updateRendering',
+    key: "_updateRendering",
     value: function _updateRendering() {
-      var name = this.querySelector('.name');
+      var name = this.querySelector(".name");
       if (name) {
-        name.textContent = '' + this._name;
+        name.textContent = "" + this._name;
       }
     }
   }], [{
-    key: 'observedAttributes',
+    key: "observedAttributes",
     get: function get() {
-      return ['name'];
+      return ["name"];
     }
   }]);
 
@@ -3975,7 +3975,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popup', {
+var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)("webrtc-popup", {
   template: __webpack_require__(378)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Popup, _HTMLElement);
@@ -3994,33 +3994,33 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
   }
 
   _createClass(Popup, [{
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
-      var btnSend = this.querySelector('.btn-login');
-      btnSend.addEventListener('click', this._onEnter);
+      var btnSend = this.querySelector(".btn-login");
+      btnSend.addEventListener("click", this._onEnter);
 
-      var room = this.querySelector('.room-query');
-      room.addEventListener('keypress', this._onKeyPress);
+      var room = this.querySelector(".room-query");
+      room.addEventListener("keypress", this._onKeyPress);
 
-      var name = this.querySelector('.username-query');
-      name.addEventListener('keypress', this._onKeyPress);
+      var name = this.querySelector(".username-query");
+      name.addEventListener("keypress", this._onKeyPress);
 
-      $('#enter-modal').on('shown.bs.modal', function () {
+      $("#enter-modal").on("shown.bs.modal", function () {
         $(room).focus();
       });
     }
   }, {
-    key: 'show',
+    key: "show",
     value: function show() {
-      $('#enter-modal').modal('show');
+      $("#enter-modal").modal("show");
     }
   }, {
-    key: 'hide',
+    key: "hide",
     value: function hide() {
-      $('#enter-modal').modal('hide');
+      $("#enter-modal").modal("hide");
     }
   }, {
-    key: '_onKeyPress',
+    key: "_onKeyPress",
     value: function _onKeyPress(e) {
       if (e.keyCode === 13 && !event.shiftKey) {
         e.preventDefault();
@@ -4028,12 +4028,12 @@ var Popup = exports.Popup = (_dec = (0, _webComponent.WebComponent)('webrtc-popu
       }
     }
   }, {
-    key: '_onEnter',
+    key: "_onEnter",
     value: function _onEnter() {
-      var roomName = this.querySelector('.room-query').value;
-      var userName = this.querySelector('.username-query').value;
+      var roomName = this.querySelector(".room-query").value;
+      var userName = this.querySelector(".username-query").value;
       if (roomName.length > 0 && userName.length > 0) {
-        window.location.href = '' + window.location.origin + window.location.pathname + '?&room=' + roomName + '&username=' + userName;
+        window.location.href = "" + window.location.origin + window.location.pathname + "?&room=" + roomName + "&username=" + userName;
       }
     }
   }]);
@@ -4068,7 +4068,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room', {
+var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)("webrtc-room", {
   template: __webpack_require__(379)
 }), _dec(_class = function (_HTMLElement) {
   _inherits(Room, _HTMLElement);
@@ -4102,29 +4102,29 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
   }
 
   _createClass(Room, [{
-    key: 'connectedCallback',
+    key: "connectedCallback",
     value: function connectedCallback() {
-      this.participants = this.querySelector('webrtc-participants');
-      this.conversation = this.querySelector('webrtc-conversation');
+      this.participants = this.querySelector("webrtc-participants");
+      this.conversation = this.querySelector("webrtc-conversation");
 
       this.addEventListener("mousemove", this._onMouseMove);
 
-      var enterBtn = this.querySelector('.btn-enter');
-      enterBtn.addEventListener('click', this.connect);
-      enterBtn.addEventListener('click', this.disconnect);
+      var enterBtn = this.querySelector(".btn-enter");
+      enterBtn.addEventListener("click", this.connect);
+      enterBtn.addEventListener("click", this.disconnect);
 
-      var muteBtn = this.querySelector('.btn-mute');
-      muteBtn.addEventListener('click', this._toggleAudio);
+      var muteBtn = this.querySelector(".btn-mute");
+      muteBtn.addEventListener("click", this._toggleAudio);
 
-      var camBtn = this.querySelector('.btn-cam');
-      camBtn.addEventListener('click', this._toggleVideo);
-      var fsBtn = this.querySelector('.btn-fullscreen');
-      fsBtn.addEventListener('click', this._toggleFullScreen);
+      var camBtn = this.querySelector(".btn-cam");
+      camBtn.addEventListener("click", this._toggleVideo);
+      var fsBtn = this.querySelector(".btn-fullscreen");
+      fsBtn.addEventListener("click", this._toggleFullScreen);
 
-      var messageNew = this.conversation.querySelector('webrtc-message-new');
-      messageNew.addEventListener('send', this._onSend);
+      var messageNew = this.conversation.querySelector("webrtc-message-new");
+      messageNew.addEventListener("send", this._onSend);
 
-      var self = this.querySelector('.video-self');
+      var self = this.querySelector(".video-self");
       if (self.srcObject !== this._stream) {
         self.srcObject = this._stream;
       }
@@ -4135,12 +4135,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       this.conversation.owner = this._username;
     }
   }, {
-    key: 'disconnectedCallback',
+    key: "disconnectedCallback",
     value: function disconnectedCallback() {
       this.disconnect();
     }
   }, {
-    key: 'connect',
+    key: "connect",
     value: function connect() {
       var _this2 = this;
 
@@ -4148,12 +4148,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         if (this.peerData && this.id.length > 0) {
           this.peerData.connect(this.id);
 
-          var enterBtn = this.querySelector('.btn-enter');
-          enterBtn.classList.remove('btn-success');
-          enterBtn.classList.add('btn-danger');
-          var enterIcon = this.querySelector('.icon-enter');
-          enterIcon.classList.remove('fa-sign-in');
-          enterIcon.classList.add('fa-sign-out');
+          var enterBtn = this.querySelector(".btn-enter");
+          enterBtn.classList.remove("btn-success");
+          enterBtn.classList.add("btn-danger");
+          var enterIcon = this.querySelector(".icon-enter");
+          enterIcon.classList.remove("fa-sign-in");
+          enterIcon.classList.add("fa-sign-out");
 
           setTimeout(function () {
             return _this2._isConnected = true;
@@ -4162,7 +4162,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
     }
   }, {
-    key: 'disconnect',
+    key: "disconnect",
     value: function disconnect() {
       var _this3 = this;
 
@@ -4173,12 +4173,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
 
         this.participants.clear();
 
-        var enterBtn = this.querySelector('.btn-enter');
-        enterBtn.classList.add('btn-success');
-        enterBtn.classList.remove('btn-danger');
-        var enterIcon = this.querySelector('.icon-enter');
-        enterIcon.classList.add('fa-sign-in');
-        enterIcon.classList.remove('fa-sign-out');
+        var enterBtn = this.querySelector(".btn-enter");
+        enterBtn.classList.add("btn-success");
+        enterBtn.classList.remove("btn-danger");
+        var enterIcon = this.querySelector(".icon-enter");
+        enterIcon.classList.add("fa-sign-in");
+        enterIcon.classList.remove("fa-sign-out");
 
         setTimeout(function () {
           return _this3._isConnected = false;
@@ -4186,12 +4186,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }
     }
   }, {
-    key: 'setStream',
+    key: "setStream",
     value: function setStream(stream) {
       this._stream = stream;
     }
   }, {
-    key: 'send',
+    key: "send",
     value: function send(data) {
       this.peerData.send(JSON.stringify({
         message: data,
@@ -4199,12 +4199,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }));
     }
   }, {
-    key: '_onSend',
+    key: "_onSend",
     value: function _onSend(e) {
       this.send(e.detail);
     }
   }, {
-    key: '_onChannel',
+    key: "_onChannel",
     value: function _onChannel(e) {
       var _this4 = this;
 
@@ -4215,11 +4215,11 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       var channel = e.data;
       channel.onmessage = function (event) {
         var msg = JSON.parse(event.data);
-        _this4.conversation.addMessage(msg.username, msg.message, 'income');
+        _this4.conversation.addMessage(msg.username, msg.message, "income");
       };
     }
   }, {
-    key: '_onPeer',
+    key: "_onPeer",
     value: function _onPeer(e) {
       var _this5 = this;
 
@@ -4238,13 +4238,13 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         if (onconnectionstatechange) {
           onconnectionstatechange(event);
         }
-        if (e.data.connectionState === 'closed') {
+        if (e.data.connectionState === "closed") {
           peerElem.parentNode.removeChild(peerElem);
         }
       };
 
       e.data.oniceconnectionstatechange = function () {
-        if (e.data.iceConnectionState == 'disconnected') {
+        if (e.data.iceConnectionState == "disconnected") {
           peerElem.parentNode.removeChild(peerElem);
         }
       };
@@ -4263,7 +4263,7 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       };
     }
   }, {
-    key: '_onMouseMove',
+    key: "_onMouseMove",
     value: function _onMouseMove() {
       var _this6 = this;
 
@@ -4281,9 +4281,9 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
       }, 10000);
     }
   }, {
-    key: '_toggleFullScreen',
+    key: "_toggleFullScreen",
     value: function _toggleFullScreen() {
-      var fullscreenBtn = this.querySelector('.btn-fullscreen');
+      var fullscreenBtn = this.querySelector(".btn-fullscreen");
       if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen();
@@ -4294,8 +4294,8 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         } else if (document.documentElement.webkitRequestFullscreen) {
           document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
         }
-        fullscreenBtn.classList.add('btn-info');
-        fullscreenBtn.classList.remove('btn-default');
+        fullscreenBtn.classList.add("btn-info");
+        fullscreenBtn.classList.remove("btn-default");
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -4306,12 +4306,12 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
         } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen();
         }
-        fullscreenBtn.classList.remove('btn-info');
-        fullscreenBtn.classList.add('btn-default');
+        fullscreenBtn.classList.remove("btn-info");
+        fullscreenBtn.classList.add("btn-default");
       }
     }
   }, {
-    key: '_toggleAudio',
+    key: "_toggleAudio",
     value: function _toggleAudio() {
       if (this._stream) {
         var audioTracks = this._stream.getAudioTracks();
@@ -4319,19 +4319,19 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
           var enabled = !audioTracks[0].enabled;
           audioTracks[0].enabled = enabled;
 
-          var muteBtn = this.querySelector('.btn-mute');
+          var muteBtn = this.querySelector(".btn-mute");
           if (enabled) {
-            muteBtn.classList.remove('btn-danger');
-            muteBtn.classList.add('btn-default');
+            muteBtn.classList.remove("btn-danger");
+            muteBtn.classList.add("btn-default");
           } else {
-            muteBtn.classList.add('btn-danger');
-            muteBtn.classList.remove('btn-default');
+            muteBtn.classList.add("btn-danger");
+            muteBtn.classList.remove("btn-default");
           }
         }
       }
     }
   }, {
-    key: '_toggleVideo',
+    key: "_toggleVideo",
     value: function _toggleVideo() {
       if (this._stream) {
         var videoTracks = this._stream.getVideoTracks();
@@ -4339,21 +4339,21 @@ var Room = exports.Room = (_dec = (0, _webComponent.WebComponent)('webrtc-room',
           var enabled = !videoTracks[0].enabled;
           videoTracks[0].enabled = enabled;
 
-          var camBtn = this.querySelector('.btn-cam');
+          var camBtn = this.querySelector(".btn-cam");
           if (enabled) {
-            camBtn.classList.remove('btn-danger');
-            camBtn.classList.add('btn-default');
+            camBtn.classList.remove("btn-danger");
+            camBtn.classList.add("btn-default");
           } else {
-            camBtn.classList.add('btn-danger');
-            camBtn.classList.remove('btn-default');
+            camBtn.classList.add("btn-danger");
+            camBtn.classList.remove("btn-default");
           }
         }
       }
     }
   }], [{
-    key: 'observedAttributes',
+    key: "observedAttributes",
     get: function get() {
-      return ['id', 'username'];
+      return ["id", "username"];
     }
   }]);
 
@@ -9320,4 +9320,4 @@ module.exports = __webpack_require__(144);
 
 /***/ })
 ],[401]);
-//# sourceMappingURL=application.3cdf8156bc59fa6a6fb3.js.map
+//# sourceMappingURL=application.167c40da1daf8b4e29a8.js.map

@@ -90,7 +90,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "js/" + chunkId + "." + {"0":"3cdf8156bc59fa6a6fb3"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "js/" + chunkId + "." + {"0":"167c40da1daf8b4e29a8"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -10533,7 +10533,7 @@ function createTemplate(template) {
     return null;
   }
 
-  var t = document.createElement('template');
+  var t = document.createElement("template");
   t.innerHTML = template;
 
   return t.content.cloneNode(true);
@@ -10554,7 +10554,7 @@ function createStyles(styles) {
   if (!styles) {
     return null;
   }
-  var s = document.createElement('style');
+  var s = document.createElement("style");
   s.textContent = styles;
 
   return s;
@@ -10566,10 +10566,10 @@ var connectedCallback = (function (options) {
     original.prototype.connectedCallback = function () {
       var target = this;
       if (options.shadowDOM === true) {
-        var shadowRoot = constructor.shadowRoot;
+        var shadowRoot = target.shadowRoot;
         if (!shadowRoot) {
-          shadowRoot = constructor.attachShadow({
-            mode: 'open'
+          shadowRoot = target.attachShadow({
+            mode: "open"
           });
         }
         target = shadowRoot;
@@ -10579,7 +10579,7 @@ var connectedCallback = (function (options) {
 
       var oAttr = original.observedAttributes;
       if (oAttr && oAttr.indexOf(name) > -1) {
-        this['_' + name] = this.getAttribute(name);
+        this["_" + name] = this.getAttribute(name);
       }
 
       if (cb) {
@@ -10596,11 +10596,11 @@ var attributeChangedCallback = (function (original) {
   original.prototype.attributeChangedCallback = function (name, oldValue, newValue) {
     var oAttr = original.observedAttributes;
     if (oAttr && oAttr.indexOf(name) > -1) {
-      this['_' + name] = newValue;
+      this["_" + name] = newValue;
     }
 
     if (ac) {
-      ac.call(this);
+      ac.call(this, name, oldValue, newValue);
     }
   };
 
@@ -10614,7 +10614,7 @@ var proxy = (function (original) {
     oAttr.forEach(function (name) {
       Object.defineProperty(original.prototype, name, {
         get: function get() {
-          return this['_' + name];
+          return this["_" + name];
         },
         set: function set(value) {
           this.setAttribute(name, value);
@@ -10634,9 +10634,9 @@ function WebComponent(name) {
   return function (target) {
     target = applyMiddleware(connectedCallback(options), attributeChangedCallback, proxy)(target);
 
-    if (options['extends']) {
+    if (options["extends"]) {
       customElements.define(name, target, {
-        'extends': options['extends']
+        "extends": options["extends"]
       });
     } else {
       customElements.define(name, target);
@@ -25971,4 +25971,4 @@ module.exports = __webpack_require__(67);
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=vendor.732175e16e64d3e817e0.js.map
+//# sourceMappingURL=vendor.a7ca7652469c8a4715ce.js.map
