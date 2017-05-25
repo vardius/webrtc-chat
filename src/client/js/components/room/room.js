@@ -1,12 +1,8 @@
-import {
-  WebComponent
-} from 'web-component';
-import {
-  AppEventType
-} from 'peer-data';
+import { WebComponent } from "web-component";
+import { AppEventType } from "peer-data";
 
-@WebComponent('webrtc-room', {
-  template: require('./room.html')
+@WebComponent("webrtc-room", {
+  template: require("./room.html")
 })
 export class Room extends HTMLElement {
   constructor() {
@@ -35,31 +31,31 @@ export class Room extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['id', 'username'];
+    return ["id", "username"];
   }
 
   connectedCallback() {
-    this.participants = this.querySelector('webrtc-participants');
-    this.conversation = this.querySelector('webrtc-conversation');
+    this.participants = this.querySelector("webrtc-participants");
+    this.conversation = this.querySelector("webrtc-conversation");
 
     this.addEventListener("mousemove", this._onMouseMove);
 
-    const enterBtn = this.querySelector('.btn-enter');
-    enterBtn.addEventListener('click', this.connect);
-    enterBtn.addEventListener('click', this.disconnect);
+    const enterBtn = this.querySelector(".btn-enter");
+    enterBtn.addEventListener("click", this.connect);
+    enterBtn.addEventListener("click", this.disconnect);
 
-    const muteBtn = this.querySelector('.btn-mute');
-    muteBtn.addEventListener('click', this._toggleAudio);
+    const muteBtn = this.querySelector(".btn-mute");
+    muteBtn.addEventListener("click", this._toggleAudio);
 
-    const camBtn = this.querySelector('.btn-cam');
-    camBtn.addEventListener('click', this._toggleVideo);
-    const fsBtn = this.querySelector('.btn-fullscreen');
-    fsBtn.addEventListener('click', this._toggleFullScreen);
+    const camBtn = this.querySelector(".btn-cam");
+    camBtn.addEventListener("click", this._toggleVideo);
+    const fsBtn = this.querySelector(".btn-fullscreen");
+    fsBtn.addEventListener("click", this._toggleFullScreen);
 
-    const messageNew = this.conversation.querySelector('webrtc-message-new');
-    messageNew.addEventListener('send', this._onSend);
+    const messageNew = this.conversation.querySelector("webrtc-message-new");
+    messageNew.addEventListener("send", this._onSend);
 
-    const self = this.querySelector('.video-self');
+    const self = this.querySelector(".video-self");
     if (self.srcObject !== this._stream) {
       self.srcObject = this._stream;
     }
@@ -79,12 +75,12 @@ export class Room extends HTMLElement {
       if (this.peerData && this.id.length > 0) {
         this.peerData.connect(this.id);
 
-        const enterBtn = this.querySelector('.btn-enter');
-        enterBtn.classList.remove('btn-success');
-        enterBtn.classList.add('btn-danger');
-        const enterIcon = this.querySelector('.icon-enter');
-        enterIcon.classList.remove('fa-sign-in');
-        enterIcon.classList.add('fa-sign-out');
+        const enterBtn = this.querySelector(".btn-enter");
+        enterBtn.classList.remove("btn-success");
+        enterBtn.classList.add("btn-danger");
+        const enterIcon = this.querySelector(".icon-enter");
+        enterIcon.classList.remove("fa-sign-in");
+        enterIcon.classList.add("fa-sign-out");
 
         setTimeout(() => this._isConnected = true, 500);
       }
@@ -99,12 +95,12 @@ export class Room extends HTMLElement {
 
       this.participants.clear();
 
-      const enterBtn = this.querySelector('.btn-enter');
-      enterBtn.classList.add('btn-success');
-      enterBtn.classList.remove('btn-danger');
-      const enterIcon = this.querySelector('.icon-enter');
-      enterIcon.classList.add('fa-sign-in');
-      enterIcon.classList.remove('fa-sign-out');
+      const enterBtn = this.querySelector(".btn-enter");
+      enterBtn.classList.add("btn-success");
+      enterBtn.classList.remove("btn-danger");
+      const enterIcon = this.querySelector(".icon-enter");
+      enterIcon.classList.add("fa-sign-in");
+      enterIcon.classList.remove("fa-sign-out");
 
       setTimeout(() => this._isConnected = false, 500);
     }
@@ -115,10 +111,12 @@ export class Room extends HTMLElement {
   }
 
   send(data) {
-    this.peerData.send(JSON.stringify({
-      message: data,
-      username: this.username
-    }));
+    this.peerData.send(
+      JSON.stringify({
+        message: data,
+        username: this.username
+      })
+    );
   }
 
   _onSend(e) {
@@ -132,8 +130,8 @@ export class Room extends HTMLElement {
 
     const channel = e.data;
     channel.onmessage = event => {
-      const msg = JSON.parse(event.data)
-      this.conversation.addMessage(msg.username, msg.message, 'income');
+      const msg = JSON.parse(event.data);
+      this.conversation.addMessage(msg.username, msg.message, "income");
     };
   }
 
@@ -144,20 +142,22 @@ export class Room extends HTMLElement {
 
     const peerElem = this.participants.addPeer(e.caller.id);
 
-    this._stream.getTracks().forEach(track => e.data.addTrack(track, this._stream));
+    this._stream
+      .getTracks()
+      .forEach(track => e.data.addTrack(track, this._stream));
 
     const onconnectionstatechange = e.data.onconnectionstatechange;
     e.data.onconnectionstatechange = event => {
       if (onconnectionstatechange) {
         onconnectionstatechange(event);
       }
-      if (e.data.connectionState === 'closed') {
+      if (e.data.connectionState === "closed") {
         peerElem.parentNode.removeChild(peerElem);
       }
-    }
+    };
 
-    e.data.oniceconnectionstatechange = function () {
-      if (e.data.iceConnectionState == 'disconnected') {
+    e.data.oniceconnectionstatechange = function() {
+      if (e.data.iceConnectionState == "disconnected") {
         peerElem.parentNode.removeChild(peerElem);
       }
     };
@@ -192,9 +192,13 @@ export class Room extends HTMLElement {
   }
 
   _toggleFullScreen() {
-    const fullscreenBtn = this.querySelector('.btn-fullscreen');
-    if (!document.fullscreenElement &&
-      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    const fullscreenBtn = this.querySelector(".btn-fullscreen");
+    if (
+      !document.fullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.msFullscreenElement
+    ) {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
       } else if (document.documentElement.msRequestFullscreen) {
@@ -202,10 +206,12 @@ export class Room extends HTMLElement {
       } else if (document.documentElement.mozRequestFullScreen) {
         document.documentElement.mozRequestFullScreen();
       } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        document.documentElement.webkitRequestFullscreen(
+          Element.ALLOW_KEYBOARD_INPUT
+        );
       }
-      fullscreenBtn.classList.add('btn-info');
-      fullscreenBtn.classList.remove('btn-default');
+      fullscreenBtn.classList.add("btn-info");
+      fullscreenBtn.classList.remove("btn-default");
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -216,8 +222,8 @@ export class Room extends HTMLElement {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
-      fullscreenBtn.classList.remove('btn-info');
-      fullscreenBtn.classList.add('btn-default');
+      fullscreenBtn.classList.remove("btn-info");
+      fullscreenBtn.classList.add("btn-default");
     }
   }
 
@@ -228,13 +234,13 @@ export class Room extends HTMLElement {
         const enabled = !audioTracks[0].enabled;
         audioTracks[0].enabled = enabled;
 
-        const muteBtn = this.querySelector('.btn-mute');
+        const muteBtn = this.querySelector(".btn-mute");
         if (enabled) {
-          muteBtn.classList.remove('btn-danger');
-          muteBtn.classList.add('btn-default');
+          muteBtn.classList.remove("btn-danger");
+          muteBtn.classList.add("btn-default");
         } else {
-          muteBtn.classList.add('btn-danger');
-          muteBtn.classList.remove('btn-default');
+          muteBtn.classList.add("btn-danger");
+          muteBtn.classList.remove("btn-default");
         }
       }
     }
@@ -247,13 +253,13 @@ export class Room extends HTMLElement {
         const enabled = !videoTracks[0].enabled;
         videoTracks[0].enabled = enabled;
 
-        const camBtn = this.querySelector('.btn-cam');
+        const camBtn = this.querySelector(".btn-cam");
         if (enabled) {
-          camBtn.classList.remove('btn-danger');
-          camBtn.classList.add('btn-default');
+          camBtn.classList.remove("btn-danger");
+          camBtn.classList.add("btn-default");
         } else {
-          camBtn.classList.add('btn-danger');
-          camBtn.classList.remove('btn-default');
+          camBtn.classList.add("btn-danger");
+          camBtn.classList.remove("btn-default");
         }
       }
     }

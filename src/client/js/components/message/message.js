@@ -1,22 +1,20 @@
-import {
-  WebComponent
-} from 'web-component';
+import { WebComponent } from "web-component";
 
-@WebComponent('webrtc-message', {
-  template: require('./message.html')
+@WebComponent("webrtc-message", {
+  template: require("./message.html")
 })
 export class Message extends HTMLElement {
   constructor() {
     super();
 
-    this._type = 'system';
-    this._time = (new Date).getTime();
-    this._author = '';
-    this._body = '';
+    this._type = "system";
+    this._time = new Date().getTime();
+    this._author = "";
+    this._body = "";
   }
 
   static get observedAttributes() {
-    return ['type', 'body', 'time', 'author'];
+    return ["type", "body", "time", "author"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -30,7 +28,7 @@ export class Message extends HTMLElement {
   }
 
   _updateRendering() {
-    const container = this.querySelector('p');
+    const container = this.querySelector("p");
     if (container) {
       container.innerHTML = `<b>${this._author}: </b>${this._body}`;
       container.className = `message ${this._type}`;

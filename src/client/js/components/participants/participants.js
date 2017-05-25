@@ -1,9 +1,7 @@
-import {
-  WebComponent
-} from 'web-component';
+import { WebComponent } from "web-component";
 
-@WebComponent('webrtc-participants', {
-  template: require('./participants.html')
+@WebComponent("webrtc-participants", {
+  template: require("./participants.html")
 })
 export class Participants extends HTMLElement {
   constructor() {
@@ -18,9 +16,9 @@ export class Participants extends HTMLElement {
   }
 
   addPeer(name) {
-    const container = this.querySelector('.videos');
+    const container = this.querySelector(".videos");
 
-    let peer = document.createElement('webrtc-peer');
+    let peer = document.createElement("webrtc-peer");
     peer.name = name;
     container.appendChild(peer);
 
@@ -28,7 +26,7 @@ export class Participants extends HTMLElement {
   }
 
   clear() {
-    const container = this.querySelector('.videos');
+    const container = this.querySelector(".videos");
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }

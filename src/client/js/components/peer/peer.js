@@ -1,21 +1,19 @@
-import {
-  WebComponent
-} from 'web-component';
+import { WebComponent } from "web-component";
 
-@WebComponent('webrtc-peer', {
-  template: require('./peer.html')
+@WebComponent("webrtc-peer", {
+  template: require("./peer.html")
 })
 export class Peer extends HTMLElement {
   constructor() {
     super();
 
-    this._name = '';
+    this._name = "";
 
     this.setStream = this.setStream.bind(this);
   }
 
   static get observedAttributes() {
-    return ['name'];
+    return ["name"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -35,19 +33,19 @@ export class Peer extends HTMLElement {
   }
 
   getStream() {
-    const video = this.querySelector('video');
+    const video = this.querySelector("video");
     return video.srcObject;
   }
 
   setStream(stream) {
-    const video = this.querySelector('video');
+    const video = this.querySelector("video");
     if (video.srcObject !== stream) {
       video.srcObject = stream;
     }
   }
 
   _updateRendering() {
-    const name = this.querySelector('.name');
+    const name = this.querySelector(".name");
     if (name) {
       name.textContent = `${this._name}`;
     }

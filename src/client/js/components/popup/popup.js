@@ -1,9 +1,7 @@
-import {
-  WebComponent
-} from 'web-component';
+import { WebComponent } from "web-component";
 
-@WebComponent('webrtc-popup', {
-  template: require('./popup.html')
+@WebComponent("webrtc-popup", {
+  template: require("./popup.html")
 })
 export class Popup extends HTMLElement {
   constructor() {
@@ -17,26 +15,26 @@ export class Popup extends HTMLElement {
   }
 
   connectedCallback() {
-    const btnSend = this.querySelector('.btn-login');
-    btnSend.addEventListener('click', this._onEnter);
+    const btnSend = this.querySelector(".btn-login");
+    btnSend.addEventListener("click", this._onEnter);
 
-    const room = this.querySelector('.room-query');
-    room.addEventListener('keypress', this._onKeyPress);
+    const room = this.querySelector(".room-query");
+    room.addEventListener("keypress", this._onKeyPress);
 
-    const name = this.querySelector('.username-query');
-    name.addEventListener('keypress', this._onKeyPress);
+    const name = this.querySelector(".username-query");
+    name.addEventListener("keypress", this._onKeyPress);
 
-    $('#enter-modal').on('shown.bs.modal', () => {
+    $("#enter-modal").on("shown.bs.modal", () => {
       $(room).focus();
     });
   }
 
   show() {
-    $('#enter-modal').modal('show');
+    $("#enter-modal").modal("show");
   }
 
   hide() {
-    $('#enter-modal').modal('hide');
+    $("#enter-modal").modal("hide");
   }
 
   _onKeyPress(e) {
@@ -47,8 +45,8 @@ export class Popup extends HTMLElement {
   }
 
   _onEnter() {
-    const roomName = this.querySelector('.room-query').value;
-    const userName = this.querySelector('.username-query').value;
+    const roomName = this.querySelector(".room-query").value;
+    const userName = this.querySelector(".username-query").value;
     if (roomName.length > 0 && userName.length > 0) {
       window.location.href = `${window.location.origin}${window.location.pathname}?&room=${roomName}&username=${userName}`;
     }

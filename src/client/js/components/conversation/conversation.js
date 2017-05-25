@@ -1,15 +1,13 @@
-import {
-  WebComponent
-} from 'web-component';
+import { WebComponent } from "web-component";
 
-@WebComponent('webrtc-conversation', {
-  template: require('./conversation.html')
+@WebComponent("webrtc-conversation", {
+  template: require("./conversation.html")
 })
 export class Conversation extends HTMLElement {
   constructor() {
     super();
 
-    this._owner = '';
+    this._owner = "";
 
     this.addMessage = this.addMessage.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
@@ -18,12 +16,12 @@ export class Conversation extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['owner'];
+    return ["owner"];
   }
 
   connectedCallback() {
-    const messageNew = this.querySelector('webrtc-message-new');
-    messageNew.addEventListener('send', this._onSend);
+    const messageNew = this.querySelector("webrtc-message-new");
+    messageNew.addEventListener("send", this._onSend);
   }
 
   addMessage(author, body, type) {
@@ -32,19 +30,19 @@ export class Conversation extends HTMLElement {
     msg.body = body;
     msg.type = type;
 
-    this.querySelector('.conversation').appendChild(msg);
+    this.querySelector(".conversation").appendChild(msg);
     this.scrollDown();
   }
 
   scrollDown() {
-    const elem = this.querySelector('.conversation');
+    const elem = this.querySelector(".conversation");
     elem.scrollTop = elem.scrollHeight;
   }
 
   _onSend(e) {
-    const msg = e.detail
+    const msg = e.detail;
     if (msg) {
-      this.addMessage(this._owner, e.detail, 'outcome');
+      this.addMessage(this._owner, e.detail, "outcome");
       this.scrollDown();
     }
   }

@@ -1,9 +1,9 @@
-export {App} from './app/app';
-export {Popup} from './popup/popup';
-export {Chat} from './chat/chat';
-export {Room} from './room/room';
-export {Participants} from './participants/participants';
-export {Conversation} from './conversation/conversation';
-export {Peer} from './peer/peer';
-export {Message} from './message/message';
-export {MessageNew} from './message-new/message-new';
+export { App } from "./app/app";
+export { Popup } from "./popup/popup";
+export { Chat } from "./chat/chat";
+export { Room } from "./room/room";
+export { Participants } from "./participants/participants";
+export { Conversation } from "./conversation/conversation";
+export { Peer } from "./peer/peer";
+export { Message } from "./message/message";
+export { MessageNew } from "./message-new/message-new";
