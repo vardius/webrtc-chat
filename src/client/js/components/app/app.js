@@ -3,7 +3,7 @@ import { WebComponent } from "web-component";
 @WebComponent("webrtc-app", {
   template: require("./app.html")
 })
-export class Chat extends HTMLElement {
+export class App extends HTMLElement {
   constructor() {
     super();
   }
