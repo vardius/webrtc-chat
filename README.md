@@ -8,11 +8,11 @@ Server-less chat application useing peer to peer WebRTC
 
 Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
-## License
-
-The code is available under the [MIT license](LICENSE.txt).
-
 ## Support on Beerpay
 Hey dude! Help me out for a couple of :beers:!
 
 [![Beerpay](https://beerpay.io/vardius/webrtc-chat/badge.svg?style=beer-square)](https://beerpay.io/vardius/webrtc-chat)  [![Beerpay](https://beerpay.io/vardius/webrtc-chat/make-wish.svg?style=flat-square)](https://beerpay.io/vardius/webrtc-chat?focus=wish)
+
+## License
+
+The code is available under the [MIT license](LICENSE.txt).
