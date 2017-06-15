@@ -62,7 +62,7 @@
     "jquery": "^3.2.1",
     "jsdom": "^11.0.0",
     "node-sass": "^4.5.2",
-    "peer-data": "^1.2.14",
+    "peer-data": "^1.2.18",
     "postcss-loader": "^2.0.6",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",
