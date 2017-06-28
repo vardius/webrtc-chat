@@ -5,28 +5,26 @@ import http from "http";
 import os from "os";
 import socketIO from "socket.io";
 
-const port = process.env.PORT || 3000;
-const index = fspath.join(__dirname, "index.html");
-const SocketEventType = {
+const SignalingEventType = {
   CONNECT: "CONNECT",
   DISCONNECT: "DISCONNECT",
   CANDIDATE: "CANDIDATE",
   OFFER: "OFFER",
-  ANSWER: "ANSWER"
+  ANSWER: "ANSWER",
+  ERROR: "ERROR"
 };
 
+const port = process.env.PORT || 3000;
+const index = fspath.join(__dirname, "index.html");
+
 const app = express();
-app.get("/favicon.ico", (req, res) => {
-  res.sendStatus(404);
-});
 app.use("/css", express.static(fspath.join(__dirname, "css")));
 app.use("/fonts", express.static(fspath.join(__dirname, "fonts")));
 app.use("/images", express.static(fspath.join(__dirname, "images")));
 app.use("/js", express.static(fspath.join(__dirname, "js")));
 app.use(cookieParser());
-app.get("*", (req, res) => {
-  res.sendFile(index);
-});
+app.get("/favicon.ico", (req, res) => res.sendStatus(404));
+app.get("*", (req, res) => res.sendFile(index));
 
 const server = http.createServer(app);
 const io = socketIO.listen(server);
@@ -55,17 +53,17 @@ io.on("connection", function(socket) {
     log("SERVER_LOG", event);
 
     switch (event.type) {
-      case SocketEventType.CONNECT:
+      case SignalingEventType.CONNECT:
         onConnect(event.room.id);
         socket.broadcast.to(event.room.id).emit("message", event);
         break;
-      case SocketEventType.DISCONNECT:
+      case SignalingEventType.DISCONNECT:
         onDisconnect(event.room.id);
         socket.broadcast.to(event.room.id).emit("message", event);
         break;
-      case SocketEventType.OFFER:
-      case SocketEventType.ANSWER:
-      case SocketEventType.CANDIDATE:
+      case SignalingEventType.OFFER:
+      case SignalingEventType.ANSWER:
+      case SignalingEventType.CANDIDATE:
         socket.broadcast.to(event.callee.id).emit("message", event);
         break;
       default:
@@ -83,9 +81,17 @@ io.on("connection", function(socket) {
       });
     }
   });
+
+  socket.on("disconnect", function() {
+    socket.broadcast.emit({
+      type: SignalingEventType.DISCONNECT,
+      caller: { id: socket.id },
+      callee: null,
+      room: null,
+      data: null
+    });
+  });
 });
 
-server.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server started at port ${port}`);
-});
+// eslint-disable-next-line no-console
+server.listen(port, () => console.log(`Server started at port ${port}`));
