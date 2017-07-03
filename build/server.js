@@ -77,14 +77,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_cookie_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_cookie_parser__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_http__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_http__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_os__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_os___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_os__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_socket_io__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_peer_data__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_peer_data___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_peer_data__);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_peer_data_server__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_peer_data_server___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_peer_data_server__);
 
 
 
@@ -104,71 +98,7 @@ app.get("/favicon.ico", (req, res) => res.sendStatus(404));
 app.get("*", (req, res) => res.sendFile(index));
 
 const server = __WEBPACK_IMPORTED_MODULE_3_http___default.a.createServer(app);
-const io = __WEBPACK_IMPORTED_MODULE_5_socket_io___default.a.listen(server);
-io.on("connection", function (socket) {
-  function log() {
-    socket.emit("log", ...arguments);
-  }
-
-  function onConnect(id) {
-    // eslint-disable-next-line no-console
-    console.log(`Client ${socket.id} connected to room: ${id}`);
-    socket.join(id);
-  }
-
-  function onDisconnect(id) {
-    // eslint-disable-next-line no-console
-    console.log(`Client ${socket.id} disconnected from room: ${id}`);
-    socket.leave(id);
-  }
-
-  socket.on("message", function (event) {
-    event.caller = {
-      id: socket.id
-    };
-
-    log("SERVER_LOG", event);
-
-    switch (event.type) {
-      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].CONNECT:
-        onConnect(event.room.id);
-        socket.broadcast.to(event.room.id).emit("message", event);
-        break;
-      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].DISCONNECT:
-        onDisconnect(event.room.id);
-        socket.broadcast.to(event.room.id).emit("message", event);
-        break;
-      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].OFFER:
-      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].ANSWER:
-      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].CANDIDATE:
-        socket.broadcast.to(event.callee.id).emit("message", event);
-        break;
-      default:
-        socket.broadcast.to(event.room.id).emit("message", event);
-    }
-  });
-
-  socket.on("ipaddr", function () {
-    var ifaces = __WEBPACK_IMPORTED_MODULE_4_os___default.a.networkInterfaces();
-    for (var dev in ifaces) {
-      ifaces[dev].forEach(function (details) {
-        if (details.family === "IPv4" && details.address !== "127.0.0.1") {
-          socket.emit("ipaddr", details.address);
-        }
-      });
-    }
-  });
-
-  socket.on("disconnect", function () {
-    socket.broadcast.emit({
-      type: __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].DISCONNECT,
-      caller: { id: socket.id },
-      callee: null,
-      room: null,
-      data: null
-    });
-  });
-});
+__WEBPACK_IMPORTED_MODULE_4_peer_data_server___default.a(server);
 
 // eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Server started at port ${port}`));
@@ -201,19 +131,7 @@ module.exports = require("http");
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("os");
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("socket.io");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("peer-data");
+module.exports = require("peer-data-server");
 
 /***/ })
 /******/ ]);
