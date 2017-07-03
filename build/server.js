@@ -81,6 +81,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_os___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_os__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_socket_io__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_peer_data__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_peer_data___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_peer_data__);
 
 
 
@@ -88,14 +90,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const SignalingEventType = {
-  CONNECT: "CONNECT",
-  DISCONNECT: "DISCONNECT",
-  CANDIDATE: "CANDIDATE",
-  OFFER: "OFFER",
-  ANSWER: "ANSWER",
-  ERROR: "ERROR"
-};
 
 const port = process.env.PORT || 3000;
 const index = __WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "index.html");
@@ -136,17 +130,17 @@ io.on("connection", function (socket) {
     log("SERVER_LOG", event);
 
     switch (event.type) {
-      case SignalingEventType.CONNECT:
+      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].CONNECT:
         onConnect(event.room.id);
         socket.broadcast.to(event.room.id).emit("message", event);
         break;
-      case SignalingEventType.DISCONNECT:
+      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].DISCONNECT:
         onDisconnect(event.room.id);
         socket.broadcast.to(event.room.id).emit("message", event);
         break;
-      case SignalingEventType.OFFER:
-      case SignalingEventType.ANSWER:
-      case SignalingEventType.CANDIDATE:
+      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].OFFER:
+      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].ANSWER:
+      case __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].CANDIDATE:
         socket.broadcast.to(event.callee.id).emit("message", event);
         break;
       default:
@@ -167,7 +161,7 @@ io.on("connection", function (socket) {
 
   socket.on("disconnect", function () {
     socket.broadcast.emit({
-      type: SignalingEventType.DISCONNECT,
+      type: __WEBPACK_IMPORTED_MODULE_6_peer_data__["SignalingEventType"].DISCONNECT,
       caller: { id: socket.id },
       callee: null,
       room: null,
@@ -214,6 +208,12 @@ module.exports = require("os");
 /***/ (function(module, exports) {
 
 module.exports = require("socket.io");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("peer-data");
 
 /***/ })
 /******/ ]);

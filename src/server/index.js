@@ -4,15 +4,7 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import os from "os";
 import socketIO from "socket.io";
-
-const SignalingEventType = {
-  CONNECT: "CONNECT",
-  DISCONNECT: "DISCONNECT",
-  CANDIDATE: "CANDIDATE",
-  OFFER: "OFFER",
-  ANSWER: "ANSWER",
-  ERROR: "ERROR"
-};
+import {SignalingEventType} from "peer-data";
 
 const port = process.env.PORT || 3000;
 const index = fspath.join(__dirname, "index.html");
