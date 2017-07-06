@@ -10437,7 +10437,31 @@ var SignalingEventType = (function () {
 
 var EventDispatcher = (function () {
     function EventDispatcher() {
+        var _this = this;
         this.handlers = {};
+        this.register = function (type, callback) {
+            if (!_this.handlers[type]) {
+                _this.handlers[type] = [];
+            }
+            _this.handlers[type].push(callback);
+        };
+        this.unregister = function (type, callback) {
+            if (_this.handlers[type]) {
+                var index = _this.handlers[type].indexOf(callback);
+                if (index !== -1) {
+                    delete _this.handlers[type][index];
+                }
+            }
+        };
+        this.dispatch = function (type) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            if (_this.handlers[type]) {
+                _this.handlers[type].forEach(function (h) { return h.apply(void 0, args); });
+            }
+        };
     }
     EventDispatcher.getInstance = function () {
         if (!EventDispatcher.globalInstance) {
@@ -10445,54 +10469,32 @@ var EventDispatcher = (function () {
         }
         return EventDispatcher.globalInstance;
     };
-    EventDispatcher.prototype.register = function (type, callback) {
-        if (!this.handlers[type]) {
-            this.handlers[type] = [];
-        }
-        this.handlers[type].push(callback);
-    };
-    EventDispatcher.prototype.unregister = function (type, callback) {
-        if (this.handlers[type]) {
-            var index = this.handlers[type].indexOf(callback);
-            if (index !== -1) {
-                delete this.handlers[type][index];
-            }
-        }
-    };
-    EventDispatcher.prototype.dispatch = function (type) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        if (this.handlers[type]) {
-            this.handlers[type].forEach(function (h) { return h.apply(void 0, args); });
-        }
-    };
     return EventDispatcher;
 }());
 
 var Configuration = (function () {
     function Configuration() {
+        var _this = this;
         this.servers = {};
         this.dataConstraints = null;
+        this.setServers = function (servers) {
+            _this.servers = servers;
+        };
+        this.getServers = function () {
+            return _this.servers;
+        };
+        this.setDataConstraints = function (dataConstraints) {
+            _this.dataConstraints = dataConstraints;
+        };
+        this.getDataConstraints = function () {
+            return _this.dataConstraints;
+        };
     }
     Configuration.getInstance = function () {
         if (!Configuration.instance) {
             Configuration.instance = new Configuration();
         }
         return Configuration.instance;
-    };
-    Configuration.prototype.setServers = function (servers) {
-        this.servers = servers;
-    };
-    Configuration.prototype.getServers = function () {
-        return this.servers;
-    };
-    Configuration.prototype.setDataConstraints = function (dataConstraints) {
-        this.dataConstraints = dataConstraints;
-    };
-    Configuration.prototype.getDataConstraints = function () {
-        return this.dataConstraints;
     };
     return Configuration;
 }());
@@ -10563,171 +10565,278 @@ function __generator(thisArg, body) {
 }
 
 var Participant = (function () {
-    function Participant(id, room, remoteDesc) {
-        if (remoteDesc === void 0) { remoteDesc = null; }
+    function Participant(id, room) {
         var _this = this;
         this.dispatcher = new EventDispatcher();
+        this.getId = function () {
+            return _this.id;
+        };
+        this.on = function (event, callback) {
+            _this.dispatcher.register(event, callback);
+        };
+        this.send = function (payload) {
+            if (_this.channel.readyState === 'open') {
+                _this.channel.send(payload);
+            }
+        };
+        this.close = function () {
+            _this.channel.close();
+            _this.peer.close();
+            _this.dispatcher.dispatch('disconnected');
+        };
+        this.handleEvent = function (event) {
+            if (_this.id !== event.caller.id) {
+                return;
+            }
+            switch (event.type) {
+                case SignalingEventType.ANSWER:
+                    _this.onAnswer(event);
+                    break;
+                case SignalingEventType.CANDIDATE:
+                    _this.onCandidate(event);
+                    break;
+            }
+        };
+        this.init = function (remoteDesc) {
+            if (remoteDesc === void 0) { remoteDesc = null; }
+            return __awaiter(_this, void 0, void 0, function () {
+                var _this = this;
+                var stream;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            this.peer = new RTCPeerConnection(Configuration.getInstance().getServers());
+                            this.peer.onicecandidate = this.onIceCandidate;
+                            this.peer.onconnectionstatechange = this.onConnectionStateChange;
+                            this.peer.oniceconnectionstatechange = this.onIceConnectionStateChange;
+                            this.peer.ondatachannel = this.onDataChannel;
+                            this.peer.ontrack = this.dispatchRemoteStream;
+                            stream = this.room.getStream();
+                            if (stream instanceof MediaStream) {
+                                stream.getTracks().map(function (track) { return _this.peer.addTrack(track, stream); });
+                            }
+                            if (!remoteDesc) return [3 /*break*/, 2];
+                            return [4 /*yield*/, this.peer
+                                    .setRemoteDescription(remoteDesc)
+                                    .then(function (_) { return _this.peer.createAnswer(_this.offerAnswerOptions); })
+                                    .then(function (desc) { return _this.peer.setLocalDescription(desc); })
+                                    .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
+                                    type: SignalingEventType.ANSWER,
+                                    caller: null,
+                                    callee: { id: _this.id },
+                                    room: { id: _this.room.getId() },
+                                    payload: _this.peer.localDescription,
+                                }); })
+                                    .then(function (_) { return _this; })];
+                        case 1: return [2 /*return*/, _a.sent()];
+                        case 2:
+                            this.channel = this.newDataChannel(Configuration.getInstance().getDataConstraints());
+                            this.channel.onmessage = this.onMessage;
+                            return [4 /*yield*/, this.peer
+                                    .createOffer(this.offerAnswerOptions)
+                                    .then(function (desc) { return _this.peer.setLocalDescription(desc); })
+                                    .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
+                                    type: SignalingEventType.OFFER,
+                                    caller: null,
+                                    callee: { id: _this.id },
+                                    room: { id: _this.room.getId() },
+                                    payload: _this.peer.localDescription,
+                                }); })
+                                    .then(function (_) { return _this; })];
+                        case 3: return [2 /*return*/, _a.sent()];
+                    }
+                });
+            });
+        };
+        this.renegotiate = function (remoteDesc) {
+            if (remoteDesc === void 0) { remoteDesc = null; }
+            if (remoteDesc) {
+                _this.peer
+                    .setRemoteDescription(remoteDesc)
+                    .then(function (_) { return _this.peer.createAnswer(_this.offerAnswerOptions); })
+                    .then(function (desc) { return _this.peer.setLocalDescription(desc); })
+                    .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
+                    type: SignalingEventType.ANSWER,
+                    caller: null,
+                    callee: { id: _this.id },
+                    room: { id: _this.room.getId() },
+                    payload: _this.peer.localDescription,
+                }); })
+                    .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
+            }
+            else {
+                _this.channel = _this.newDataChannel(Configuration.getInstance().getDataConstraints());
+                _this.channel.onmessage = _this.onMessage;
+                _this.peer
+                    .createOffer(_this.offerAnswerOptions)
+                    .then(function (desc) { return _this.peer.setLocalDescription(desc); })
+                    .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
+                    type: SignalingEventType.OFFER,
+                    caller: null,
+                    callee: { id: _this.id },
+                    room: { id: _this.room.getId() },
+                    payload: _this.peer.localDescription,
+                }); })
+                    .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
+            }
+        };
+        this.newDataChannel = function (dataConstraints) {
+            var label = Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+            return _this.peer.createDataChannel(label, dataConstraints);
+        };
+        this.onAnswer = function (event) {
+            _this.peer
+                .setRemoteDescription(new RTCSessionDescription(event.payload))
+                .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
+        };
+        this.onCandidate = function (event) {
+            _this.peer
+                .addIceCandidate(new RTCIceCandidate(event.payload))
+                .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
+        };
+        this.onIceCandidate = function (iceEvent) {
+            if (iceEvent.candidate) {
+                EventDispatcher.getInstance().dispatch('send', {
+                    type: SignalingEventType.CANDIDATE,
+                    caller: null,
+                    callee: { id: _this.id },
+                    room: { id: _this.room.getId() },
+                    payload: iceEvent.candidate,
+                });
+            }
+            else {
+                // All ICE candidates have been sent
+            }
+        };
+        this.onConnectionStateChange = function () {
+            switch (_this.peer.connectionState) {
+                case 'disconnected':
+                case 'failed':
+                case 'closed':
+                    _this.dispatcher.dispatch('disconnected');
+                    break;
+            }
+        };
+        this.onIceConnectionStateChange = function () {
+            switch (_this.peer.iceConnectionState) {
+                case 'disconnected':
+                case 'failed':
+                case 'closed':
+                    _this.dispatcher.dispatch('disconnected');
+                    break;
+            }
+        };
+        this.onDataChannel = function (event) {
+            _this.channel = event.channel;
+            _this.channel.onmessage = _this.onMessage;
+        };
+        this.onMessage = function (event) {
+            _this.dispatcher.dispatch('message', event.data);
+        };
+        this.dispatchRemoteStream = function (event) {
+            _this.dispatcher.dispatch('track', event);
+        };
         this.id = id;
         this.room = room;
-        this.remoteDesc = remoteDesc;
-        this.onAnswer = this.onAnswer.bind(this);
-        this.onCandidate = this.onCandidate.bind(this);
-        this.peer = new RTCPeerConnection(Configuration.getInstance().getServers());
-        this.peer.onicecandidate = this.onIceCandidate.bind(this);
-        this.peer.onconnectionstatechange = this.onConnectionStateChange.bind(this);
-        this.peer.oniceconnectionstatechange = this.onIceConnectionStateChange.bind(this);
-        this.peer.ondatachannel = this.onDataChannel.bind(this);
-        this.peer.ontrack = this.dispatchRemoteStream.bind(this);
-        var stream = this.room.getStream();
-        if (stream instanceof MediaStream) {
-            stream.getTracks().map(function (track) { return _this.peer.addTrack(track, stream); });
-        }
+        this.offerAnswerOptions = {
+            offerToReceiveAudio: 1,
+            offerToReceiveVideo: 1,
+        };
     }
-    Participant.prototype.getId = function () {
-        return this.id;
-    };
-    Participant.prototype.init = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            var offerAnswerOptions;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        offerAnswerOptions = {
-                            offerToReceiveAudio: 1,
-                            offerToReceiveVideo: 1,
-                        };
-                        if (!this.remoteDesc) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.peer
-                                .setRemoteDescription(this.remoteDesc)
-                                .then(function (_) { return _this.peer.createAnswer(offerAnswerOptions); })
-                                .then(function (desc) { return _this.peer.setLocalDescription(desc); })
-                                .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
-                                type: SignalingEventType.ANSWER,
-                                caller: null,
-                                callee: { id: _this.id },
-                                room: { id: _this.room.getId() },
-                                payload: _this.peer.localDescription,
-                            }); })
-                                .then(function (_) { return _this; })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        this.channel = this.newDataChannel(Configuration.getInstance().getDataConstraints());
-                        this.channel.onmessage = this.onMessage.bind(this);
-                        return [4 /*yield*/, this.peer
-                                .createOffer(offerAnswerOptions)
-                                .then(function (desc) { return _this.peer.setLocalDescription(desc); })
-                                .then(function (_) { return EventDispatcher.getInstance().dispatch('send', {
-                                type: SignalingEventType.OFFER,
-                                caller: null,
-                                callee: { id: _this.id },
-                                room: { id: _this.room.getId() },
-                                payload: _this.peer.localDescription,
-                            }); })
-                                .then(function (_) { return _this; })];
-                    case 3: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Participant.prototype.on = function (event, callback) {
-        this.dispatcher.register(event, callback);
-    };
-    Participant.prototype.send = function (payload) {
-        if (this.channel.readyState === 'open') {
-            this.channel.send(payload);
-        }
-    };
-    Participant.prototype.close = function () {
-        this.channel.close();
-        this.peer.close();
-        this.dispatcher.dispatch('disconnected');
-    };
-    Participant.prototype.handleEvent = function (event) {
-        if (this.id !== event.caller.id) {
-            return;
-        }
-        switch (event.type) {
-            case SignalingEventType.ANSWER:
-                this.onAnswer(event);
-                break;
-            case SignalingEventType.CANDIDATE:
-                this.onCandidate(event);
-                break;
-        }
-    };
-    Participant.prototype.onAnswer = function (event) {
-        var _this = this;
-        this.peer
-            .setRemoteDescription(new RTCSessionDescription(event.payload))
-            .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
-    };
-    Participant.prototype.onCandidate = function (event) {
-        var _this = this;
-        this.peer
-            .addIceCandidate(new RTCIceCandidate(event.payload))
-            .catch(function (evnt) { return _this.dispatcher.dispatch('error', evnt); });
-    };
-    Participant.prototype.newDataChannel = function (dataConstraints) {
-        var label = Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
-        return this.peer.createDataChannel(label, dataConstraints);
-    };
-    Participant.prototype.onIceCandidate = function (iceEvent) {
-        if (iceEvent.candidate) {
-            EventDispatcher.getInstance().dispatch('send', {
-                type: SignalingEventType.CANDIDATE,
-                caller: null,
-                callee: { id: this.id },
-                room: { id: this.room.getId() },
-                payload: iceEvent.candidate,
-            });
-        }
-        else {
-            // All ICE candidates have been sent
-        }
-    };
-    Participant.prototype.onConnectionStateChange = function () {
-        switch (this.peer.connectionState) {
-            case 'disconnected':
-            case 'failed':
-            case 'closed':
-                this.dispatcher.dispatch('disconnected');
-                break;
-        }
-    };
-    Participant.prototype.onIceConnectionStateChange = function () {
-        switch (this.peer.iceConnectionState) {
-            case 'disconnected':
-            case 'failed':
-            case 'closed':
-                this.dispatcher.dispatch('disconnected');
-                break;
-        }
-    };
-    Participant.prototype.onDataChannel = function (event) {
-        this.channel = event.channel;
-        this.channel.onmessage = this.onMessage.bind(this);
-    };
-    Participant.prototype.onMessage = function (event) {
-        this.dispatcher.dispatch('message', event.data);
-    };
-    Participant.prototype.dispatchRemoteStream = function (event) {
-        this.dispatcher.dispatch('track', event);
-    };
     return Participant;
 }());
 
 var Room = (function () {
     function Room(id, stream) {
         if (stream === void 0) { stream = null; }
+        var _this = this;
         this.participants = new Map();
         this.dispatcher = new EventDispatcher();
         this.stream = null;
+        this.getId = function () {
+            return _this.id;
+        };
+        this.getStream = function () {
+            return _this.stream;
+        };
+        this.on = function (event, callback) {
+            _this.dispatcher.register(event, callback);
+        };
+        this.send = function (payload) {
+            // todo: refactor when typescript supports map
+            var keys = Array.from(_this.participants.keys());
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                _this.participants.get(key).send(payload);
+            }
+        };
+        this.disconnect = function () {
+            EventDispatcher.getInstance().dispatch('send', {
+                type: SignalingEventType.DISCONNECT,
+                caller: null,
+                callee: null,
+                room: { id: _this.id },
+                payload: null,
+            });
+            // todo: refactor when typescript supports map
+            var keys = Array.from(_this.participants.keys());
+            for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
+                var key = keys_2[_i];
+                _this.participants.get(key).close();
+                _this.participants.delete(key);
+            }
+        };
+        this.handleEvent = function (event) {
+            if (_this.id !== event.room.id) {
+                return;
+            }
+            switch (event.type) {
+                case SignalingEventType.CONNECT:
+                    _this.onConnect(event);
+                    break;
+                case SignalingEventType.OFFER:
+                    _this.onOffer(event);
+                    break;
+                case SignalingEventType.DISCONNECT:
+                    _this.onDisconnect(event);
+                    break;
+                case SignalingEventType.ANSWER:
+                case SignalingEventType.CANDIDATE:
+                    if (_this.participants.has(event.caller.id)) {
+                        _this.participants.get(event.caller.id).handleEvent(event);
+                    }
+                    break;
+            }
+        };
+        this.onOffer = function (event) {
+            var desc = new RTCSessionDescription(event.payload);
+            if (_this.participants.has(event.caller.id)) {
+                _this.participants.get(event.caller.id).renegotiate(desc);
+            }
+            else {
+                var participant = new Participant(event.caller.id, _this);
+                _this.participants.set(participant.getId(), participant);
+                _this.dispatcher.dispatch('participant', participant.init(desc));
+            }
+        };
+        this.onConnect = function (event) {
+            if (_this.participants.has(event.caller.id)) {
+                _this.participants.get(event.caller.id).renegotiate();
+            }
+            else {
+                var participant = new Participant(event.caller.id, _this);
+                _this.participants.set(participant.getId(), participant);
+                _this.dispatcher.dispatch('participant', participant.init());
+            }
+        };
+        this.onDisconnect = function (event) {
+            if (_this.participants.has(event.caller.id)) {
+                _this.participants.get(event.caller.id).close();
+                _this.participants.delete(event.caller.id);
+            }
+        };
         this.id = id;
         this.stream = stream;
-        this.onConnect = this.onConnect.bind(this);
-        this.onOffer = this.onOffer.bind(this);
-        this.onDisconnect = this.onDisconnect.bind(this);
         EventDispatcher.getInstance().dispatch('send', {
             type: SignalingEventType.CONNECT,
             caller: null,
@@ -10736,78 +10845,6 @@ var Room = (function () {
             payload: null,
         });
     }
-    Room.prototype.getId = function () {
-        return this.id;
-    };
-    Room.prototype.getStream = function () {
-        return this.stream;
-    };
-    Room.prototype.on = function (event, callback) {
-        this.dispatcher.register(event, callback);
-    };
-    Room.prototype.send = function (payload) {
-        // todo: refactor when typescript supports map
-        var keys = Array.from(this.participants.keys());
-        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-            var key = keys_1[_i];
-            this.participants.get(key).send(payload);
-        }
-    };
-    Room.prototype.disconnect = function () {
-        EventDispatcher.getInstance().dispatch('send', {
-            type: SignalingEventType.DISCONNECT,
-            caller: null,
-            callee: null,
-            room: { id: this.id },
-            payload: null,
-        });
-        // todo: refactor when typescript supports map
-        var keys = Array.from(this.participants.keys());
-        for (var _i = 0, keys_2 = keys; _i < keys_2.length; _i++) {
-            var key = keys_2[_i];
-            this.participants.get(key).close();
-            this.participants.delete(key);
-        }
-    };
-    Room.prototype.handleEvent = function (event) {
-        if (this.id !== event.room.id) {
-            return;
-        }
-        switch (event.type) {
-            case SignalingEventType.CONNECT:
-                this.onConnect(event);
-                break;
-            case SignalingEventType.OFFER:
-                this.onOffer(event);
-                break;
-            case SignalingEventType.DISCONNECT:
-                this.onDisconnect(event);
-                break;
-            case SignalingEventType.ANSWER:
-            case SignalingEventType.CANDIDATE:
-                if (this.participants.has(event.caller.id)) {
-                    this.participants.get(event.caller.id).handleEvent(event);
-                }
-                break;
-        }
-    };
-    Room.prototype.onOffer = function (event) {
-        var desc = new RTCSessionDescription(event.payload);
-        var participant = new Participant(event.caller.id, this, desc);
-        this.participants.set(participant.getId(), participant);
-        this.dispatcher.dispatch('participant', participant.init());
-    };
-    Room.prototype.onConnect = function (event) {
-        var participant = new Participant(event.caller.id, this);
-        this.participants.set(participant.getId(), participant);
-        this.dispatcher.dispatch('participant', participant.init());
-    };
-    Room.prototype.onDisconnect = function (event) {
-        if (this.participants.has(event.caller.id)) {
-            this.participants.get(event.caller.id).close();
-            this.participants.delete(event.caller.id);
-        }
-    };
     return Room;
 }());
 
@@ -10815,36 +10852,36 @@ var App = (function () {
     function App(servers, dataConstraints) {
         if (servers === void 0) { servers = {}; }
         if (dataConstraints === void 0) { dataConstraints = null; }
+        var _this = this;
         this.rooms = new Map();
-        this.onEvent = this.onEvent.bind(this);
+        this.connect = function (id, stream) {
+            if (stream === void 0) { stream = null; }
+            if (_this.rooms.has(id)) {
+                return _this.rooms.get(id);
+            }
+            var room = new Room(id, stream);
+            _this.rooms.set(id, room);
+            return room;
+        };
+        this.onEvent = function (event) {
+            if (_this.rooms.has(event.room.id)) {
+                _this.rooms.get(event.room.id).handleEvent(event);
+            }
+        };
+        this.onDisconnected = function (event) {
+            if (event.type === SignalingEventType.DISCONNECT) {
+                _this.rooms.delete(event.room.id);
+            }
+        };
         Configuration.getInstance().setServers(servers);
         Configuration.getInstance().setDataConstraints(dataConstraints);
-        EventDispatcher.getInstance().register(SignalingEventType.CONNECT, this.onEvent.bind(this));
-        EventDispatcher.getInstance().register(SignalingEventType.OFFER, this.onEvent.bind(this));
-        EventDispatcher.getInstance().register(SignalingEventType.DISCONNECT, this.onEvent.bind(this));
-        EventDispatcher.getInstance().register(SignalingEventType.ANSWER, this.onEvent.bind(this));
-        EventDispatcher.getInstance().register(SignalingEventType.CANDIDATE, this.onEvent.bind(this));
-        EventDispatcher.getInstance().register('send', this.onDisconnected.bind(this));
+        EventDispatcher.getInstance().register(SignalingEventType.CONNECT, this.onEvent);
+        EventDispatcher.getInstance().register(SignalingEventType.OFFER, this.onEvent);
+        EventDispatcher.getInstance().register(SignalingEventType.DISCONNECT, this.onEvent);
+        EventDispatcher.getInstance().register(SignalingEventType.ANSWER, this.onEvent);
+        EventDispatcher.getInstance().register(SignalingEventType.CANDIDATE, this.onEvent);
+        EventDispatcher.getInstance().register('send', this.onDisconnected);
     }
-    App.prototype.connect = function (id, stream) {
-        if (stream === void 0) { stream = null; }
-        if (this.rooms.has(id)) {
-            return this.rooms.get(id);
-        }
-        var room = new Room(id, stream);
-        this.rooms.set(id, room);
-        return room;
-    };
-    App.prototype.onEvent = function (event) {
-        if (this.rooms.has(event.room.id)) {
-            this.rooms.get(event.room.id).handleEvent(event);
-        }
-    };
-    App.prototype.onDisconnected = function (event) {
-        if (event.type === SignalingEventType.DISCONNECT) {
-            this.rooms.delete(event.room.id);
-        }
-    };
     return App;
 }());
 
@@ -17279,30 +17316,31 @@ var index_3 = index.connect;
 
 var SocketChannel = (function () {
     function SocketChannel(opts) {
+        var _this = this;
+        this.onSend = function (event) {
+            _this.socket.emit('message', event);
+        };
+        this.onIp = function (ipaddr) {
+            EventDispatcher.getInstance().dispatch('log', 'Server IP address is: ' + ipaddr);
+        };
+        this.onLog = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            EventDispatcher.getInstance().dispatch('log', args);
+        };
+        this.onMessage = function (event) {
+            EventDispatcher.getInstance().dispatch(event.type, event);
+        };
         this.socket = index_3(opts);
-        EventDispatcher.getInstance().register('send', this.onSend.bind(this));
+        EventDispatcher.getInstance().register('send', this.onSend);
         this.subscribeEvents();
     }
-    SocketChannel.prototype.onSend = function (event) {
-        this.socket.emit('message', event);
-    };
     SocketChannel.prototype.subscribeEvents = function () {
-        this.socket.on('message', this.onMessage.bind(this));
-        this.socket.on('ipaddr', this.onIp.bind(this));
-        this.socket.on('log', this.onLog.bind(this));
-    };
-    SocketChannel.prototype.onIp = function (ipaddr) {
-        EventDispatcher.getInstance().dispatch('log', 'Server IP address is: ' + ipaddr);
-    };
-    SocketChannel.prototype.onLog = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        EventDispatcher.getInstance().dispatch('log', args);
-    };
-    SocketChannel.prototype.onMessage = function (event) {
-        EventDispatcher.getInstance().dispatch(event.type, event);
+        this.socket.on('message', this.onMessage);
+        this.socket.on('ipaddr', this.onIp);
+        this.socket.on('log', this.onLog);
     };
     return SocketChannel;
 }());
@@ -24387,4 +24425,4 @@ module.exports = g;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vendor.2ba9a4b1706415a79900.js.map
+//# sourceMappingURL=vendor.9a358256e8da726005bc.js.map
