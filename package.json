@@ -61,7 +61,7 @@
     "jquery": "^3.2.1",
     "jsdom": "^11.1.0",
     "node-sass": "^4.5.2",
-    "peer-data": "^3.0.18",
+    "peer-data": "^3.0.19",
     "peer-data-server": "^1.0.5",
     "postcss-loader": "^2.0.6",
     "raw-loader": "^0.5.1",
@@ -76,6 +76,6 @@
     "webpack-hot-middleware": "^2.18.2",
     "webpack-merge": "^4.1.0",
     "webpack-node-externals": "^1.5.4",
-    "webrtc-adapter": "^4.1.1"
+    "webrtc-adapter": "^4.2.0"
   }
 }

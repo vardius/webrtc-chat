@@ -4188,11 +4188,11 @@ peer-data-server@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/peer-data-server/-/peer-data-server-1.0.5.tgz#c6ea01a1d3bc587a61b858212459f5d8f2660e0b"
 
-peer-data@^3.0.18:
-  version "3.0.18"
-  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-3.0.18.tgz#3b4d9a46958249af2b2c15301bfa8feddd0f7744"
+peer-data@^3.0.19:
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-3.0.19.tgz#c5d8ac273d73011d258e4ed4bde1489b4fd11d10"
   dependencies:
-    webrtc-adapter "^4.1.1"
+    webrtc-adapter "^4.2.0"
 
 performance-now@^0.2.0:
   version "0.2.0"
@@ -5692,9 +5692,9 @@ webpack@^3.1.0:
     webpack-sources "^1.0.1"
     yargs "^6.0.0"
 
-webrtc-adapter@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-4.1.1.tgz#bb815b6430b9c36dac9c3756d0c9ce438b34e336"
+webrtc-adapter@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-4.2.0.tgz#293e4870fca90414c332bd09410a27a812a18c50"
   dependencies:
     sdp "^2.1.0"
 
