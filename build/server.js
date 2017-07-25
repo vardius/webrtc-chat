@@ -88,17 +88,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const port = process.env.PORT || 3000;
 const index = __WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "index.html");
 
-const app = __WEBPACK_IMPORTED_MODULE_0_express___default.a();
+const app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
 app.use("/css", __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "css")));
 app.use("/fonts", __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "fonts")));
 app.use("/images", __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "images")));
 app.use("/js", __WEBPACK_IMPORTED_MODULE_0_express___default.a.static(__WEBPACK_IMPORTED_MODULE_1_path___default.a.join(__dirname, "js")));
-app.use(__WEBPACK_IMPORTED_MODULE_2_cookie_parser___default.a());
+app.use(__WEBPACK_IMPORTED_MODULE_2_cookie_parser___default()());
 app.get("/favicon.ico", (req, res) => res.sendStatus(404));
 app.get("*", (req, res) => res.sendFile(index));
 
 const server = __WEBPACK_IMPORTED_MODULE_3_http___default.a.createServer(app);
-__WEBPACK_IMPORTED_MODULE_4_peer_data_server___default.a(server);
+__WEBPACK_IMPORTED_MODULE_4_peer_data_server___default()(server);
 
 // eslint-disable-next-line no-console
 server.listen(port, () => console.log(`Server started at port ${port}`));
