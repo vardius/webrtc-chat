@@ -1,5 +1,4 @@
 import { WebComponent } from "web-component";
-import { AppEventType } from "peer-data";
 
 @WebComponent("webrtc-room", {
   template: require("./room.html")
@@ -15,6 +14,7 @@ export class Room extends HTMLElement {
     this._isConnected = false;
 
     this.peerData = null;
+    this.peerDataRoom = null;
     this.participants = null;
     this.conversation = null;
 
@@ -22,8 +22,6 @@ export class Room extends HTMLElement {
     this.disconnect = this.disconnect.bind(this);
 
     this._onSend = this._onSend.bind(this);
-    this._onPeer = this._onPeer.bind(this);
-    this._onChannel = this._onChannel.bind(this);
     this._toggleAudio = this._toggleAudio.bind(this);
     this._toggleVideo = this._toggleVideo.bind(this);
     this._toggleFullScreen = this._toggleFullScreen.bind(this);
@@ -60,9 +58,6 @@ export class Room extends HTMLElement {
       self.srcObject = this._stream;
     }
 
-    this.peerData.on(AppEventType.PEER, this._onPeer);
-    this.peerData.on(AppEventType.CHANNEL, this._onChannel);
-
     this.conversation.owner = this._username;
   }
 
@@ -71,28 +66,48 @@ export class Room extends HTMLElement {
   }
 
   connect() {
-    if (!this._isConnected) {
-      if (this.peerData && this.id.length > 0) {
-        this.peerData.connect(this.id);
+    if (
+      !this.peerDataRoom && this.peerData && this.id.length > 0 && this._stream
+    ) {
+      const peerDataRoom = this.peerData.connect(this._id, this._stream);
+      peerDataRoom.on("participant", promise => {
+        promise.then(participant => {
+          const peerElem = this.participants.addPeer(participant.getId());
 
-        const enterBtn = this.querySelector(".btn-enter");
-        enterBtn.classList.remove("btn-success");
-        enterBtn.classList.add("btn-danger");
-        const enterIcon = this.querySelector(".icon-enter");
-        enterIcon.classList.remove("fa-sign-in");
-        enterIcon.classList.add("fa-sign-out");
+          participant.on("message", payload => {
+            const msg = JSON.parse(payload);
+            this.conversation.addMessage(msg.username, msg.message, "income");
+          });
 
-        setTimeout(() => this._isConnected = true, 500);
-      }
+          participant.on("disconnected", () => {
+            if (peerElem.parentNode) {
+              peerElem.parentNode.removeChild(peerElem);
+            }
+          });
+
+          participant.on("track", event => {
+            const stream = event.streams[0];
+            if (stream !== peerElem.getStream()) {
+              peerElem.setStream(stream);
+            }
+          });
+        });
+      });
+
+      const enterBtn = this.querySelector(".btn-enter");
+      enterBtn.classList.remove("btn-success");
+      enterBtn.classList.add("btn-danger");
+      const enterIcon = this.querySelector(".icon-enter");
+      enterIcon.classList.remove("fa-sign-in");
+      enterIcon.classList.add("fa-sign-out");
+
+      setTimeout(() => this.peerDataRoom = peerDataRoom, 500);
     }
   }
 
   disconnect() {
-    if (this._isConnected) {
-      if (this.peerData) {
-        this.peerData.disconnect(this.id);
-      }
-
+    if (this.peerDataRoom) {
+      this.peerDataRoom.disconnect(this.id);
       this.participants.clear();
 
       const enterBtn = this.querySelector(".btn-enter");
@@ -102,7 +117,7 @@ export class Room extends HTMLElement {
       enterIcon.classList.add("fa-sign-in");
       enterIcon.classList.remove("fa-sign-out");
 
-      setTimeout(() => this._isConnected = false, 500);
+      setTimeout(() => this.peerDataRoom = null, 500);
     }
   }
 
@@ -111,69 +126,18 @@ export class Room extends HTMLElement {
   }
 
   send(data) {
-    this.peerData.send(
-      JSON.stringify({
-        message: data,
-        username: this.username
-      })
-    );
+    if (this.peerDataRoom) {
+      this.peerDataRoom.send(
+        JSON.stringify({
+          message: data,
+          username: this.username
+        })
+      );
+    }
   }
 
   _onSend(e) {
     this.send(e.detail);
-  }
-
-  _onChannel(e) {
-    if (e.room.id !== this._id) {
-      return;
-    }
-
-    const channel = e.data;
-    channel.onmessage = event => {
-      const msg = JSON.parse(event.data);
-      this.conversation.addMessage(msg.username, msg.message, "income");
-    };
-  }
-
-  _onPeer(e) {
-    if (e.room.id !== this._id) {
-      return;
-    }
-
-    const peerElem = this.participants.addPeer(e.caller.id);
-
-    this._stream
-      .getTracks()
-      .forEach(track => e.data.addTrack(track, this._stream));
-
-    const onconnectionstatechange = e.data.onconnectionstatechange;
-    e.data.onconnectionstatechange = event => {
-      if (onconnectionstatechange) {
-        onconnectionstatechange(event);
-      }
-      if (e.data.connectionState === "closed") {
-        peerElem.parentNode.removeChild(peerElem);
-      }
-    };
-
-    e.data.oniceconnectionstatechange = function() {
-      if (e.data.iceConnectionState == "disconnected") {
-        peerElem.parentNode.removeChild(peerElem);
-      }
-    };
-
-    e.data.onsignalingstatechange = () => {
-      if (e.data.signalingState === "closed") {
-        peerElem.parentNode.removeChild(peerElem);
-      }
-    };
-
-    e.data.ontrack = event => {
-      const stream = event.streams[0];
-      if (stream !== peerElem.getStream()) {
-        peerElem.setStream(stream);
-      }
-    };
   }
 
   _onMouseMove() {
@@ -183,7 +147,7 @@ export class Room extends HTMLElement {
       $(element).fadeIn();
     });
     this._timeout = setTimeout(() => {
-      if (this._isConnected) {
+      if (this.peerDataRoom) {
         Array.from(giuElements).forEach(element => {
           $(element).fadeOut();
         });

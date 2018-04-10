@@ -1,5 +1,5 @@
 import { WebComponent } from "web-component";
-import PeerData, { SocketChannel, AppEventType } from "peer-data";
+import PeerData, { SocketChannel } from "peer-data";
 
 @WebComponent("webrtc-chat", {
   template: require("./chat.html")
@@ -13,19 +13,20 @@ export class Chat extends HTMLElement {
         {
           // url: "stun:stun.1.google.com:19302"
           url: "stun:74.125.142.127:19302"
+        },
+        {
+          urls: "turn:turn.bistri.com:80",
+          credential: "homeo",
+          username: "homeo"
         }
       ]
     };
-
     const constraints = {
       ordered: true
     };
 
     this.peerData = new PeerData(servers, constraints);
     this.signaling = new SocketChannel();
-
-    this.peerData.on(AppEventType.ERROR, this._onError.bind(this));
-    this.peerData.on(AppEventType.LOG, this._onLog.bind(this));
   }
 
   createRoom(id, username, stream) {
@@ -50,21 +51,5 @@ export class Chat extends HTMLElement {
         return room.parentNode.removeChild(room);
       }
     });
-  }
-
-  _onError(e) {
-    this.dispatchEvent(
-      new CustomEvent("error", {
-        detail: e
-      })
-    );
-  }
-
-  _onLog(e) {
-    this.dispatchEvent(
-      new CustomEvent("log", {
-        detail: e
-      })
-    );
   }
 }
