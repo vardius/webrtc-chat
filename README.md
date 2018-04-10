@@ -9,6 +9,8 @@ Server-less chat application useing peer to peer WebRTC
 
 Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
+[DEMO](https://vardius-webrtc-chat.herokuapp.com/)
+
 ## License
 
 The code is available under the [MIT license](LICENSE.txt).
