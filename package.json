@@ -4,17 +4,17 @@
   "description": "Serverless chat application using peer to peer WebRTC",
   "scripts": {
     "clean:build": "rimraf build",
-    "prebuild": "yarn clean:build",
-    "build": "yarn build:client && yarn build:server",
+    "prebuild": "npm run clean:build",
+    "build": "npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.production.js --progress",
     "build:server": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.server.js --progress",
-    "prestart": "yarn && yarn build",
+    "prestart": "npm run build",
     "start": "node build/server.js",
     "dev": "webpack-dashboard -- node ./bin/server.js",
     "lint": "eslint config src/** --ext .js",
     "test": "cross-env BABEL_ENV=commonjs jest --no-cache --config $(node jest.config.js)",
-    "test:cov": "yarn test -- --coverage",
-    "test:watch": "yarn test -- --watch",
+    "test:cov": "npm run test -- --coverage",
+    "test:watch": "npm run test -- --watch",
     "tunnel": "lt --port 3000"
   },
   "bugs": {
