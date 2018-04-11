@@ -1245,9 +1245,9 @@ bootstrap-sass@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.3.7.tgz#6596c7ab40f6637393323ab0bc80d064fc630498"
 
-bootstrap@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0.tgz#ceb03842c145fcc1b9b4e15da2a05656ba68469a"
+bootstrap@^3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -5270,11 +5270,11 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peer-data-server@^1.0.6:
+peer-data-server@^1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/peer-data-server/-/peer-data-server-1.0.9.tgz#0d3e5aa851b46a6c9242972315094ced835132d5"
 
-peer-data@^3.0.21:
+peer-data@^3.0.23:
   version "3.0.23"
   resolved "https://registry.yarnpkg.com/peer-data/-/peer-data-3.0.23.tgz#21850b2ff0e9acc37dbfcdba14014e2b08d65bc6"
   dependencies:
@@ -7251,7 +7251,7 @@ webrtc-adapter@^6.0.1:
     rtcpeerconnection-shim "^1.1.13"
     sdp "^2.3.0"
 
-webrtc-adapter@^6.1.1:
+webrtc-adapter@^6.1.5:
   version "6.1.5"
   resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.1.5.tgz#df72e4af5cb6675656c896db0d1187695359220b"
   dependencies:
