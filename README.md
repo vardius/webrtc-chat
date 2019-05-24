@@ -9,7 +9,7 @@ Server-less chat application useing peer to peer WebRTC
 
 Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
-[DEMO](https://vardius-webrtc-chat.herokuapp.com/)
+[DEMO](https://vardius-webrtc-chat.herokuapp.com/) - After selecting a room and a username please click **green** button at the right corner to join the room.
 
 ![demo](../master/.github/demo.png)
 
