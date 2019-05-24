@@ -26,6 +26,9 @@
     "email": "vardius@gmail.com"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=4"
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.23.0",
@@ -62,8 +65,8 @@
     "jquery": "^3.2.1",
     "jsdom": "^11.1.0",
     "node-sass": "^4.5.2",
-    "peer-data": "^3.0.23",
-    "peer-data-server": "^1.0.9",
+    "peer-data": "^3.1.2",
+    "peer-data-server": "^1.0.10",
     "popper.js": "^1.12.9",
     "postcss-loader": "^2.0.6",
     "raw-loader": "^0.5.1",

@@ -70,27 +70,25 @@ export class Room extends HTMLElement {
       !this.peerDataRoom && this.peerData && this.id.length > 0 && this._stream
     ) {
       const peerDataRoom = this.peerData.connect(this._id, this._stream);
-      peerDataRoom.on("participant", promise => {
-        promise.then(participant => {
-          const peerElem = this.participants.addPeer(participant.getId());
+      peerDataRoom.on("participant", participant => {
+        const peerElem = this.participants.addPeer(participant.getId());
 
-          participant.on("message", payload => {
-            const msg = JSON.parse(payload);
-            this.conversation.addMessage(msg.username, msg.message, "income");
-          });
+        participant.on("message", payload => {
+          const msg = JSON.parse(payload);
+          this.conversation.addMessage(msg.username, msg.message, "income");
+        });
 
-          participant.on("disconnected", () => {
-            if (peerElem.parentNode) {
-              peerElem.parentNode.removeChild(peerElem);
-            }
-          });
+        participant.on("disconnected", () => {
+          if (peerElem.parentNode) {
+            peerElem.parentNode.removeChild(peerElem);
+          }
+        });
 
-          participant.on("track", event => {
-            const stream = event.streams[0];
-            if (stream !== peerElem.getStream()) {
-              peerElem.setStream(stream);
-            }
-          });
+        participant.on("track", event => {
+          const stream = event.streams[0];
+          if (stream !== peerElem.getStream()) {
+            peerElem.setStream(stream);
+          }
         });
       });
 
