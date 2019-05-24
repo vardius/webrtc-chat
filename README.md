@@ -11,6 +11,8 @@ Example usage [PeerData](https://github.com/Vardius/peer-data) library.
 
 [DEMO](https://vardius-webrtc-chat.herokuapp.com/)
 
+![demo](../master/.github/demo.png)
+
 ## License
 
 The code is available under the [MIT license](LICENSE.txt).
