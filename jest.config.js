@@ -1,4 +1,6 @@
 module.exports = {
+  verbose: true,
+  testURL: "http://localhost/",
   setupTestFrameworkScriptFile: "<rootDir>/bin/jest.js",
   mapCoverage: true,
   moduleFileExtensions: ["js", "scss", "html"],
