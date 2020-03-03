@@ -48,7 +48,7 @@ export class Popup extends HTMLElement {
     const roomName = this.querySelector(".room-query").value;
     const userName = this.querySelector(".username-query").value;
     if (roomName.length > 0 && userName.length > 0) {
-      window.location.href = `${window.location.origin}${window.location.pathname}?&room=${roomName}&username=${userName}`;
+      window.location.href = `${window.location.origin}${window.location.pathname}?room=${roomName}&username=${userName}`;
     }
   }
 }
