@@ -21,7 +21,7 @@ export class App extends HTMLElement {
           audio: true,
           video: true
         };
-        navigator.getUserMedia(
+        navigator.mediaDevices.getUserMedia(
           constraints,
           stream => chat.createRoom(roomname, username, stream),
           error => {
